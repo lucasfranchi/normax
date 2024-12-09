@@ -16,9 +16,9 @@ export class RelatoriosListComponent {
 
   relatorioList: Array<RelatorioInterface> = [
     {
-      title: 'Apreciação de risco',
+      title: 'NR-12',
       subtitle: 'Conforme ABNT NBR ISO 12100',
-      route: '/apreciacao-risco',
+      route: '/sistema-gestao-qualidade',
     },
   ];
 

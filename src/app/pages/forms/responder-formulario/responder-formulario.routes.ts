@@ -7,13 +7,18 @@ export const routes: Routes = [
     component: ResponderFormularioComponent,
     children: [
       {
+        path: 'sistema-gestao-qualidade',
+        loadComponent: () =>
+          import('../sistema-gestao-qualidade/sistema-gestao-qualidade.component').then((m) => m.SistemaGestaoQualidadeComponent),
+      },
+      {
         path: 'apreciacao-risco',
         loadComponent: () =>
           import('../apreciacao-risco/apreciacao-risco.component').then((m) => m.ApreciacaoRiscoComponent),
       },
       {
         path: '',
-        redirectTo: '/responder-formulario/apreciacao-risco',
+        redirectTo: '/responder-formulario/sistema-gestao-qualidade',
         pathMatch: 'full',
       },
     ],

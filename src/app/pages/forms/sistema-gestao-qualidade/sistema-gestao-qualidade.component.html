@@ -1,0 +1,91 @@
+<form class="rl-sistena-gestao-form">
+  <div class="rl-sistena-gestao-form__inputs">
+    <ion-input
+      label="Nº Doc"
+      labelPlacement="stacked"
+      placeholder="Número do documento"
+    ></ion-input>
+    <ion-input
+      label="Elaboração inicial"
+      labelPlacement="stacked"
+      placeholder="Responsável pela elaboração inicial"
+    ></ion-input>
+    <ion-input
+      label="Leitura Crítica"
+      labelPlacement="stacked"
+      placeholder="Responsável pela leitura crítica"
+    ></ion-input>
+    <ion-input
+      label="Aprovação"
+      labelPlacement="stacked"
+      placeholder="Responsável pela aprovação"
+    ></ion-input>
+
+    <ion-button class="rl-sistena-gestao-form__register" (click)="openModal()">Adicionar Registro</ion-button>
+
+    <ion-grid [fixed]="true" class="rl-sistena-gestao-form__grid">
+      <ion-row class="rl-sistena-gestao-form__grid-header">
+        <ion-col>Rev.</ion-col>
+        <ion-col>Data</ion-col>
+        <ion-col>Alterações</ion-col>
+        <ion-col>Revisado Por</ion-col>
+      </ion-row>
+      <ion-row *ngFor="let item of items" class="rl-sistena-gestao-form__grid-row">
+        <ion-col>{{ item.rev }}</ion-col>
+        <ion-col>{{ item.data }}</ion-col>
+        <ion-col>{{ item.alteracoes }}</ion-col>
+        <ion-col>{{ item.revisadoPor }}</ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</form>
+
+<ion-button class="rl-sistena-gestao-form__next-button" [disabled]="isValidForm">Próximo</ion-button>
+
+<ion-modal [isOpen]="isModalOpen">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Adicionar Registro</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="closeModal()">Fechar</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <form (submit)="addRegistro()">
+        <ion-input
+          label="Revisão"
+          labelPlacement="stacked"
+          placeholder="Revisão"
+          [disabled]="true"
+          [(ngModel)]="newItem.rev"
+          name="rev"
+        ></ion-input>
+        <ion-input
+          label="Data"
+          labelPlacement="stacked"
+          type="date"
+          placeholder="Data"
+          [(ngModel)]="newItem.data"
+          name="data"
+        ></ion-input>
+        <ion-input
+          label="Alterações"
+          labelPlacement="stacked"
+          placeholder="Alterações"
+          [(ngModel)]="newItem.alteracoes"
+          name="alteracoes"
+        ></ion-input>
+        <ion-input
+          label="Revisado Por"
+          labelPlacement="stacked"
+          placeholder="Revisado Por"
+          [(ngModel)]="newItem.revisadoPor"
+          name="revisadoPor"
+        ></ion-input>
+        <ion-button type="submit">Salvar</ion-button>
+      </form>
+    </ion-content>
+  </ng-template>
+</ion-modal>

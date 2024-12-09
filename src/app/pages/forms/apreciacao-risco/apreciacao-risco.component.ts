@@ -32,7 +32,6 @@ import { arrowBackOutline, helpCircleOutline } from 'ionicons/icons';
   styleUrls: ['./apreciacao-risco.component.scss'],
   imports: [
     IonImg,
-    IonBackButton,
     IonContent,
     IonTitle,
     IonButtons,
