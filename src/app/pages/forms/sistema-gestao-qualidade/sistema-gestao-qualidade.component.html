@@ -1,24 +1,28 @@
-<form class="rl-sistena-gestao-form">
+<form class="rl-sistena-gestao-form" [formGroup]="formGroup">
   <div class="rl-sistena-gestao-form__inputs">
     <ion-input
       label="Nº Doc"
       labelPlacement="stacked"
       placeholder="Número do documento"
+      formControlName="documento"
     ></ion-input>
     <ion-input
       label="Elaboração inicial"
       labelPlacement="stacked"
       placeholder="Responsável pela elaboração inicial"
+      formControlName="elaboracaoInicial"
     ></ion-input>
     <ion-input
       label="Leitura Crítica"
       labelPlacement="stacked"
       placeholder="Responsável pela leitura crítica"
+      formControlName="leituraCritica"
     ></ion-input>
     <ion-input
       label="Aprovação"
       labelPlacement="stacked"
       placeholder="Responsável pela aprovação"
+      formControlName="aprovacao"
     ></ion-input>
 
     <ion-button class="rl-sistena-gestao-form__register" (click)="openModal()">Adicionar Registro</ion-button>
@@ -40,7 +44,7 @@
   </div>
 </form>
 
-<ion-button class="rl-sistena-gestao-form__next-button" [disabled]="isValidForm">Próximo</ion-button>
+<ion-button class="rl-sistena-gestao-form__next-button" (click)="nextPage()" [disabled]="isValidForm">Próximo</ion-button>
 
 <ion-modal [isOpen]="isModalOpen">
   <ng-template>

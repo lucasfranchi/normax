@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonIcon, IonCardHeader, IonCardTitle, IonCardSubtitle } from "@ionic/angular/standalone";
 import { addIcons } from 'ionicons';
-import { readerOutline } from 'ionicons/icons';
+import { construct } from 'ionicons/icons';
 
 @Component({
   selector: 'rl-card',
@@ -17,7 +17,7 @@ export class RlCardComponent implements OnInit {
   @Input() route: string = '';
 
   constructor(private router: Router) {
-    addIcons({readerOutline});
+    addIcons({construct});
   }
 
   ngOnInit() {}

@@ -1,0 +1,91 @@
+<form class="rl-identificacoes" [formGroup]="formGroup">
+  <div class="rl-identificacoes__inputs">
+    <ion-input
+      label="Empresa"
+      labelPlacement="stacked"
+      placeholder="Nome da empresa"
+      formControlName="empresa"
+    ></ion-input>
+    <ion-input
+      label="CNPJ"
+      labelPlacement="stacked"
+      placeholder="Número do CNPJ"
+      formControlName="cnpj"
+    ></ion-input>
+    <ion-input
+      label="I.E"
+      labelPlacement="stacked"
+      placeholder="I.E"
+      formControlName="ie"
+    ></ion-input>
+    <ion-input
+      label="Endereço"
+      labelPlacement="stacked"
+      placeholder="Endereço"
+      formControlName="endereco"
+    ></ion-input>
+    <ion-input
+      label="Cidade"
+      labelPlacement="stacked"
+      placeholder="Nome da cidade"
+      formControlName="cidade"
+    ></ion-input>
+    <ion-input
+      label="Estado"
+      labelPlacement="stacked"
+      placeholder="Nome do estado"
+      formControlName="estado"
+    ></ion-input>
+    <ion-input
+      label="CEP"
+      labelPlacement="stacked"
+      placeholder="Número do CEP"
+      formControlName="cep"
+    ></ion-input>
+    <ion-input
+      label="Nº Documento"
+      labelPlacement="stacked"
+      placeholder="Número do documento"
+      formControlName="numDocumento"
+    ></ion-input>
+    <ion-input
+      label="Nome projeto"
+      labelPlacement="stacked"
+      placeholder="Nome do projeto"
+      formControlName="nomeProjeto"
+    ></ion-input>
+    <ion-input
+      label="Revisão"
+      labelPlacement="stacked"
+      placeholder="Número da revisão"
+      formControlName="revisao"
+    ></ion-input>
+    <ion-input
+      label="Responsável acompanhamento"
+      labelPlacement="stacked"
+      placeholder="Responsável do acompanhamento"
+      formControlName="respAcompanhamento"
+    ></ion-input>
+    <ion-input
+      label="Responsável técnico"
+      labelPlacement="stacked"
+      placeholder="Responsável técnico"
+      formControlName="respTecnico"
+    ></ion-input>
+    <ion-input
+      label="CREA"
+      labelPlacement="stacked"
+      placeholder="Número do CREA"
+      formControlName="crea"
+    ></ion-input>
+    <ion-input
+      label="Titulação"
+      labelPlacement="stacked"
+      placeholder="Titulação"
+      formControlName="titulacao"
+    ></ion-input>
+
+  </div>
+</form>
+
+<ion-button class="rl-identificacoes__next-button" (click)="nextPage()" [disabled]="isValidForm">Próximo</ion-button>

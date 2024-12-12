@@ -12,6 +12,11 @@ export const routes: Routes = [
           import('../sistema-gestao-qualidade/sistema-gestao-qualidade.component').then((m) => m.SistemaGestaoQualidadeComponent),
       },
       {
+        path: 'identificacoes',
+        loadComponent: () =>
+          import('../identificacoes/identificacoes.component').then((m) => m.IdentificacoesComponent),
+      },
+      {
         path: 'apreciacao-risco',
         loadComponent: () =>
           import('../apreciacao-risco/apreciacao-risco.component').then((m) => m.ApreciacaoRiscoComponent),

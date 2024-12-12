@@ -18,11 +18,13 @@ import {
   IonModal,
   IonRow,
   IonTitle,
-  IonToolbar
+  IonToolbar,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { arrowBackOutline, helpCircleOutline } from 'ionicons/icons';
+import 'jspdf-autotable';
 import { SistemaGerstaoQualidadeItem } from './sistema-gestao-qualidade';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'sistema-gestao-qualidade',
@@ -49,20 +51,25 @@ import { SistemaGerstaoQualidadeItem } from './sistema-gestao-qualidade';
 export class SistemaGestaoQualidadeComponent implements OnInit {
   formGroup: FormGroup;
   items: Array<SistemaGerstaoQualidadeItem> = [];
-  newItem: SistemaGerstaoQualidadeItem = { rev: 0, data: '', alteracoes: '', revisadoPor: '' };
+  newItem: SistemaGerstaoQualidadeItem = {
+    rev: 0,
+    data: '',
+    alteracoes: '',
+    revisadoPor: '',
+  };
   isModalOpen: boolean = false;
-  isValidForm: boolean = true;
+  isValidForm: boolean = false;
 
-  constructor(private _fb: FormBuilder) {
+  constructor(private _fb: FormBuilder, private _router: Router) {
     addIcons({ helpCircleOutline, arrowBackOutline });
   }
 
   ngOnInit() {
     this._createFormGroup();
 
-    this.formGroup.valueChanges.subscribe(it => {
-      this.isValidForm = this.formGroup.valid
-    })
+    this.formGroup.valueChanges.subscribe((it) => {
+      this.isValidForm = this.formGroup.valid;
+    });
   }
 
   private _createFormGroup() {
@@ -70,7 +77,7 @@ export class SistemaGestaoQualidadeComponent implements OnInit {
       documento: ['', [Validators.required]],
       elaboracaoInicial: ['', [Validators.required]],
       leituraCritica: ['', [Validators.required]],
-      aprovação: [],
+      aprovacao: ['', [Validators.required]],
     });
   }
 
@@ -84,8 +91,17 @@ export class SistemaGestaoQualidadeComponent implements OnInit {
 
   addRegistro() {
     this.items.push({ ...this.newItem });
-    console.log(this.newItem)
-    this.newItem = { rev: this.newItem.rev++, data: '', alteracoes: '', revisadoPor: '' };
+    console.log(this.newItem);
+    this.newItem = {
+      rev: this.newItem.rev++,
+      data: '',
+      alteracoes: '',
+      revisadoPor: '',
+    };
     this.closeModal();
+  }
+
+  public nextPage() {
+    this._router.navigate(['/responder-formulario/identificacoes']);
   }
 }
