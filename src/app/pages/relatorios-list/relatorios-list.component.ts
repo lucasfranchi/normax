@@ -18,7 +18,7 @@ export class RelatoriosListComponent {
     {
       title: 'NR-12',
       subtitle: 'Conforme ABNT NBR ISO 12100',
-      route: '/sistema-gestao-qualidade',
+      route: '/apreciacao-risco',
     },
   ];
 

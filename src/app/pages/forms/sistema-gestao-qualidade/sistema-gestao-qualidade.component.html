@@ -43,9 +43,8 @@
     </ion-grid>
   </div>
 </form>
-
-<ion-button class="rl-sistena-gestao-form__next-button" (click)="nextPage()" [disabled]="isValidForm">Próximo</ion-button>
-
+<ion-button class="rl-sistena-gestao-form__next-button" [disabled]="isValidForm">Próximo</ion-button>
+<input type="file" (change)="onFileChange($event)" />
 <ion-modal [isOpen]="isModalOpen">
   <ng-template>
     <ion-header>

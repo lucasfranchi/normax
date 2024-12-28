@@ -23,7 +23,7 @@ export const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: '/responder-formulario/sistema-gestao-qualidade',
+        redirectTo: '/responder-formulario/apreciacao-risco',
         pathMatch: 'full',
       },
     ],

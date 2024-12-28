@@ -7,6 +7,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 import {
   IonButton,
   IonButtons,
@@ -22,9 +23,9 @@ import {
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { arrowBackOutline, helpCircleOutline } from 'ionicons/icons';
-import 'jspdf-autotable';
+import { ChangeExcelFileDTO } from 'src/app/services/change-excel-file/change-excel-file';
+import { ChangeExcelFileService } from 'src/app/services/change-excel-file/change-excel-file.service';
 import { SistemaGerstaoQualidadeItem } from './sistema-gestao-qualidade';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'sistema-gestao-qualidade',
@@ -60,7 +61,11 @@ export class SistemaGestaoQualidadeComponent implements OnInit {
   isModalOpen: boolean = false;
   isValidForm: boolean = false;
 
-  constructor(private _fb: FormBuilder, private _router: Router) {
+  constructor(
+    private _fb: FormBuilder,
+    private _router: Router,
+    private _changeExcelFileService: ChangeExcelFileService
+  ) {
     addIcons({ helpCircleOutline, arrowBackOutline });
   }
 
@@ -103,5 +108,26 @@ export class SistemaGestaoQualidadeComponent implements OnInit {
 
   public nextPage() {
     this._router.navigate(['/responder-formulario/identificacoes']);
+  }
+
+  onFileChange(event: any) {
+    const target: DataTransfer = <DataTransfer>event.target;
+    if (target.files.length !== 1) throw new Error('Cannot use multiple files');
+    const changeExcelFileDTO: ChangeExcelFileDTO = {
+      file: target,
+      changesList: [
+        {
+          cell: 'C3',
+          worksheetIndex: 0,
+          value: 'Caguei mole',
+        },
+        {
+          cell: 'C4',
+          worksheetIndex: 1,
+          value: 'Peidei duro',
+        },
+      ],
+    };
+    this._changeExcelFileService.changeExcelFile(changeExcelFileDTO);
   }
 }

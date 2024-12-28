@@ -12,7 +12,6 @@ import {
   IonButton,
   IonInput
 } from '@ionic/angular/standalone';
-import 'jspdf-autotable';
 
 @Component({
   selector: 'app-identificacoes',
@@ -56,7 +55,7 @@ export class IdentificacoesComponent  implements OnInit {
       revisao: ['', [Validators.required]],
       respAcompanhamento: ['', [Validators.required]],
       respTecnico: ['', [Validators.required]],
-      Crea: ['', [Validators.required]],
+      crea: ['', [Validators.required]],
       titulacao: ['', [Validators.required]],
     });
   }

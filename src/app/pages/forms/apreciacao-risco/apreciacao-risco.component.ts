@@ -4,9 +4,9 @@ import {
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 import {
-  IonBackButton,
   IonButton,
   IonButtons,
   IonContent,
@@ -19,35 +19,43 @@ import {
   IonItemGroup,
   IonLabel,
   IonModal,
+  IonSelect,
+  IonSelectOption,
   IonTextarea,
   IonTitle,
   IonToolbar,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { arrowBackOutline, helpCircleOutline } from 'ionicons/icons';
+import { ChangeExcelFileDTO } from 'src/app/services/change-excel-file/change-excel-file';
+import { ChangeExcelFileService } from 'src/app/services/change-excel-file/change-excel-file.service';
+import { getCellChangesByForm } from './apreciacao-risco';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'rl-apreciacao-risco',
   templateUrl: './apreciacao-risco.component.html',
   styleUrls: ['./apreciacao-risco.component.scss'],
   imports: [
-    IonImg,
-    IonContent,
-    IonTitle,
+    FormsModule,
+    IonButton,
     IonButtons,
-    IonToolbar,
-    IonModal,
+    IonContent,
     IonHeader,
     IonIcon,
-    IonButton,
-    IonTextarea,
-    IonLabel,
+    IonImg,
+    IonInput,
+    IonItem,
     IonItemDivider,
     IonItemGroup,
-    IonItem,
-    IonInput,
+    IonLabel,
+    IonModal,
+    IonSelect,
+    IonSelectOption,
+    IonTextarea,
+    IonTitle,
+    IonToolbar,
     ReactiveFormsModule,
-    FormsModule,
   ],
   standalone: true,
 })
@@ -55,7 +63,11 @@ export class ApreciacaoRiscoComponent implements OnInit {
   @ViewChild(IonModal) modal: IonModal;
   formGroup: FormGroup;
 
-  constructor(private _fb: FormBuilder) {
+  constructor(
+    private _fb: FormBuilder,
+    private _changeExcelFileService: ChangeExcelFileService,
+    private _http: HttpClient
+  ) {
     addIcons({ helpCircleOutline, arrowBackOutline });
   }
 
@@ -65,21 +77,38 @@ export class ApreciacaoRiscoComponent implements OnInit {
 
   private _createFormGroup() {
     this.formGroup = this._fb.group({
-      perigo: [''],
-      localizacao: [''],
-      atividade: [''],
-      consequenciaRisco: [''],
-      tipo: [''],
+      relatorio: ['0', [Validators.required]],
+      perigo: [],
+      localizacao: [],
+      atividade: [],
+      consequenciaRisco: [],
+      tipo: [],
       avaliacaoRisco: [],
       estimativaRisco: [],
       reducaoRiscoPerc: [],
-      consideracaoCondAtual: [''],
-      recomendacoes: [''],
+      consideracaoCondAtual: [""],
+      recomendacoes: [""],
     });
   }
 
   closeModal() {
     this.modal.dismiss(null, 'cancel');
+  }
+
+  public generateRelatorio() {
+    this._http.get('/assets/NR-12.xlsx', { responseType: 'blob' }).subscribe(data => {
+      const file = new File([data], 'NR-12.xlsx', { type: data.type });
+      const dataTransfer = new DataTransfer();
+      dataTransfer.items.add(file);
+
+      const changeExcelFileDTO: ChangeExcelFileDTO = {
+        changesList: Object.keys(this.formGroup.value)
+          .filter((it) => getCellChangesByForm(this.formGroup.value, it))
+          .map((key) => getCellChangesByForm(this.formGroup.value, key)),
+        file: dataTransfer
+      };
+      this._changeExcelFileService.changeExcelFile(changeExcelFileDTO);
+    })
   }
 
   onWillDismiss(event: Event) {}
