@@ -21,8 +21,8 @@ export class ChangeExcelFileService {
       const newBuffer = await workbook.xlsx.writeBuffer();
       this._convertExcelToPdfService.convertExcelToPdf(
         newBuffer,
-        'novo_arquivo',
-        changeExcelFileDTO.file
+        'novo_arquivo.xlsx',
+        changeExcelFileDTO,
       );
     };
     reader.readAsArrayBuffer(changeExcelFileDTO.file.files[0]);
@@ -34,6 +34,7 @@ export class ChangeExcelFileService {
   ) {
     changeExcelFileDTO.changesList.forEach((it) => {
       const worksheet = workbook.worksheets[it.worksheetIndex];
+      console.log(it)
       worksheet.getCell(it.cell).value = it.value;
 
       const rows: any = [];

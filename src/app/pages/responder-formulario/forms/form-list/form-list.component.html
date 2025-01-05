@@ -1,0 +1,25 @@
+<div class="maneger-form-list">
+  <div class="maneger-form-list__container">
+    @for (card of cardsOptions; track card) {
+      <maneger-color-cards
+        [card]="card"
+        (onAddButtonClick)="addItemInReport($event)"
+        (onDeleteButtonClick)="deleteItemInReport($event)">
+      </maneger-color-cards>
+    }
+  </div>
+
+  <ion-grid [fixed]="true" class="maneger-form-list__grid">
+    <ion-row class="maneger-form-list__grid-header">
+      <ion-col size="2">Id</ion-col>
+      <ion-col>Descrição</ion-col>
+    </ion-row>
+    <ion-row *ngFor="let report of reports" class="maneger-form-list__grid-row" style="--color:{{report.color}};">
+      <ion-col size="2">{{ report.id }}</ion-col>
+      <ion-col>{{ report.title }}</ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-button class="maneger-form-list__button" (click)="gerarRelatorio()">Gerar relatório</ion-button>
+</div>
+

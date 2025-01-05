@@ -1,6 +1,7 @@
 export interface ChangeExcelFileDTO {
   changesList: Array<ChangeExcelFile>;
-  file: DataTransfer
+  reportId: string;
+  file: DataTransfer;
 }
 
 export interface ChangeExcelFile {

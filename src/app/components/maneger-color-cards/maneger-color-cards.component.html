@@ -1,0 +1,10 @@
+<div class="maneger-color-card" style="--color:{{card.color}};">
+  <div class="maneger-color-card__fita"></div>
+  <div class="maneger-color-card__content">
+    {{ card.title }}
+  </div>
+  <div class="maneger-color-card__buttons">
+    <ion-button fill="solid" *ngIf="card.hasInReport" (click)="onDeleteButton($event)">Deletar</ion-button>
+    <ion-button fill="outline" (click)="onAddButton($event)">Adicionar relatório</ion-button>
+  </div>
+</div>
