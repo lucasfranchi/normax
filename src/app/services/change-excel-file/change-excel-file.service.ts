@@ -1,31 +1,86 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import * as ExcelJS from 'exceljs';
-import { ConvertExcelToPdfService } from '../convert-excel-to-pdf.service';
-import { ChangeExcelFileDTO } from './change-excel-file';
+import {ConvertExcelToPdfService} from '../convert-excel-to-pdf.service';
+import {ChangeExcelFileDTO} from './change-excel-file';
+import {ReportOrganizerService} from "../report-organizer/report-organizer.service";
+import {Router} from "@angular/router";
+import {ReportOrganizerInterface} from "../report-organizer/report-organizer";
 
 @Injectable({
   providedIn: 'root',
 })
 export class ChangeExcelFileService {
-  constructor(private _convertExcelToPdfService: ConvertExcelToPdfService) {}
+  constructor(private _router: Router, private _convertExcelToPdfService: ConvertExcelToPdfService, private _reportOrganizer: ReportOrganizerService) {
+  }
 
-  public changeExcelFile(changeExcelFileDTO: ChangeExcelFileDTO) {
+  public changeExcelFile(changeExcelFileDTO: ChangeExcelFileDTO, imageBase64?: string) {
     const reader: FileReader = new FileReader();
     reader.onload = async (e: any) => {
       const buffer = e.target.result;
       const workbook = new ExcelJS.Workbook();
       await workbook.xlsx.load(buffer);
+      if (imageBase64) await this._addImageToWorkbook(workbook, imageBase64);
       this._retrieveChanges(changeExcelFileDTO, workbook);
       this._removeUnusedWorkSheets(changeExcelFileDTO, workbook);
 
       const newBuffer = await workbook.xlsx.writeBuffer();
-      this._convertExcelToPdfService.convertExcelToPdf(
-        newBuffer,
-        'novo_arquivo.xlsx',
-        changeExcelFileDTO,
-      );
+
+      this._reportOrganizer.addReport(
+        {
+          id: Number(changeExcelFileDTO.reportId),
+          file: new File([newBuffer], `file_${changeExcelFileDTO.reportId}.xlsx`, {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}),
+          identificador: ''
+        }
+      )
+
+      this._router.navigate(['/responder-formulario/forms'])
     };
     reader.readAsArrayBuffer(changeExcelFileDTO.file.files[0]);
+  }
+
+  public async changeOrdersAndGenerateReports() {
+    const excelFiles = this._reportOrganizer.getReports();
+
+    // Atualiza todos os arquivos Excel primeiro
+    for (const file of excelFiles) {
+      await this.updateExcelFileOrderAsync(file);
+    }
+
+    // Converte os arquivos Excel para PDF
+    this._convertExcelToPdfService.convertExcelListToPdf(excelFiles);
+  }
+
+  private updateExcelFileOrderAsync(newObject: ReportOrganizerInterface): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onload = (event) => {
+        const buffer = event.target?.result as ArrayBuffer;
+
+        const workbook = new ExcelJS.Workbook();
+        workbook.xlsx.load(buffer).then(() => {
+          const sheet = workbook.worksheets[0];
+
+          if (sheet) {
+            sheet.getCell('M1').value = newObject.identificador;
+
+            workbook.xlsx.writeBuffer().then((updatedBuffer) => {
+              newObject.file = new File([updatedBuffer], 'report.xlsx', {type: newObject.file.type});
+              resolve(); // Resolve a promessa após a atualização
+            });
+          } else {
+            console.error('Planilha não encontrada.');
+            reject('Planilha não encontrada.');
+          }
+        }).catch(error => {
+          console.error('Erro ao carregar o arquivo Excel:', error);
+          reject(error);
+        });
+      };
+
+      reader.readAsArrayBuffer(newObject.file);
+    });
+
   }
 
   private _retrieveChanges(
@@ -34,12 +89,11 @@ export class ChangeExcelFileService {
   ) {
     changeExcelFileDTO.changesList.forEach((it) => {
       const worksheet = workbook.worksheets[it.worksheetIndex];
-      console.log(it)
       worksheet.getCell(it.cell).value = it.value;
 
       const rows: any = [];
       worksheet.eachRow(
-        { includeEmpty: true },
+        {includeEmpty: true},
         (
           row: {
             eachCell: (
@@ -51,7 +105,7 @@ export class ChangeExcelFileService {
         ) => {
           const rowData: any = [];
           row.eachCell(
-            { includeEmpty: true },
+            {includeEmpty: true},
             (cell: { value: any }, colIndex: any) => {
               rowData.push(cell.value || '');
             }
@@ -77,5 +131,22 @@ export class ChangeExcelFileService {
         workbook.removeWorksheetEx(it);
       }
     });
+  }
+
+  private async _addImageToWorkbook(workbook: ExcelJS.Workbook, imageBase64: string) {
+    try {
+      const imageId = workbook.addImage({
+        base64: imageBase64,
+        extension: 'jpeg'
+      });
+
+      const worksheet = workbook.worksheets[0];
+      worksheet.addImage(imageId, {
+        tl: {col: 1, row: 21},
+        ext: {width: 300, height: 300},
+      });
+    } catch (error) {
+      console.error('Erro ao adicionar imagem ao workbook:', error);
+    }
   }
 }

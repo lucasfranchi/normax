@@ -1,4 +1,6 @@
-<div class="maneger-form-list">
+<ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+
+<div class="maneger-form-list" *ngIf="!isLoading">
   <div class="maneger-form-list__container">
     @for (card of cardsOptions; track card) {
       <maneger-color-cards

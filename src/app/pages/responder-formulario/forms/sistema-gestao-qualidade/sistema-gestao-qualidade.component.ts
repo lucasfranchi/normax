@@ -96,7 +96,6 @@ export class SistemaGestaoQualidadeComponent implements OnInit {
 
   addRegistro() {
     this.items.push({ ...this.newItem });
-    console.log(this.newItem);
     this.newItem = {
       rev: this.newItem.rev++,
       data: '',

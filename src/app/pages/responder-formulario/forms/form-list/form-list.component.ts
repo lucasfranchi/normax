@@ -2,10 +2,11 @@ import {Component, OnInit} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {ManegerColorCardsComponent} from "../../../../components/maneger-color-cards/maneger-color-cards.component";
 import {ManagerColorCardsInterface} from "../../../../components/maneger-color-cards/maneger-color-cards";
-import {IonButton, IonCol, IonGrid, IonRow} from "@ionic/angular/standalone";
+import {IonButton, IonCol, IonGrid, IonRow, IonSpinner} from "@ionic/angular/standalone";
 import {Router} from "@angular/router";
 import {ReportOrganizerService} from "../../../../services/report-organizer/report-organizer.service";
 import {PDFDocument} from "pdf-lib";
+import {ChangeExcelFileService} from "../../../../services/change-excel-file/change-excel-file.service";
 
 @Component({
   selector: 'app-form-list',
@@ -17,11 +18,14 @@ import {PDFDocument} from "pdf-lib";
     IonCol,
     IonGrid,
     IonRow,
-    IonButton
+    IonButton,
+    IonSpinner
   ],
   standalone: true,
 })
 export class FormListComponent implements OnInit {
+  isLoading: boolean = false;
+
   cardsOptions: Array<ManagerColorCardsInterface> = [
     {
       color: '193,121,71',
@@ -112,11 +116,10 @@ export class FormListComponent implements OnInit {
 
   reports: Array<ManagerColorCardsInterface> = [];
 
-  constructor(private _router: Router, private _reportOrganizerService: ReportOrganizerService) {
+  constructor(private _router: Router, private _reportOrganizerService: ReportOrganizerService, private _changeExcelFileService: ChangeExcelFileService) {
   }
 
   ngOnInit(): void {
-    console.log(this._reportOrganizerService.getReports())
     const arr = []
     this._reportOrganizerService.getReports().forEach(it =>
       arr.push(this.cardsOptions.find(card => card.id === it.id))
@@ -140,32 +143,11 @@ export class FormListComponent implements OnInit {
 
   public async gerarRelatorio() {
     try {
-      const pdfBlobs = this._reportOrganizerService.getReports().map(it => it.file);
-
-      // Cria um novo documento PDF
-      const mergedPdf = await PDFDocument.create();
-
-      for (let pdfBlob of pdfBlobs) {
-        const arrayBuffer = await pdfBlob.arrayBuffer(); // Isso vai funcionar diretamente no navegador
-        const pdf = await PDFDocument.load(arrayBuffer);
-
-        // Adiciona todas as páginas do PDF atual ao novo PDF
-        const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPages().map((_, index) => index));
-        copiedPages.forEach(page => mergedPdf.addPage(page));
-      }
-
-      // Salva o PDF combinado como um ArrayBuffer
-      const pdfBytes = await mergedPdf.save();
-
-      // Cria um Blob a partir do ArrayBuffer resultante
-      const mergedBlob = new Blob([pdfBytes], { type: 'application/pdf' });
-
-      // Cria um link de download e aciona o download
-      const downloadLink = document.createElement('a');
-      downloadLink.href = URL.createObjectURL(mergedBlob);
-      downloadLink.download = 'merged.pdf';
-      downloadLink.click();
+      this.isLoading = true;
+      console.log(this._reportOrganizerService.getReports())
+      this._changeExcelFileService.changeOrdersAndGenerateReports()
     } catch (error) {
+      this.isLoading = false;
       console.error('Erro ao gerar relatório:', error);
     }
   }
