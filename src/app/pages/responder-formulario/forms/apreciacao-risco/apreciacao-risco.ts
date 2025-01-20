@@ -1,24 +1,25 @@
-import {ChangeExcelFile, ChangeExcelFileDTO} from "../../../../services/change-excel-file/change-excel-file";
+import {ChangeExcelFile} from "../../../../services/change-excel-file/change-excel-file";
 
 export interface ApreciacaoRiscoForm {
-  atividade: string;
-  avaliacaoRisco: ApreciacaoRiscoHZN;
-  consequenciaRisco: string;
-  consideracaoCondAtual: string;
-  estimativaRisco: ApreciacaoRiscoHZN;
-  localizacao: string;
-  perigo: string;
-  recomendacoes: string;
-  reducaoRiscoPerc: number;
-  tipo: string;
-  title: string;
+  relatorio: string,
+  perigo: string,
+  localizacao: string,
+  atividade: string,
+  consequenciaRisco: string,
+  tipo: string,
+  arpo: string,
+  arfe: string,
+  arglp: string,
+  arnp: string,
+  erpo: string,
+  consideracaoCondAtual: string,
+  recomendacoes: string,
 }
 
-export interface ApreciacaoRiscoHZN {
-  po: number;
-  fe: number;
-  glp: number;
-  np: number;
+export interface ApreciacaoRiscoPresets {
+  id: string;
+  reportId: string;
+  form: ApreciacaoRiscoForm;
 }
 
 export function getCellChangesByForm(form: any, key: string, reportId: number): ChangeExcelFile {

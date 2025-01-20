@@ -1,4 +1,4 @@
-<ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+<maneger-loading class="w-full h-full flex items-center justify-center" *ngIf="isLoading"></maneger-loading>
 
 <div class="maneger-form-list" *ngIf="!isLoading">
   <div class="maneger-form-list__container">
@@ -21,7 +21,21 @@
       <ion-col>{{ report.title }}</ion-col>
     </ion-row>
   </ion-grid>
-
-  <ion-button class="maneger-form-list__button" (click)="gerarRelatorio()">Gerar relatório</ion-button>
+  <div class="flex justify-between p-4">
+    <button class="bg-white w-24" (click)="returnPage()">
+      <svg width="15" height="15" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" fill="none"
+           xmlns="http://www.w3.org/2000/svg">
+        <path d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" stroke-linejoin="round" stroke-linecap="round"></path>
+      </svg>
+      <span>Back</span>
+    </button>
+    <button class="bg-white" (click)="gerarRelatorio()">
+      <span>Gerar relatório</span>
+      <svg width="15" height="15" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" fill="none"
+           xmlns="http://www.w3.org/2000/svg">
+        <path d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" stroke-linejoin="round" stroke-linecap="round"></path>
+      </svg>
+    </button>
+  </div>
 </div>
 

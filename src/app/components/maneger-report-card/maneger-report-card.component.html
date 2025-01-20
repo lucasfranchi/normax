@@ -1,0 +1,22 @@
+<div class="relative items-center flex w-full flex-row rounded-xl bg-white bg-clip-border text-gray-700 shadow-md" style="height: 120px; max-height: 400px">
+    <!-- Botão de deletar -->
+    <button class="absolute bottom-0 right-0 m-2 p-1 bg-red-500 rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400" (click)="onItemClickEvent()">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-1 12H6L5 7m5-4h4m-4 0h4m-4 0V3a2 2 0 00-2-2h-4a2 2 0 00-2 2v1H2m20 0h-6"/>
+        </svg>
+    </button>
+
+    <div class="items-center flex justify-center relative -ml-6 mr-4 h-4/5 w-1/4 overflow-hidden rounded-xl bg-red-gray-500 bg-clip-border text-white shadow-lg shadow-red-gray-500/40 bg-gradient-to-r from-red-500 to-red-600">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-12h-8m8 0a4 4 0 00-4-4h-4V8m4 0V4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V8z"/>
+        </svg>
+    </div>
+    <div class="py-4 px-2 w-3/4">
+        <h5 class="mb-2 block font-sans text-xl font-semibold leading-snug tracking-normal text-red-gray-900 antialiased">
+            {{ title }}
+        </h5>
+        <p class="block font-sans text-sm text-base font-light leading-relaxed antialiased">
+            Criado: {{ subtitle }}
+        </p>
+    </div>
+</div>

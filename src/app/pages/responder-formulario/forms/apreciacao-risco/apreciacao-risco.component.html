@@ -1,8 +1,8 @@
 <div *ngIf="isLoading" class="rl-apreciacao">
-  <ion-spinner name="crescent"></ion-spinner>
+  <maneger-loading></maneger-loading>
 </div>
 
-<form class="rl-apreciacao-form" *ngIf="!isLoading" [formGroup]="formGroup">
+<form class="rl-apreciacao-form " *ngIf="!isLoading" [formGroup]="formGroup">
   <div class="rl-apreciacao-form__inputs">
     <ion-select
       formControlName="relatorio"
@@ -54,6 +54,13 @@
         EQUIPAMENTOS
       </ion-select-option
       >
+    </ion-select>
+    <ion-select
+      label="Selecione o preset"
+      label-placement="stacked"
+      (ionChange)="changePreset($event)"
+    >
+      <ion-select-option *ngFor="let preset of presets" [value]="preset.id" >{{preset.form.perigo}}</ion-select-option>
     </ion-select>
     <ion-input
       formControlName="perigo"

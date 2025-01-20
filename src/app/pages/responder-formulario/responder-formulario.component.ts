@@ -1,13 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import {
-  IonToolbar,
-  IonHeader,
-  IonContent,
-  IonTitle,
-  IonBackButton,
-  IonButtons,
-} from '@ionic/angular/standalone';
+import {Component, OnInit} from '@angular/core';
+import {RouterOutlet} from '@angular/router';
+import {IonBackButton, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar,} from '@ionic/angular/standalone';
+import {ManegerFormPageComponent} from "../../components/maneger-form-page/maneger-form-page.component";
 
 @Component({
   selector: 'app-responder-formulario',
@@ -21,6 +15,8 @@ import {
     IonHeader,
     IonToolbar,
     RouterOutlet,
+    ManegerFormPageComponent,
+
   ],
   standalone: true,
 })

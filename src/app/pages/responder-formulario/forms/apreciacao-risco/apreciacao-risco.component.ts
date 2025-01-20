@@ -1,7 +1,6 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators,} from '@angular/forms';
 import {
-  ActionSheetController,
   IonButton,
   IonButtons,
   IonContent,
@@ -16,21 +15,21 @@ import {
   IonModal,
   IonSelect,
   IonSelectOption,
-  IonSpinner,
   IonText,
   IonTextarea,
   IonTitle,
   IonToolbar,
-  Platform,
 } from '@ionic/angular/standalone';
 import {addIcons} from 'ionicons';
 import {arrowBackOutline, helpCircleOutline} from 'ionicons/icons';
 import {ChangeExcelFileDTO} from 'src/app/services/change-excel-file/change-excel-file';
 import {ChangeExcelFileService} from 'src/app/services/change-excel-file/change-excel-file.service';
-import {getCellChangesByForm} from './apreciacao-risco';
+import {ApreciacaoRiscoPresets, getCellChangesByForm} from './apreciacao-risco';
 import {HttpClient} from '@angular/common/http';
 import {ActivatedRoute} from "@angular/router";
 import {CommonModule} from "@angular/common";
+import {getPreset} from "./apreciacao-risco-presets/apreciacao-risco-preset";
+import {ManegerLoadingComponent} from "../../../../components/maneger-loading/maneger-loading.component";
 
 @Component({
   selector: 'rl-apreciacao-risco',
@@ -57,14 +56,16 @@ import {CommonModule} from "@angular/common";
     IonTitle,
     IonToolbar,
     ReactiveFormsModule,
-    IonSpinner,
     IonText,
+    ManegerLoadingComponent,
   ],
   standalone: true,
 })
 export class ApreciacaoRiscoComponent implements OnInit {
   @ViewChild(IonModal) modal: IonModal;
-  @ViewChild('fileInput', { static: false }) fileInput!: ElementRef;
+  @ViewChild('fileInput', {static: false}) fileInput!: ElementRef;
+
+  presets: Array<ApreciacaoRiscoPresets> = []
 
   formGroup: FormGroup;
   isLoading: boolean = false;
@@ -76,8 +77,6 @@ export class ApreciacaoRiscoComponent implements OnInit {
     private _changeExcelFileService: ChangeExcelFileService,
     private _http: HttpClient,
     private route: ActivatedRoute,
-    private actionsheetCtrl: ActionSheetController,
-    private platform: Platform,
   ) {
     addIcons({helpCircleOutline, arrowBackOutline});
   }
@@ -86,6 +85,7 @@ export class ApreciacaoRiscoComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.reportId = params['id']
       this._createFormGroup();
+      this.presets = getPreset(this.reportId)
       this.formGroup.get('relatorio').disable()
     });
   }
@@ -106,6 +106,14 @@ export class ApreciacaoRiscoComponent implements OnInit {
       consideracaoCondAtual: ["", [Validators.required]],
       recomendacoes: ["", [Validators.required]],
     });
+  }
+
+  changePreset(event) {
+    console.log(event.detail.value)
+
+    const formValue = this.presets.find(it => it.id === event.detail.value);
+    console.log(formValue)
+    this.formGroup.patchValue(formValue.form)
   }
 
   OnInputChange(input: string) {

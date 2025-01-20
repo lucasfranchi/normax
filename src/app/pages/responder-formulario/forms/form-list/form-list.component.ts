@@ -1,12 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {CommonModule} from "@angular/common";
+import {CommonModule, Location} from "@angular/common";
 import {ManegerColorCardsComponent} from "../../../../components/maneger-color-cards/maneger-color-cards.component";
 import {ManagerColorCardsInterface} from "../../../../components/maneger-color-cards/maneger-color-cards";
-import {IonButton, IonCol, IonGrid, IonRow, IonSpinner} from "@ionic/angular/standalone";
+import {IonButton, IonCol, IonGrid, IonRow} from "@ionic/angular/standalone";
 import {Router} from "@angular/router";
 import {ReportOrganizerService} from "../../../../services/report-organizer/report-organizer.service";
-import {PDFDocument} from "pdf-lib";
 import {ChangeExcelFileService} from "../../../../services/change-excel-file/change-excel-file.service";
+import {ManegerLoadingComponent} from "../../../../components/maneger-loading/maneger-loading.component";
 
 @Component({
   selector: 'app-form-list',
@@ -19,7 +19,7 @@ import {ChangeExcelFileService} from "../../../../services/change-excel-file/cha
     IonGrid,
     IonRow,
     IonButton,
-    IonSpinner
+    ManegerLoadingComponent
   ],
   standalone: true,
 })
@@ -116,7 +116,7 @@ export class FormListComponent implements OnInit {
 
   reports: Array<ManagerColorCardsInterface> = [];
 
-  constructor(private _router: Router, private _reportOrganizerService: ReportOrganizerService, private _changeExcelFileService: ChangeExcelFileService) {
+  constructor(private _router: Router, private _reportOrganizerService: ReportOrganizerService, private _changeExcelFileService: ChangeExcelFileService, private _location: Location) {
   }
 
   ngOnInit(): void {
@@ -150,5 +150,9 @@ export class FormListComponent implements OnInit {
       this.isLoading = false;
       console.error('Erro ao gerar relatório:', error);
     }
+  }
+
+  public returnPage(): void {
+    this._location.back()
   }
 }

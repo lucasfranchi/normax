@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
 import { ResponderFormularioComponent } from './responder-formulario.component';
+import {ApresentacaoMaquinaComponent} from "./forms/apresentacao-maquina/apresentacao-maquina.component";
+import {CategoriaSegurancaComponent} from "./forms/categoria-seguranca/categoria-seguranca.component";
 
 export const routes: Routes = [
   {
@@ -7,19 +9,19 @@ export const routes: Routes = [
     component: ResponderFormularioComponent,
     children: [
       {
-        path: 'sistema-gestao-qualidade',
-        loadComponent: () =>
-          import('./forms/sistema-gestao-qualidade/sistema-gestao-qualidade.component').then((m) => m.SistemaGestaoQualidadeComponent),
-      },
-      {
-        path: 'identificacoes',
-        loadComponent: () =>
-          import('./forms/identificacoes/identificacoes.component').then((m) => m.IdentificacoesComponent),
-      },
-      {
         path: 'apreciacao-risco',
         loadComponent: () =>
           import('./forms/apreciacao-risco/apreciacao-risco.component').then((m) => m.ApreciacaoRiscoComponent),
+      },
+      {
+        path: 'apresentacao-maquina',
+        loadComponent: () =>
+          import('./forms/apresentacao-maquina/apresentacao-maquina.component').then((m) => m.ApresentacaoMaquinaComponent),
+      },
+      {
+        path: 'categoria-seguranca',
+        loadComponent: () =>
+          import('./forms/categoria-seguranca/categoria-seguranca.component').then((m) => m.CategoriaSegurancaComponent),
       },
       {
         path: 'forms',
@@ -28,7 +30,7 @@ export const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: '/responder-formulario/apreciacao-risco',
+        redirectTo: '/responder-formulario/apresentacao-maquina',
         pathMatch: 'full',
       },
     ],

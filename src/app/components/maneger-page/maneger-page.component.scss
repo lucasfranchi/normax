@@ -1,0 +1,95 @@
+:host {
+  height: 100%;
+  width: 100%;
+}
+
+.maneger-page {
+  box-shadow: 0px 8px 28px -9px rgba(0,0,0,0.45);
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+
+  &__header {
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    height: 15vh;
+    font-size: 2rem;
+    overflow: hidden;
+  }
+
+  &__wave {
+    position: absolute;
+    width: 90vw;
+    height: 90vw;
+    opacity: 0.6;
+    left: 5vw;
+    top: -10vh;
+    background: linear-gradient(744deg,#af40ff,#5b42f3 60%,#00ddeb);
+  }
+
+  &__icon {
+    width: 3em;
+    margin-top: -1em;
+    padding-bottom: 1em;
+  }
+
+  &__infotop {
+    text-align: center;
+    font-size: 20px;
+    color: rgb(255, 255, 255);
+    font-weight: 600;
+    z-index: 1000;
+  }
+
+  &__name {
+    font-size: 14px;
+    font-weight: 100;
+    position: relative;
+    top: 1em;
+    text-transform: lowercase;
+  }
+}
+
+.maneger-page__wave:nth-child(2),
+.maneger-page__:nth-child(3) {
+  top: 210px;
+}
+
+.playing .maneger-page__wave {
+  border-radius: 40%;
+  animation: wave 3000ms infinite linear;
+}
+
+.maneger-page__wave {
+  border-radius: 40%;
+  animation: wave 55s infinite linear;
+}
+
+.playing .maneger-page__wave:nth-child(2) {
+  animation-duration: 4000ms;
+}
+
+.maneger-page__wave:nth-child(2) {
+  animation-duration: 50s;
+}
+
+.playing .maneger-page__wave:nth-child(3) {
+  animation-duration: 5000ms;
+}
+
+.maneger-page__wave:nth-child(3) {
+  animation-duration: 45s;
+}
+
+@keyframes wave {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}

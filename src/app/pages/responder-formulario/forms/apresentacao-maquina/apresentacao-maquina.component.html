@@ -1,0 +1,143 @@
+<form class="maneger-apresentacao" [formGroup]="formGroup">
+  <div class="maneger-apresentacao__form-card">
+    <ion-input
+      formControlName="maquina"
+      labelPlacement="stacked"
+      placeholder="Ex: Esmeril"
+    >
+      <div slot="label">Máquina a ser avaliada
+        <ion-text color="danger">(*)</ion-text>
+      </div>
+    </ion-input>
+  </div>
+  <div class="maneger-apresentacao__form-card">
+    <div class="flex">
+      <ion-input
+        class="flex-none w-28"
+        formControlName="relMaquina"
+        labelPlacement="stacked"
+        placeholder="Ex: 001"
+      >
+        <div slot="label">Nº Rel. Máq.
+          <ion-text color="danger">(*)</ion-text>
+        </div>
+      </ion-input>
+      <ion-input
+        formControlName="numTagSeri"
+        labelPlacement="stacked"
+        placeholder="Tag ou número de série"
+      >
+        <div slot="label">TAG / Num. Série</div>
+      </ion-input>
+    </div>
+    <ion-input
+      formControlName="localInstalacao"
+      labelPlacement="stacked"
+      placeholder="Ex: Araraquara"
+    >
+      <div slot="label">Local Instalação
+        <ion-text color="danger">(*)</ion-text>
+      </div>
+    </ion-input>
+    <ion-input
+      formControlName="anoFabricacao"
+      labelPlacement="stacked"
+      placeholder="Ex: 2001"
+    >
+      <div slot="label">Ano Fabricação
+        <ion-text color="danger">(*)</ion-text>
+      </div>
+    </ion-input>
+    <ion-input
+      formControlName="tipo"
+      labelPlacement="stacked"
+      placeholder="Ex: Esmeril"
+    >
+      <div slot="label">Tipo
+        <ion-text color="danger">(*)</ion-text>
+      </div>
+    </ion-input>
+
+    <ion-label position="stacked" class="label">Data da inspeção</ion-label>
+    <ion-datetime-button class="mt-2" datetime="datetime"></ion-datetime-button>
+
+    <ion-modal [keepContentsMounted]="true">
+      <ng-template>
+        <ion-datetime id="datetime" presentation="date" formControlName="dataInspecao"></ion-datetime>
+      </ng-template>
+    </ion-modal>
+  </div>
+
+  <div class="maneger-apresentacao__form-card">
+    <ion-label position="stacked" class="label"><h1>Fontes de Energia</h1></ion-label>
+    <ion-checkbox class="mt-3" labelPlacement="end" formControlName="feEletrica">Elétrica</ion-checkbox>
+    <ion-checkbox labelPlacement="end" formControlName="fePneumatica">Pneumática</ion-checkbox>
+    <ion-checkbox labelPlacement="end" formControlName="feHidraulica">Hidráulica</ion-checkbox>
+    <ion-checkbox labelPlacement="end" formControlName="feOutra">Outra</ion-checkbox>
+  </div>
+
+  <div class="maneger-apresentacao__form-card">
+    <ion-label position="stacked" class="label"><h1>Sistemas de segurança</h1>
+      <p>Atualmente instalados na máquina.</p></ion-label>
+    <ion-checkbox class="mt-4" labelPlacement="end" formControlName="ssProtecoesFixa">Proteções fixas</ion-checkbox>
+    <ion-checkbox labelPlacement="end" formControlName="ssProtecoesMoveis">Proteções móveis com intertravamento</ion-checkbox>
+    <ion-checkbox labelPlacement="end" formControlName="ssDispositivo">Dispositivo de parada de emergência</ion-checkbox>
+    <ion-checkbox labelPlacement="end" formControlName="ssComando">Comando bimanual</ion-checkbox>
+    <ion-checkbox labelPlacement="end" formControlName="ssScanner">Scanner</ion-checkbox>
+    <ion-checkbox labelPlacement="end" formControlName="ssCortina">Cortina de luz</ion-checkbox>
+    <ion-checkbox labelPlacement="end" formControlName="ssProtecao">Proteção perimetral com gradil</ion-checkbox>
+    <ion-checkbox labelPlacement="end" formControlName="ssBloco">Bloco e/ou válvulas de segurança</ion-checkbox>
+    <ion-checkbox labelPlacement="end" formControlName="ssSensores">Sensores</ion-checkbox>
+    <ion-checkbox labelPlacement="end" formControlName="ssCalco">Calço mecânico</ion-checkbox>
+    <ion-checkbox labelPlacement="end" formControlName="ssRele">Relé/CLP de Segurança</ion-checkbox>
+    <ion-checkbox labelPlacement="end" formControlName="ssChave">Chave Geral</ion-checkbox>
+    <ion-checkbox labelPlacement="end" formControlName="ssRearme">Rearme manual/Reset</ion-checkbox>
+    <ion-checkbox labelPlacement="end" formControlName="ssSinal">Sinal luminoso e/ou sonoro</ion-checkbox>
+    <ion-checkbox labelPlacement="end" formControlName="ssOutros">Outros:</ion-checkbox>
+  </div>
+  <div class="maneger-apresentacao__form-card">
+    <ion-input
+      formControlName="respTecnico"
+      labelPlacement="stacked"
+      placeholder="Nome do responsável pela avaliação"
+    >
+      <div slot="label">Responsável técnico
+        <ion-text color="danger">(*)</ion-text>
+      </div>
+    </ion-input>
+    <ion-input
+      formControlName="crea"
+      labelPlacement="stacked"
+      placeholder="Ex: 0000000000"
+    >
+      <div slot="label">CREA
+        <ion-text color="danger">(*)</ion-text>
+      </div>
+    </ion-input>
+    <ion-textarea
+      formControlName="qualificacao"
+      labelPlacement="stacked"
+      placeholder="Qualificações do resp. técnico."
+    >
+      <div slot="label">Qualificação
+        <ion-text color="danger">(*)</ion-text>
+      </div>
+    </ion-textarea>
+  </div>
+  <div class="flex justify-between">
+    <button class="bg-white w-24 items-end" (click)="returnPage()">
+      <svg width="15" height="15" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" fill="none"
+           xmlns="http://www.w3.org/2000/svg">
+        <path d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" stroke-linejoin="round" stroke-linecap="round"></path>
+      </svg>
+      <span>Back</span>
+    </button>
+    <button class="bg-white w-24 items-end" (click)="nextPage()">
+      <span>Next</span>
+      <svg width="15" height="15" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" fill="none"
+           xmlns="http://www.w3.org/2000/svg">
+        <path d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" stroke-linejoin="round" stroke-linecap="round"></path>
+      </svg>
+    </button>
+  </div>
+</form>

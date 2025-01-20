@@ -27,6 +27,7 @@ export class ConvertExcelToPdfService {
         const formData = new FormData();
         const blob = new Blob([buffer], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
         formData.append('file', blob, `file_${index}.xlsx`);
+        console.log('Arquivo que está sendo enviado:', formData.get('file'));
 
         this._http
           .post('http://192.168.1.29:5000/convert', formData, {

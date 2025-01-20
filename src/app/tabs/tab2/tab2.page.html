@@ -1,13 +1,7 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Relatórios Salvos</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-  <ion-list>
-    <ion-item *ngFor="let pdfFile of pdfFiles" (click)="openPdf(pdfFile)">
-      {{ pdfFile }}
-    </ion-item>
+<maneger-page header="Relatórios">
+  <ion-list class="flex flex-col gap-3 p-4 pl-8 h-full rounded-t-xl bg-gray-100">
+    <maneger-report-card *ngFor="let pdfFile of pdfFiles" [title]="pdfFile.name" [subtitle]="pdfFile.date"
+                         (click)="openPdf(pdfFile.name)" (onItemClick)="deletePdf($event)">
+    </maneger-report-card>
   </ion-list>
-</ion-content>
+</maneger-page>
