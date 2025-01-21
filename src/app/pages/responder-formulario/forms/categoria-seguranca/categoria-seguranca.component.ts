@@ -1,8 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {IonLabel, IonPicker, IonPickerColumn, IonPickerColumnOption} from "@ionic/angular/standalone";
-import {FormBuilder, FormGroup, ReactiveFormsModule} from "@angular/forms";
+import {ReactiveFormsModule} from "@angular/forms";
 import {Location} from "@angular/common";
 import {Router} from "@angular/router";
+import {CategoriaForm} from "../../../../services/form-organizer/form-organizer";
+import {FormOrganizerService} from "../../../../services/form-organizer/form-organizer.service";
 
 @Component({
   selector: 'categoria-seguranca',
@@ -19,20 +21,35 @@ import {Router} from "@angular/router";
   ]
 })
 export class CategoriaSegurancaComponent implements OnInit {
-  formGroup: FormGroup;
+  formValue: CategoriaForm = {
+    categoriaF: 'F1',
+    categoriaP: 'P1',
+    categoriaS: 'S1'
+  };
 
-  constructor(private _fb: FormBuilder, private _location: Location, private _router: Router) {
+  constructor(
+    private _location: Location,
+    private _router: Router,
+    private _formOrganizerService: FormOrganizerService
+  ) {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
+    this.formValue = this._formOrganizerService.getFormValue().categoriaSeguranca
   }
 
+  public onPickerChange(key: string, event: CustomEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.formValue[key] = event.detail.value;
+  }
 
   public returnPage(): void {
     this._location.back()
   }
 
   public nextPage(): void {
-    this._router.navigateByUrl('/responder-formulario/forms');
+    this._formOrganizerService.addFormValues('categoriaSeguranca', this.formValue);
+    this._router.navigateByUrl('/responder-formulario/limites-maquina');
   }
 }

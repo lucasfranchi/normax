@@ -12,6 +12,8 @@ import {
 import {FormBuilder, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {Location} from "@angular/common";
 import {Router} from "@angular/router";
+import {FormOrganizerService} from "../../../../services/form-organizer/form-organizer.service";
+import {ApresentacaoMaquinaForm} from "../../../../services/form-organizer/form-organizer";
 
 @Component({
   selector: 'apresentacao-maquina',
@@ -32,11 +34,17 @@ import {Router} from "@angular/router";
 })
 export class ApresentacaoMaquinaComponent implements OnInit {
   formGroup: FormGroup;
+  formValues: ApresentacaoMaquinaForm = null
 
-  constructor(private _fb: FormBuilder, private _location: Location, private _router: Router) {
-  }
+  constructor(
+    private _fb: FormBuilder,
+    private _location: Location,
+    private _router: Router,
+    private _formOrganizerService: FormOrganizerService
+  ) {}
 
   ngOnInit() {
+    this.formValues = this._formOrganizerService.getFormValue().apresentacaoMaquina
     this.formGroup = this._fb.group({
       maquina: [],
       relMaquina: [],
@@ -68,6 +76,7 @@ export class ApresentacaoMaquinaComponent implements OnInit {
       crea: [],
       qualificacao: [],
     })
+    this.formGroup.patchValue(this.formValues);
   }
 
   public returnPage(): void {
@@ -75,6 +84,7 @@ export class ApresentacaoMaquinaComponent implements OnInit {
   }
 
   public nextPage(): void {
+    this._formOrganizerService.addFormValues('apresentacaoMaquina', this.formGroup.value);
     this._router.navigateByUrl('/responder-formulario/categoria-seguranca');
   }
 

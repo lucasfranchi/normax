@@ -24,6 +24,11 @@ export const routes: Routes = [
           import('./forms/categoria-seguranca/categoria-seguranca.component').then((m) => m.CategoriaSegurancaComponent),
       },
       {
+        path: 'limites-maquina',
+        loadComponent: () =>
+          import('./forms/limites-maquina/limites-maquina.component').then((m) => m.LimitesMaquinaComponent),
+      },
+      {
         path: 'forms',
         loadComponent: () =>
           import('./forms/form-list/form-list.component').then((m) => m.FormListComponent),
