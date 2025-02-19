@@ -13,12 +13,13 @@ export class FormOrganizerService {
       categoriaS: 'S1',
     },
     limitesMaquina: null,
+    capa: null
   };
 
   constructor() {}
 
   public addFormValues(
-    key: 'apresentacaoMaquina' | 'categoriaSeguranca' | 'limitesMaquina',
+    key: 'apresentacaoMaquina' | 'categoriaSeguranca' | 'limitesMaquina' | 'capa',
     formValue: any
   ) {
     this.forms[key] = formValue;

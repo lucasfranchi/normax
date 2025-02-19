@@ -97,64 +97,67 @@
 
   <div class="maneger-apresentacao__form-card">
     <ion-label position="stacked" class="label"
-      ><h1>Sistemas de segurança</h1>
-      <p>Atualmente instalados na máquina.</p></ion-label
+    ><h1>Sistemas de segurança</h1>
+    <p>Atualmente instalados na máquina.</p></ion-label
     >
     <ion-checkbox
-      class="mt-4"
-      labelPlacement="end"
-      formControlName="ssProtecoesFixa"
-      >Proteções fixas</ion-checkbox
+    class="mt-4"
+    labelPlacement="end"
+    formControlName="ssProtecoesFixa"
+    >Proteções fixas</ion-checkbox
     >
     <ion-checkbox labelPlacement="end" formControlName="ssProtecoesMoveis"
-      >Proteções móveis com intertravamento</ion-checkbox
+    >Proteções móveis com intertravamento</ion-checkbox
     >
     <ion-checkbox labelPlacement="end" formControlName="ssDispositivo"
       >Dispositivo de parada de emergência</ion-checkbox
-    >
-    <ion-checkbox labelPlacement="end" formControlName="ssComando"
+      >
+      <ion-checkbox labelPlacement="end" formControlName="ssComando"
       >Comando bimanual</ion-checkbox
-    >
-    <ion-checkbox labelPlacement="end" formControlName="ssScanner"
+      >
+      <ion-checkbox labelPlacement="end" formControlName="ssScanner"
       >Scanner</ion-checkbox
-    >
-    <ion-checkbox labelPlacement="end" formControlName="ssCortina"
+      >
+      <ion-checkbox labelPlacement="end" formControlName="ssCortina"
       >Cortina de luz</ion-checkbox
-    >
-    <ion-checkbox labelPlacement="end" formControlName="ssProtecao"
+      >
+      <ion-checkbox labelPlacement="end" formControlName="ssProtecao"
       >Proteção perimetral com gradil</ion-checkbox
-    >
-    <ion-checkbox labelPlacement="end" formControlName="ssBloco"
+      >
+      <ion-checkbox labelPlacement="end" formControlName="ssBloco"
       >Bloco e/ou válvulas de segurança</ion-checkbox
-    >
-    <ion-checkbox labelPlacement="end" formControlName="ssSensores"
+      >
+      <ion-checkbox labelPlacement="end" formControlName="ssSensores"
       >Sensores</ion-checkbox
-    >
-    <ion-checkbox labelPlacement="end" formControlName="ssCalco"
+      >
+      <ion-checkbox labelPlacement="end" formControlName="ssCalco"
       >Calço mecânico</ion-checkbox
-    >
-    <ion-checkbox labelPlacement="end" formControlName="ssRele"
+      >
+      <ion-checkbox labelPlacement="end" formControlName="ssRele"
       >Relé/CLP de Segurança</ion-checkbox
-    >
-    <ion-checkbox labelPlacement="end" formControlName="ssChave"
+      >
+      <ion-checkbox labelPlacement="end" formControlName="ssChave"
       >Chave Geral</ion-checkbox
-    >
-    <ion-checkbox labelPlacement="end" formControlName="ssRearme"
+      >
+      <ion-checkbox labelPlacement="end" formControlName="ssRearme"
       >Rearme manual/Reset</ion-checkbox
-    >
-    <ion-checkbox labelPlacement="end" formControlName="ssSinal"
+      >
+      <ion-checkbox labelPlacement="end" formControlName="ssSinal"
       >Sinal luminoso e/ou sonoro</ion-checkbox
-    >
-    <ion-checkbox labelPlacement="end" formControlName="ssOutros"
+      >
+      <ion-checkbox labelPlacement="end" formControlName="ssOutros"
       >Outros:</ion-checkbox
-    >
-  </div>
-  <div class="maneger-apresentacao__form-card">
-    <ion-input
+      >
+    </div>
+    <div class="maneger-apresentacao__form-card">
+      <ion-checkbox class="mt-2" labelPlacement="end" formControlName="procedimentoLoto"
+        > PROCEDIMENTO LOCKOUT/ TAGOUT LOTO</ion-checkbox
+      >
+      <ion-input
       formControlName="respTecnico"
       labelPlacement="stacked"
       placeholder="Nome do responsável pela avaliação"
-    >
+      >
       <div slot="label">
         Responsável técnico
         <ion-text color="danger">(*)</ion-text>

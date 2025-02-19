@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonCol, IonGrid, IonRow } from '@ionic/angular/standalone';
-import { ApreciacaoFormOrganizerService } from 'src/app/services/apreciacao-form-organizer.service/apreciacao-form-organizer.service';
 import { ChangeExcelFileDTO } from 'src/app/services/change-excel-file/change-excel-file';
 import {
   getLinkedForms,
@@ -126,7 +125,6 @@ export class FormListComponent implements OnInit {
   constructor(
     private _router: Router,
     private _reportOrganizerService: ReportOrganizerService,
-    private _apreciacaoFormOrganizerService: ApreciacaoFormOrganizerService,
     private _formOrganizerService: FormOrganizerService,
     private _changeExcelFileService: ChangeExcelFileService,
     private _location: Location,
@@ -163,7 +161,16 @@ export class FormListComponent implements OnInit {
       this.isLoading = true;
       const formOrganizer = this._formOrganizerService.getFormValue();
 
-      Object.keys(formOrganizer).forEach((it) => {
+      this._formOrganizerService.addFormValues('capa', {
+        maquina: formOrganizer?.apresentacaoMaquina?.maquina,
+        serie: formOrganizer?.apresentacaoMaquina?.numTagSeri,
+        localInstalacao: formOrganizer?.apresentacaoMaquina?.localInstalacao,
+        valorMedia: 0,
+      })
+
+      const updatedForm = this._formOrganizerService.getFormValue()
+
+      Object.keys(updatedForm).forEach((it) => {
         this._http
           .get('/assets/NR-12/NR-12.xlsx', { responseType: 'blob' })
           .subscribe((data) => {
@@ -172,7 +179,7 @@ export class FormListComponent implements OnInit {
             dataTransfer.items.add(file);
 
             const changeExcelFileDTO: ChangeExcelFileDTO = {
-              changesList: getLinkedForms(it, formOrganizer),
+              changesList: getLinkedForms(it, updatedForm),
               file: dataTransfer,
               reportId: getReportIdsForms(it),
             };

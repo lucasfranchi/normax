@@ -1,4 +1,4 @@
-import { getApresentacaoCellChangesByForm } from 'src/app/pages/responder-formulario/forms/apresentacao-maquina/apresentacao-maquina';
+import { getApresentacaoCellChangesByForm, getCapaCellChangesByForm } from 'src/app/pages/responder-formulario/forms/apresentacao-maquina/apresentacao-maquina';
 import { getCategoriaCellChangesByForm } from 'src/app/pages/responder-formulario/forms/categoria-seguranca/categoria-seguranca';
 import { getLimitesCellChangesByForm } from 'src/app/pages/responder-formulario/forms/limites-maquina/limites-maquina';
 import { ChangeExcelFile } from '../change-excel-file/change-excel-file';
@@ -7,6 +7,7 @@ export interface FormOrganizerInterface {
   apresentacaoMaquina?: ApresentacaoMaquinaForm;
   categoriaSeguranca?: CategoriaForm;
   limitesMaquina?: LimitesMaquinaForm;
+  capa?: CapaForm;
 }
 
 export interface ApresentacaoMaquinaForm {
@@ -36,6 +37,7 @@ export interface ApresentacaoMaquinaForm {
   ssRearme: string;
   ssSinal: string;
   ssOutros: string;
+  procedimentoLoto: string;
   respTecnico: string;
   crea: string;
   qualificacao: string;
@@ -45,6 +47,13 @@ export interface CategoriaForm {
   categoriaS: 'S1' | 'S2';
   categoriaF: 'F1' | 'F2';
   categoriaP: 'P1' | 'P2';
+}
+
+export interface CapaForm {
+  maquina: string;
+  serie: string;
+  localInstalacao: string;
+  valorMedia: string;
 }
 
 export interface LimitesMaquinaForm {
@@ -66,6 +75,10 @@ export function getLinkedForms(
   form: FormOrganizerInterface
 ): Array<ChangeExcelFile> {
   switch (key) {
+    case 'capa':
+      return Object.keys(form.capa).map((it) =>
+        getCapaCellChangesByForm(form.capa, it, 17)
+      );
     case 'apresentacaoMaquina':
       return Object.keys(form.apresentacaoMaquina).map((it) =>
         getApresentacaoCellChangesByForm(form.apresentacaoMaquina, it, 18)
@@ -85,6 +98,8 @@ export function getLinkedForms(
 
 export function getReportIdsForms(key: string): string {
   switch (key) {
+    case 'capa':
+      return '17';
     case 'apresentacaoMaquina':
       return '18';
     case 'categoriaSeguranca':

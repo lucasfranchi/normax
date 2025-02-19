@@ -18,8 +18,10 @@ export class ConvertExcelToPdfService {
   ) {}
 
   public convertExcelListToPdf(excelList: ReportOrganizerInterface[]) {
-    const convertedPdfList: Blob[] = [];
+    const convertedPdfList: { index: number; pdf: Blob }[] = [];
     excelList.sort((a, b) => a.id - b.id);
+    console.log(excelList);
+
     excelList.forEach((excelObject, index) => {
       const reader = new FileReader();
 
@@ -30,6 +32,8 @@ export class ConvertExcelToPdfService {
           type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         });
         formData.append('file', blob, `file_${index}.xlsx`);
+        formData.append('index', index.toString());
+
         console.log('Arquivo que está sendo enviado:', formData.get('file'));
 
         this._http
@@ -38,9 +42,12 @@ export class ConvertExcelToPdfService {
           })
           .subscribe(
             (pdfBlob: Blob) => {
-              convertedPdfList.push(pdfBlob);
+              convertedPdfList.push({ index, pdf: pdfBlob });
               if (convertedPdfList.length === excelList.length) {
-                this.mergePdfs(convertedPdfList);
+                // Ordenar os PDFs convertidos pelo índice antes de mesclá-los
+                convertedPdfList.sort((a, b) => a.index - b.index);
+                const pdfs = convertedPdfList.map((item) => item.pdf);
+                this.mergePdfs(pdfs);
                 this._router.navigate(['/responder-formulario/forms']);
               }
             },
@@ -84,6 +91,7 @@ export class ConvertExcelToPdfService {
 
     // Carregar e adicionar o PDF existente da pasta assets primeiro
     const existingPdfBytes = await this.loadDefaultPdfFromAssets();
+    const divisorPdfBytes = await this.loadDivisorPdfFromAssets();
     const existingPdf = await PDFDocument.load(existingPdfBytes);
     const copiedExistingPages = await mergedPdf.copyPages(
       existingPdf,
@@ -93,8 +101,30 @@ export class ConvertExcelToPdfService {
       mergedPdf.addPage(page);
     });
 
-    // Em seguida, adicione todos os PDFs gerados
-    for (const pdfBlob of pdfList) {
+    // Pegar os últimos 4 PDFs da lista e adicioná-los ao PDF mesclado
+    const lastFourPdfs = pdfList.slice(-4);
+    for (const pdfBlob of lastFourPdfs) {
+      const pdfBytes = await pdfBlob.arrayBuffer();
+      const pdf = await PDFDocument.load(pdfBytes);
+      const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+      copiedPages.forEach((page) => {
+        mergedPdf.addPage(page);
+      });
+    }
+
+    // Adicionar o PDF divisor
+    const divisorPdf = await PDFDocument.load(divisorPdfBytes);
+    const copiedDivisorPages = await mergedPdf.copyPages(
+      divisorPdf,
+      divisorPdf.getPageIndices()
+    );
+    copiedDivisorPages.forEach((page) => {
+      mergedPdf.addPage(page);
+    });
+
+    // Adicionar o restante dos PDFs da lista
+    const remainingPdfs = pdfList.slice(0, -4);
+    for (const pdfBlob of remainingPdfs) {
       const pdfBytes = await pdfBlob.arrayBuffer();
       const pdf = await PDFDocument.load(pdfBytes);
       const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
@@ -121,6 +151,12 @@ export class ConvertExcelToPdfService {
 
   private async loadDefaultPdfFromAssets(): Promise<Uint8Array> {
     const response = await fetch('/assets/default.pdf');
+    const pdfArrayBuffer = await response.arrayBuffer();
+    return new Uint8Array(pdfArrayBuffer);
+  }
+
+  private async loadDivisorPdfFromAssets(): Promise<Uint8Array> {
+    const response = await fetch('/assets/divisor.pdf');
     const pdfArrayBuffer = await response.arrayBuffer();
     return new Uint8Array(pdfArrayBuffer);
   }

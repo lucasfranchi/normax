@@ -1,5 +1,5 @@
 import { ChangeExcelFile } from 'src/app/services/change-excel-file/change-excel-file';
-import { ApresentacaoMaquinaForm } from 'src/app/services/form-organizer/form-organizer';
+import { ApresentacaoMaquinaForm, CapaForm } from 'src/app/services/form-organizer/form-organizer';
 
 export function getApresentacaoCellChangesByForm(
   form: ApresentacaoMaquinaForm,
@@ -163,6 +163,12 @@ export function getApresentacaoCellChangesByForm(
         value: form[key],
         worksheetIndex: reportId,
       };
+    case 'procedimentoLoto':
+      return {
+        cell: ['L16'],
+        value: form[key],
+        worksheetIndex: reportId,
+      };
     case 'respTecnico':
       return {
         cell: ['A27'],
@@ -178,6 +184,40 @@ export function getApresentacaoCellChangesByForm(
     case 'qualificacao':
       return {
         cell: ['I27'],
+        value: form[key],
+        worksheetIndex: reportId,
+      };
+  }
+
+  return null;
+}
+export function getCapaCellChangesByForm(
+  form: CapaForm,
+  key: string,
+  reportId: number
+): ChangeExcelFile {
+  switch (key) {
+    case 'maquina':
+      return {
+        cell: ['C13'],
+        value: form[key],
+        worksheetIndex: reportId,
+      };
+    case 'serie':
+      return {
+        cell: ['C15'],
+        value: form[key],
+        worksheetIndex: reportId,
+      };
+    case 'localInstalacao':
+      return {
+        cell: ['G15'],
+        value: form[key],
+        worksheetIndex: reportId,
+      };
+    case 'valorMedia':
+      return {
+        cell: ['C24'],
         value: form[key],
         worksheetIndex: reportId,
       };

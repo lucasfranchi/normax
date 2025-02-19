@@ -78,6 +78,7 @@ export class ApresentacaoMaquinaComponent implements OnInit {
       ssRearme: [],
       ssSinal: [],
       ssOutros: [],
+      procedimentoLoto: [],
       respTecnico: [],
       crea: [],
       qualificacao: [],
