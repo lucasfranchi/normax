@@ -29,7 +29,7 @@ import {
   IonTextarea,
   IonTitle,
   IonToolbar,
-  ToastController
+  ToastController,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { arrowBackOutline, helpCircleOutline } from 'ionicons/icons';
@@ -154,7 +154,7 @@ export class ApreciacaoRiscoComponent implements OnInit {
       };
     };
     img.src = image.dataUrl;
-    await this.showToast('Imagem selecionada com sucesso!')
+    await this.showToast('Imagem selecionada com sucesso!');
   }
 
   async selectFromGallery() {
@@ -175,17 +175,7 @@ export class ApreciacaoRiscoComponent implements OnInit {
       };
     };
     img.src = image.dataUrl;
-    await this.showToast('Imagem selecionada com sucesso!')
-  }
-
-  // Converte o arquivo em base64
-  async convertToBase64(file: File): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result as string);
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
+    await this.showToast('Imagem selecionada com sucesso!');
   }
 
   public generateRelatorio() {
@@ -233,7 +223,7 @@ export class ApreciacaoRiscoComponent implements OnInit {
     const toast = await this.toastController.create({
       message: message,
       duration: 2000,
-      position: 'bottom'
+      position: 'bottom',
     });
     toast.present();
   }

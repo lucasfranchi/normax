@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
   IonCheckbox,
@@ -11,15 +11,17 @@ import {
   IonModal,
   IonText,
   IonTextarea,
-} from '@ionic/angular/standalone';
+  ToastController, IonButton } from '@ionic/angular/standalone';
 import { ApresentacaoMaquinaForm } from '../../../../services/form-organizer/form-organizer';
 import { FormOrganizerService } from '../../../../services/form-organizer/form-organizer.service';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { ImageSelectorInterface } from '../apreciacao-risco/apreciacao-risco';
 
 @Component({
   selector: 'apresentacao-maquina',
   templateUrl: './apresentacao-maquina.component.html',
   styleUrls: ['./apresentacao-maquina.component.scss'],
-  imports: [
+  imports: [IonButton,
     IonInput,
     IonText,
     IonDatetimeButton,
@@ -35,12 +37,14 @@ import { FormOrganizerService } from '../../../../services/form-organizer/form-o
 export class ApresentacaoMaquinaComponent implements OnInit {
   formGroup: FormGroup;
   formValues: ApresentacaoMaquinaForm = null;
+  imageSelector?: ImageSelectorInterface = null;
 
   constructor(
     private _fb: FormBuilder,
     private _location: Location,
     private _router: Router,
-    private _formOrganizerService: FormOrganizerService
+    private _formOrganizerService: FormOrganizerService,
+    private toastController: ToastController
   ) {}
 
   ngOnInit() {
@@ -52,12 +56,12 @@ export class ApresentacaoMaquinaComponent implements OnInit {
       };
     }
     this.formGroup = this._fb.group({
-      maquina: [],
-      relMaquina: [],
-      numTagSeri: [],
-      localInstalacao: [],
-      anoFabricacao: [],
-      tipo: [],
+      maquina: ['', [Validators.required]],
+      relMaquina: ['', [Validators.required]],
+      numTagSeri: ['', [Validators.required]],
+      localInstalacao: ['', [Validators.required]],
+      anoFabricacao: ['', [Validators.required]],
+      tipo: ['', [Validators.required]],
       dataInspecao: [new Date().toISOString().split('T')[0]],
       feEletrica: [],
       fePneumatica: [],
@@ -79,9 +83,9 @@ export class ApresentacaoMaquinaComponent implements OnInit {
       ssSinal: [],
       ssOutros: [],
       procedimentoLoto: [],
-      respTecnico: [],
-      crea: [],
-      qualificacao: [],
+      respTecnico: ['', [Validators.required]],
+      crea: ['', [Validators.required]],
+      qualificacao: ['', [Validators.required]],
     });
     this.formGroup.patchValue(this.formValues);
   }
@@ -91,15 +95,58 @@ export class ApresentacaoMaquinaComponent implements OnInit {
   }
 
   public nextPage(): void {
-    console.log({
-      ...this.formGroup.value,
-      dataInspecao: this._formatDate(this.formGroup.value.dataInspecao),
+    if(this.formGroup.invalid) {
+      this.formGroup.markAllAsTouched()
+      return
+    }
+      if(this.imageSelector) this._formOrganizerService.addCapaPhoto(this.imageSelector);
+      this._formOrganizerService.addFormValues('apresentacaoMaquina', {
+        ...this.formGroup.value,
+        dataInspecao: this._formatDate(this.formGroup.value.dataInspecao),
+      });
+      this._router.navigateByUrl('/responder-formulario/categoria-seguranca');
+  }
+
+  async takePicture() {
+    const image = await Camera.getPhoto({
+      quality: 100,
+      resultType: CameraResultType.DataUrl,
+      source: CameraSource.Camera,
     });
-    this._formOrganizerService.addFormValues('apresentacaoMaquina', {
-      ...this.formGroup.value,
-      dataInspecao: this._formatDate(this.formGroup.value.dataInspecao),
+
+    const img = new Image();
+    img.onload = () => {
+      this.imageSelector = {
+        image: image.dataUrl,
+        resolution: {
+          width: img.width,
+          height: img.height,
+        },
+      };
+    };
+    img.src = image.dataUrl;
+    await this._showToast('Imagem selecionada com sucesso!');
+  }
+
+  async selectFromGallery() {
+    const image = await Camera.getPhoto({
+      quality: 100,
+      resultType: CameraResultType.DataUrl,
+      source: CameraSource.Photos,
     });
-    this._router.navigateByUrl('/responder-formulario/categoria-seguranca');
+
+    const img = new Image();
+    img.onload = () => {
+      this.imageSelector = {
+        image: image.dataUrl,
+        resolution: {
+          width: img.width,
+          height: img.height,
+        },
+      };
+    };
+    img.src = image.dataUrl;
+    await this._showToast('Imagem selecionada com sucesso!');
   }
 
   private _formatDate(dateString) {
@@ -110,5 +157,14 @@ export class ApresentacaoMaquinaComponent implements OnInit {
   private _reformatDate(dateString) {
     const [day, month, year] = dateString.split('/');
     return `${year}-${month}-${day}`;
+  }
+
+  private async _showToast(message: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000,
+      position: 'bottom',
+    });
+    toast.present();
   }
 }

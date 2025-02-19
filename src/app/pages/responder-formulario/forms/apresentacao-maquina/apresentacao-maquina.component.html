@@ -184,6 +184,10 @@
       </div>
     </ion-textarea>
   </div>
+  <div class="flex">
+    <ion-button class="w-32 flex-auto" fill="outline" (click)="takePicture()">Tirar Foto</ion-button>
+    <ion-button class="w-64 flex-auto" fill="outline" (click)="selectFromGallery()">Escolher da Galeria</ion-button>
+  </div>
   <div class="flex justify-between">
     <button class="bg-white w-24 items-end" (click)="returnPage()">
       <svg
