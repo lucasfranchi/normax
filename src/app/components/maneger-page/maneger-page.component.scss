@@ -4,7 +4,7 @@
 }
 
 .maneger-page {
-  box-shadow: 0px 8px 28px -9px rgba(0,0,0,0.45);
+  box-shadow: 0px 8px 28px -9px rgba(0, 0, 0, 0.45);
   position: relative;
   overflow: hidden;
   width: 100%;
@@ -27,7 +27,7 @@
     opacity: 0.6;
     left: 5vw;
     top: -10vh;
-    background: linear-gradient(744deg,#af40ff,#5b42f3 60%,#00ddeb);
+    background: linear-gradient(744deg, #af40ff, #5b42f3 60%, #00ddeb);
   }
 
   &__icon {
@@ -38,10 +38,16 @@
 
   &__infotop {
     text-align: center;
-    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     color: rgb(255, 255, 255);
     font-weight: 600;
     z-index: 1000;
+
+    img {
+      filter: invert(35%) grayscale(100%) brightness(200%);
+    }
   }
 
   &__name {

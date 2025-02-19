@@ -1,4 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import { Location } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import {
   IonCheckbox,
   IonDatetime,
@@ -7,13 +10,10 @@ import {
   IonLabel,
   IonModal,
   IonText,
-  IonTextarea
-} from "@ionic/angular/standalone";
-import {FormBuilder, FormGroup, ReactiveFormsModule} from "@angular/forms";
-import {Location} from "@angular/common";
-import {Router} from "@angular/router";
-import {FormOrganizerService} from "../../../../services/form-organizer/form-organizer.service";
-import {ApresentacaoMaquinaForm} from "../../../../services/form-organizer/form-organizer";
+  IonTextarea,
+} from '@ionic/angular/standalone';
+import { ApresentacaoMaquinaForm } from '../../../../services/form-organizer/form-organizer';
+import { FormOrganizerService } from '../../../../services/form-organizer/form-organizer.service';
 
 @Component({
   selector: 'apresentacao-maquina',
@@ -28,13 +28,13 @@ import {ApresentacaoMaquinaForm} from "../../../../services/form-organizer/form-
     IonCheckbox,
     IonLabel,
     ReactiveFormsModule,
-    IonTextarea
+    IonTextarea,
   ],
-  standalone: true
+  standalone: true,
 })
 export class ApresentacaoMaquinaComponent implements OnInit {
   formGroup: FormGroup;
-  formValues: ApresentacaoMaquinaForm = null
+  formValues: ApresentacaoMaquinaForm = null;
 
   constructor(
     private _fb: FormBuilder,
@@ -44,7 +44,13 @@ export class ApresentacaoMaquinaComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.formValues = this._formOrganizerService.getFormValue().apresentacaoMaquina
+    const form = this._formOrganizerService.getFormValue().apresentacaoMaquina;
+    if (form) {
+      this.formValues = {
+        ...form,
+        dataInspecao: this._reformatDate(form.dataInspecao),
+      };
+    }
     this.formGroup = this._fb.group({
       maquina: [],
       relMaquina: [],
@@ -52,7 +58,7 @@ export class ApresentacaoMaquinaComponent implements OnInit {
       localInstalacao: [],
       anoFabricacao: [],
       tipo: [],
-      dataInspecao: [],
+      dataInspecao: [new Date().toISOString().split('T')[0]],
       feEletrica: [],
       fePneumatica: [],
       feHidraulica: [],
@@ -75,17 +81,33 @@ export class ApresentacaoMaquinaComponent implements OnInit {
       respTecnico: [],
       crea: [],
       qualificacao: [],
-    })
+    });
     this.formGroup.patchValue(this.formValues);
   }
 
   public returnPage(): void {
-    this._location.back()
+    this._location.back();
   }
 
   public nextPage(): void {
-    this._formOrganizerService.addFormValues('apresentacaoMaquina', this.formGroup.value);
+    console.log({
+      ...this.formGroup.value,
+      dataInspecao: this._formatDate(this.formGroup.value.dataInspecao),
+    });
+    this._formOrganizerService.addFormValues('apresentacaoMaquina', {
+      ...this.formGroup.value,
+      dataInspecao: this._formatDate(this.formGroup.value.dataInspecao),
+    });
     this._router.navigateByUrl('/responder-formulario/categoria-seguranca');
   }
 
+  private _formatDate(dateString) {
+    const [year, month, day] = dateString.split('-');
+    return `${day}/${month}/${year}`;
+  }
+
+  private _reformatDate(dateString) {
+    const [day, month, year] = dateString.split('/');
+    return `${year}-${month}-${day}`;
+  }
 }

@@ -1,4 +1,4 @@
-import {ApreciacaoRiscoPresets} from "../apreciacao-risco";
+import { ApreciacaoRiscoPresets } from '../apreciacao-risco';
 
 export function getPresetReport16(reportId: string): ApreciacaoRiscoPresets[] {
   return [
@@ -16,11 +16,14 @@ export function getPresetReport16(reportId: string): ApreciacaoRiscoPresets[] {
         arglp: '1',
         arnp: '1',
         erpo: '0,5',
-        consideracaoCondAtual: 'Não evidenciados problemas com os requisitos do tópico de Disposições Finais que possam gerar risco direto de acidente aos operadores da máquina, atendendo os requisitos estabelecidos pelo item 12.18 da NR-12.',
-        recomendacoes: 'Manter a documentação atualizada e a disposição das fiscalizações e auditorias.',
+        consideracaoCondAtual:
+          'Não evidenciados problemas com os requisitos do tópico de Disposições Finais que possam gerar risco direto de acidente aos operadores da máquina, atendendo os requisitos estabelecidos pelo item 12.18 da NR-12.',
+        recomendacoes:
+          'Manter a documentação atualizada e a disposição das fiscalizações e auditorias.',
         relatorio: reportId,
-      }
-    }, {
+      },
+    },
+    {
       id: '2',
       reportId: reportId,
       form: {
@@ -34,10 +37,12 @@ export function getPresetReport16(reportId: string): ApreciacaoRiscoPresets[] {
         arglp: '1',
         arnp: '1',
         erpo: '0,5',
-        consideracaoCondAtual: 'Não evidenciados problemas com os requisitos do tópico de Disposições Finais que possam gerar risco direto de acidente aos operadores da máquina. A relação de máquinas está sendo elaborada pela Prime Traffos conforme item 12.18.1 da NR-12.',
-        recomendacoes: 'Manter a documentação atualizada e a disposição das fiscalizações e auditorias.',
+        consideracaoCondAtual:
+          'Não evidenciados problemas com os requisitos do tópico de Disposições Finais que possam gerar risco direto de acidente aos operadores da máquina. A relação de máquinas está sendo elaborada pela Prime Traffos conforme item 12.18.1 da NR-12.',
+        recomendacoes:
+          'Manter a documentação atualizada e a disposição das fiscalizações e auditorias.',
         relatorio: reportId,
-      }
+      },
     },
-  ]
+  ];
 }

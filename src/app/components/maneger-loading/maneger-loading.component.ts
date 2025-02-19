@@ -6,10 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./maneger-loading.component.scss'],
   standalone: true,
 })
-export class ManegerLoadingComponent  implements OnInit {
-
-  constructor() { }
+export class ManegerLoadingComponent implements OnInit {
+  constructor() {}
 
   ngOnInit() {}
-
 }

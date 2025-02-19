@@ -22,7 +22,8 @@
   animation: slide05 var(--duration) ease infinite;
 }
 
-.typewriter .slide:before, .typewriter .slide:after,
+.typewriter .slide:before,
+.typewriter .slide:after,
 .typewriter .slide i:before {
   content: "";
   position: absolute;
@@ -96,7 +97,8 @@
   position: relative;
 }
 
-.typewriter .keyboard:before, .typewriter .keyboard:after {
+.typewriter .keyboard:before,
+.typewriter .keyboard:after {
   content: "";
   position: absolute;
 }
@@ -124,7 +126,10 @@
 }
 
 @keyframes bounce05 {
-  85%, 92%, 100% {
+
+  85%,
+  92%,
+  100% {
     transform: translateY(0);
   }
 
@@ -142,19 +147,23 @@
     transform: translateX(14px);
   }
 
-  15%, 30% {
+  15%,
+  30% {
     transform: translateX(6px);
   }
 
-  40%, 55% {
+  40%,
+  55% {
     transform: translateX(0);
   }
 
-  65%, 70% {
+  65%,
+  70% {
     transform: translateX(-4px);
   }
 
-  80%, 89% {
+  80%,
+  89% {
     transform: translateX(-12px);
   }
 
@@ -168,29 +177,44 @@
     transform: translateY(46px);
   }
 
-  20%, 30% {
+  20%,
+  30% {
     transform: translateY(34px);
   }
 
-  40%, 55% {
+  40%,
+  55% {
     transform: translateY(22px);
   }
 
-  65%, 70% {
+  65%,
+  70% {
     transform: translateY(10px);
   }
 
-  80%, 85% {
+  80%,
+  85% {
     transform: translateY(0);
   }
 
-  92%, 100% {
+  92%,
+  100% {
     transform: translateY(46px);
   }
 }
 
 @keyframes keyboard05 {
-  5%, 12%, 21%, 30%, 39%, 48%, 57%, 66%, 75%, 84% {
+
+  5%,
+  12%,
+  21%,
+  30%,
+  39%,
+  48%,
+  57%,
+  66%,
+  75%,
+  84% {
     box-shadow: 15px 0 0 var(--key), 30px 0 0 var(--key), 45px 0 0 var(--key), 60px 0 0 var(--key), 75px 0 0 var(--key), 90px 0 0 var(--key), 22px 10px 0 var(--key), 37px 10px 0 var(--key), 52px 10px 0 var(--key), 60px 10px 0 var(--key), 68px 10px 0 var(--key), 83px 10px 0 var(--key);
   }
 

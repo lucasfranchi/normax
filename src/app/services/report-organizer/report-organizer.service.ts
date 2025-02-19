@@ -1,17 +1,16 @@
 import { Injectable } from '@angular/core';
-import {ReportOrganizerInterface} from "./report-organizer";
+import { ReportOrganizerInterface } from './report-organizer';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ReportOrganizerService {
+  reports: Array<ReportOrganizerInterface> = [];
 
-  reports: Array<ReportOrganizerInterface> = []
-
-  constructor() { }
+  constructor() {}
 
   public addReport(report: ReportOrganizerInterface): void {
-    const existingObjects = this.reports.filter(obj => obj.id === report.id);
+    const existingObjects = this.reports.filter((obj) => obj.id === report.id);
 
     // Ordena a lista de objetos existente pelo identificador
     existingObjects.sort((a, b) => {
@@ -21,9 +20,14 @@ export class ReportOrganizerService {
     });
 
     // Define o novo identificador com base na lista ordenada
-    const newIdentifier = existingObjects.length > 0
-      ? (parseFloat(existingObjects[existingObjects.length - 1].identificador) + 0.1).toFixed(1)
-      : (report.id + 0.1).toFixed(1);
+    const newIdentifier =
+      existingObjects.length > 0
+        ? (
+            parseFloat(
+              existingObjects[existingObjects.length - 1].identificador
+            ) + 0.1
+          ).toFixed(1)
+        : (report.id + 0.1).toFixed(1);
 
     report.identificador = newIdentifier;
     this.reports.push(report);
@@ -37,10 +41,10 @@ export class ReportOrganizerService {
   }
 
   public removeReport(id: number): void {
-    this.reports = this.reports.filter(it => it.id !== id);
+    this.reports = this.reports.filter((it) => it.id !== id);
   }
 
   public clearReports(): void {
-    this.reports = []
+    this.reports = [];
   }
 }

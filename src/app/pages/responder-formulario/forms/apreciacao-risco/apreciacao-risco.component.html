@@ -3,7 +3,7 @@
   *ngIf="isLoading"
 ></maneger-loading>
 
-<form class="rl-apreciacao-form " *ngIf="!isLoading" [formGroup]="formGroup">
+<form class="rl-apreciacao-form" *ngIf="!isLoading" [formGroup]="formGroup">
   <div class="rl-apreciacao-form__inputs">
     <ion-select
       formControlName="relatorio"
@@ -11,64 +11,57 @@
       label-placement="stacked"
     >
       <ion-select-option value="1"
-      >1. ARRANJO FÍSICO E INSTALAÇÕES
-      </ion-select-option
-      >
+        >1. ARRANJO FÍSICO E INSTALAÇÕES
+      </ion-select-option>
       <ion-select-option value="2"
-      >2. INSTALAÇÕES E DISPOSITIVOS ELÉTRICO
-      </ion-select-option
-      >
+        >2. INSTALAÇÕES E DISPOSITIVOS ELÉTRICO
+      </ion-select-option>
       <ion-select-option value="3"
-      >3. DISPOSITIVOS DE PARADA E PARTIDA
-      </ion-select-option
-      >
+        >3. DISPOSITIVOS DE PARADA E PARTIDA
+      </ion-select-option>
       <ion-select-option value="4">4. SISTEMAS DE SEGURANÇA</ion-select-option>
       <ion-select-option value="5"
-      >5. DISPOSITIVOS DE PARADA DE EMERGÊNCIA
-      </ion-select-option
-      >
+        >5. DISPOSITIVOS DE PARADA DE EMERGÊNCIA
+      </ion-select-option>
       <ion-select-option value="6"
-      >6. COMPONENTES PRESSURIZADOS
-      </ion-select-option
-      >
+        >6. COMPONENTES PRESSURIZADOS
+      </ion-select-option>
       <ion-select-option value="7"
-      >7. TRANSPORTADORES DE MATERIAIS
-      </ion-select-option
-      >
+        >7. TRANSPORTADORES DE MATERIAIS
+      </ion-select-option>
       <ion-select-option value="8">8. ASPECTOS ERGONÔMICOS</ion-select-option>
       <ion-select-option value="9">9. RISCOS ADICIONAIS</ion-select-option>
       <ion-select-option value="10"
-      >10. MANUTENÇÃO, INSPEÇÃO, AJUSTE E REPAROS
-      </ion-select-option
-      >
+        >10. MANUTENÇÃO, INSPEÇÃO, AJUSTE E REPAROS
+      </ion-select-option>
       <ion-select-option value="11">11. SINALIZAÇÃOS</ion-select-option>
       <ion-select-option value="12">12. MANUAIS</ion-select-option>
       <ion-select-option value="13">13. PROCEDIMENTOS</ion-select-option>
       <ion-select-option value="14">14. CAPACITAÇÃO</ion-select-option>
       <ion-select-option value="15"
-      >15. REQUISITOS ESPECÍFICOS DE SEGURANÇA
-      </ion-select-option
-      >
+        >15. REQUISITOS ESPECÍFICOS DE SEGURANÇA
+      </ion-select-option>
       <ion-select-option value="16">16. DISPOSIÇÕES FINAIS</ion-select-option>
       <ion-select-option value="17"
-      >17. ANEXO III da NR-12 MEIOS DE ACESSO A MÁQUINAS E
-        EQUIPAMENTOS
-      </ion-select-option
-      >
+        >17. ANEXO III da NR-12 MEIOS DE ACESSO A MÁQUINAS E EQUIPAMENTOS
+      </ion-select-option>
     </ion-select>
     <ion-select
       label="Selecione o preset"
       label-placement="stacked"
       (ionChange)="changePreset($event)"
     >
-      <ion-select-option *ngFor="let preset of presets" [value]="preset.id" >{{preset.form.perigo}}</ion-select-option>
+      <ion-select-option *ngFor="let preset of presets" [value]="preset.id">{{
+        preset.form.perigo
+      }}</ion-select-option>
     </ion-select>
     <ion-input
       formControlName="perigo"
       labelPlacement="stacked"
       placeholder="Ex: Circuitos elétricos"
     >
-      <div slot="label">Perigo
+      <div slot="label">
+        Perigo
         <ion-text color="danger">(*)</ion-text>
       </div>
     </ion-input>
@@ -77,7 +70,8 @@
       labelPlacement="stacked"
       placeholder="Ex: Máquina e painel"
     >
-      <div slot="label">Localização
+      <div slot="label">
+        Localização
         <ion-text color="danger">(*)</ion-text>
       </div>
     </ion-input>
@@ -86,7 +80,8 @@
       labelPlacement="stacked"
       placeholder="Ex: Operação, manutenção, ajustes"
     >
-      <div slot="label">Atividade
+      <div slot="label">
+        Atividade
         <ion-text color="danger">(*)</ion-text>
       </div>
     </ion-input>
@@ -95,7 +90,8 @@
       labelPlacement="stacked"
       placeholder="Ex: Choque elétrico, morte"
     >
-      <div slot="label">Consequência Risco
+      <div slot="label">
+        Consequência Risco
         <ion-text color="danger">(*)</ion-text>
       </div>
     </ion-input>
@@ -104,7 +100,8 @@
       labelPlacement="stacked"
       placeholder="Ex: Elétrico, combinação de perigos"
     >
-      <div slot="label">Tipo
+      <div slot="label">
+        Tipo
         <ion-text color="danger">(*)</ion-text>
       </div>
     </ion-input>
@@ -127,7 +124,8 @@
         labelPlacement="stacked"
         placeholder="Probabilidade de ocorrência"
       >
-        <div slot="label">PO
+        <div slot="label">
+          PO
           <ion-text color="danger">(*)</ion-text>
         </div>
       </ion-input>
@@ -139,7 +137,8 @@
         placeholder="Frequência de exposição ao risco"
         (change)="OnInputChange('arfe')"
       >
-        <div slot="label">FE
+        <div slot="label">
+          FE
           <ion-text color="danger">(*)</ion-text>
         </div>
       </ion-input>
@@ -151,7 +150,8 @@
         placeholder="Grau de severidade do dano"
         (change)="OnInputChange('arglp')"
       >
-        <div slot="label">GLP
+        <div slot="label">
+          GLP
           <ion-text color="danger">(*)</ion-text>
         </div>
       </ion-input>
@@ -163,7 +163,8 @@
         placeholder="Número de pessoas expostas ao risco"
         (change)="OnInputChange('arnp')"
       >
-        <div slot="label">NP
+        <div slot="label">
+          NP
           <ion-text color="danger">(*)</ion-text>
         </div>
       </ion-input>
@@ -180,7 +181,8 @@
         labelPlacement="stacked"
         placeholder="Probabilidade de ocorrência"
       >
-        <div slot="label">PO
+        <div slot="label">
+          PO
           <ion-text color="danger">(*)</ion-text>
         </div>
       </ion-input>
@@ -222,7 +224,8 @@
       labelPlacement="stacked"
       placeholder="Escreva as considerações finais"
     >
-      <div slot="label">Considerações da condição atual
+      <div slot="label">
+        Considerações da condição atual
         <ion-text color="danger">(*)</ion-text>
       </div>
     </ion-textarea>
@@ -231,13 +234,18 @@
       labelPlacement="stacked"
       placeholder="Escreva as recomendações"
     >
-      <div slot="label">Recomendações
+      <div slot="label">
+        Recomendações
         <ion-text color="danger">(*)</ion-text>
       </div>
     </ion-textarea>
-    <ion-button (click)="selectImage()">Escolher Imagem</ion-button>
-    <input type="file" accept="image/*" #fileInput hidden (change)="onFileSelected($event)" />
-    <ion-button (click)="generateRelatorio()">Adicionar ao relatório</ion-button>
+    <div class="flex">
+      <ion-button class="w-32 flex-auto" fill="outline" (click)="takePicture()">Tirar Foto</ion-button>
+      <ion-button class="w-64 flex-auto" fill="outline" (click)="selectFromGallery()">Escolher da Galeria</ion-button>
+    </div>
+    <ion-button (click)="generateRelatorio()"
+      >Adicionar ao relatório</ion-button
+    >
   </div>
 </form>
 
@@ -269,14 +277,14 @@
       eficácia, pois, a partir de um risco identificado, relacionado ao perigo
       considerado, tem-se uma função da gravidade do dano com a probabilidade de
       ocorrência deste mesmo dano para um dado número de trabalhadores expostos.
-      <br/><br/>
+      <br /><br />
       Para se quantificar os níveis de perigo em uma máquina, deve-se fazer um
       levantamento de todos os riscos/perigos encontrados nela (ex.: falta de
       aterramento elétrico, risco de prensagem de dedos, risco de acionamento
       involuntário, etc...) e então utilizar a seguinte fórmula em cada perigo
-      encontrado:<br/>
-      <br/><strong>HRN = LO x FE x DPH x NP</strong><br/>
-      <br/>Onde HRN é o nível de risco quantificado, LO a probabilidade de
+      encontrado:<br />
+      <br /><strong>HRN = LO x FE x DPH x NP</strong><br />
+      <br />Onde HRN é o nível de risco quantificado, LO a probabilidade de
       ocorrência, FE a frequência de exposição ao risco, DPH o grau de
       severidade do dano e NP se refere ao número de pessoas expostas ao risco.
       <ion-img

@@ -3,16 +3,18 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonCol, IonGrid, IonRow } from '@ionic/angular/standalone';
+import { ApreciacaoFormOrganizerService } from 'src/app/services/apreciacao-form-organizer.service/apreciacao-form-organizer.service';
 import { ChangeExcelFileDTO } from 'src/app/services/change-excel-file/change-excel-file';
+import {
+  getLinkedForms,
+  getReportIdsForms,
+} from 'src/app/services/form-organizer/form-organizer';
 import { FormOrganizerService } from 'src/app/services/form-organizer/form-organizer.service';
 import { ManagerColorCardsInterface } from '../../../../components/maneger-color-cards/maneger-color-cards';
 import { ManegerColorCardsComponent } from '../../../../components/maneger-color-cards/maneger-color-cards.component';
 import { ManegerLoadingComponent } from '../../../../components/maneger-loading/maneger-loading.component';
 import { ChangeExcelFileService } from '../../../../services/change-excel-file/change-excel-file.service';
 import { ReportOrganizerService } from '../../../../services/report-organizer/report-organizer.service';
-import { getLinkedForms } from 'src/app/services/forms-converter/forms-converter';
-import { finalize } from 'rxjs';
-import { ApreciacaoFormOrganizerService } from 'src/app/services/apreciacao-form-organizer.service/apreciacao-form-organizer.service';
 
 @Component({
   selector: 'app-form-list',
@@ -133,9 +135,11 @@ export class FormListComponent implements OnInit {
 
   ngOnInit(): void {
     const arr = [];
-    this._apreciacaoFormOrganizerService.getApreciacaoFormRisco().forEach((it) =>
-      arr.push(this.cardsOptions.find((card) => card.id === Number(it.relatorio)))
-    )
+    this._reportOrganizerService
+      .getReports()
+      .forEach((it) =>
+        arr.push(this.cardsOptions.find((card) => card.id === it.id))
+      );
     this.reports = arr;
   }
 
@@ -157,17 +161,27 @@ export class FormListComponent implements OnInit {
   public async gerarRelatorio() {
     try {
       this.isLoading = true;
-      console.log(this._reportOrganizerService.getReports());
-      console.log(this._formOrganizerService.getFormValue());
-      this._http
-        .get('/assets/NR-12/NR-12.xlsx', { responseType: 'blob' })
-        .subscribe((data) => {
-          const file = new File([data], 'NR-12.xlsx', { type: data.type });
-          const dataTransfer = new DataTransfer();
-          dataTransfer.items.add(file);
+      const formOrganizer = this._formOrganizerService.getFormValue();
 
-          this._changeExcelFileService.applyChangesToExcel(dataTransfer)
-        })
+      Object.keys(formOrganizer).forEach((it) => {
+        this._http
+          .get('/assets/NR-12/NR-12.xlsx', { responseType: 'blob' })
+          .subscribe((data) => {
+            const file = new File([data], 'NR-12.xlsx', { type: data.type });
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(file);
+
+            const changeExcelFileDTO: ChangeExcelFileDTO = {
+              changesList: getLinkedForms(it, formOrganizer),
+              file: dataTransfer,
+              reportId: getReportIdsForms(it),
+            };
+            this._changeExcelFileService.changeExcelFile(changeExcelFileDTO);
+          });
+      });
+      setTimeout(() => {
+        this._changeExcelFileService.changeOrdersAndGenerateReports();
+      }, 3000);
     } catch (error) {
       this.isLoading = false;
       console.error('Erro ao gerar relatório:', error);

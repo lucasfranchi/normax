@@ -1,7 +1,5 @@
 import { Routes } from '@angular/router';
 import { ResponderFormularioComponent } from './responder-formulario.component';
-import {ApresentacaoMaquinaComponent} from "./forms/apresentacao-maquina/apresentacao-maquina.component";
-import {CategoriaSegurancaComponent} from "./forms/categoria-seguranca/categoria-seguranca.component";
 
 export const routes: Routes = [
   {
@@ -11,27 +9,37 @@ export const routes: Routes = [
       {
         path: 'apreciacao-risco',
         loadComponent: () =>
-          import('./forms/apreciacao-risco/apreciacao-risco.component').then((m) => m.ApreciacaoRiscoComponent),
+          import('./forms/apreciacao-risco/apreciacao-risco.component').then(
+            (m) => m.ApreciacaoRiscoComponent
+          ),
       },
       {
         path: 'apresentacao-maquina',
         loadComponent: () =>
-          import('./forms/apresentacao-maquina/apresentacao-maquina.component').then((m) => m.ApresentacaoMaquinaComponent),
+          import(
+            './forms/apresentacao-maquina/apresentacao-maquina.component'
+          ).then((m) => m.ApresentacaoMaquinaComponent),
       },
       {
         path: 'categoria-seguranca',
         loadComponent: () =>
-          import('./forms/categoria-seguranca/categoria-seguranca.component').then((m) => m.CategoriaSegurancaComponent),
+          import(
+            './forms/categoria-seguranca/categoria-seguranca.component'
+          ).then((m) => m.CategoriaSegurancaComponent),
       },
       {
         path: 'limites-maquina',
         loadComponent: () =>
-          import('./forms/limites-maquina/limites-maquina.component').then((m) => m.LimitesMaquinaComponent),
+          import('./forms/limites-maquina/limites-maquina.component').then(
+            (m) => m.LimitesMaquinaComponent
+          ),
       },
       {
         path: 'forms',
         loadComponent: () =>
-          import('./forms/form-list/form-list.component').then((m) => m.FormListComponent),
+          import('./forms/form-list/form-list.component').then(
+            (m) => m.FormListComponent
+          ),
       },
       {
         path: '',
@@ -39,5 +47,5 @@ export const routes: Routes = [
         pathMatch: 'full',
       },
     ],
-  }
+  },
 ];

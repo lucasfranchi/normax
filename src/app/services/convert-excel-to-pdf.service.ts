@@ -1,11 +1,11 @@
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {ReportOrganizerInterface} from "./report-organizer/report-organizer";
-import {ReportOrganizerService} from "./report-organizer/report-organizer.service";
-import {Router} from "@angular/router";
-import {PDFDocument} from "pdf-lib";
-import {saveAs} from "file-saver";
-import {Directory, Encoding, Filesystem} from "@capacitor/filesystem";
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { Directory, Encoding, Filesystem } from '@capacitor/filesystem';
+import { saveAs } from 'file-saver';
+import { PDFDocument } from 'pdf-lib';
+import { FormOrganizerService } from './form-organizer/form-organizer.service';
+import { ReportOrganizerInterface } from './report-organizer/report-organizer';
 
 @Injectable({
   providedIn: 'root',
@@ -13,16 +13,23 @@ import {Directory, Encoding, Filesystem} from "@capacitor/filesystem";
 export class ConvertExcelToPdfService {
   constructor(
     private _http: HttpClient,
+    private _formOrganizer: FormOrganizerService,
     private _router: Router
   ) {}
 
-  public convertExcelListToPdf(excel: File) {
+  public convertExcelListToPdf(excelList: ReportOrganizerInterface[]) {
+    const convertedPdfList: Blob[] = [];
+    excelList.sort((a, b) => a.id - b.id);
+    excelList.forEach((excelObject, index) => {
       const reader = new FileReader();
+
       reader.onload = (event) => {
         const buffer = event.target?.result as ArrayBuffer;
         const formData = new FormData();
-        const blob = new Blob([buffer], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
-        formData.append('file', blob, `file.xlsx`);
+        const blob = new Blob([buffer], {
+          type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        });
+        formData.append('file', blob, `file_${index}.xlsx`);
         console.log('Arquivo que está sendo enviado:', formData.get('file'));
 
         this._http
@@ -31,9 +38,11 @@ export class ConvertExcelToPdfService {
           })
           .subscribe(
             (pdfBlob: Blob) => {
-              console.log(pdfBlob)
-              this.mergePdfs([pdfBlob]);
-              this._router.navigate(['/responder-formulario/forms'])
+              convertedPdfList.push(pdfBlob);
+              if (convertedPdfList.length === excelList.length) {
+                this.mergePdfs(convertedPdfList);
+                this._router.navigate(['/responder-formulario/forms']);
+              }
             },
             (error) => {
               console.error('Erro ao converter o arquivo:', error);
@@ -41,7 +50,8 @@ export class ConvertExcelToPdfService {
           );
       };
 
-      reader.readAsArrayBuffer(excel);
+      reader.readAsArrayBuffer(excelObject.file);
+    });
   }
 
   private async savePdfLocally(pdfBlob: Blob, fileName: string) {
@@ -75,7 +85,10 @@ export class ConvertExcelToPdfService {
     // Carregar e adicionar o PDF existente da pasta assets primeiro
     const existingPdfBytes = await this.loadDefaultPdfFromAssets();
     const existingPdf = await PDFDocument.load(existingPdfBytes);
-    const copiedExistingPages = await mergedPdf.copyPages(existingPdf, existingPdf.getPageIndices());
+    const copiedExistingPages = await mergedPdf.copyPages(
+      existingPdf,
+      existingPdf.getPageIndices()
+    );
     copiedExistingPages.forEach((page) => {
       mergedPdf.addPage(page);
     });
@@ -92,8 +105,15 @@ export class ConvertExcelToPdfService {
 
     // Salvar o PDF mesclado final
     const mergedPdfBytes = await mergedPdf.save();
-    const mergedPdfBlob = new Blob([mergedPdfBytes], { type: 'application/pdf' });
-    await this.savePdfLocally(mergedPdfBlob, 'merged_document_with_assets.pdf');
+    const mergedPdfBlob = new Blob([mergedPdfBytes], {
+      type: 'application/pdf',
+    });
+    const form = this._formOrganizer.getFormValue();
+
+    await this.savePdfLocally(
+      mergedPdfBlob,
+      `${form.apresentacaoMaquina.maquina}.pdf`
+    );
 
     // Navegar para a página de relatórios salvos
     window.location.href = '/tabs/tab2';

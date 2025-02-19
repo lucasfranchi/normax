@@ -1,7 +1,5 @@
 import { ChangeExcelFile } from 'src/app/services/change-excel-file/change-excel-file';
-import {
-  LimitesMaquinaForm
-} from 'src/app/services/form-organizer/form-organizer';
+import { LimitesMaquinaForm } from 'src/app/services/form-organizer/form-organizer';
 
 export function getLimitesCellChangesByForm(
   form: LimitesMaquinaForm,

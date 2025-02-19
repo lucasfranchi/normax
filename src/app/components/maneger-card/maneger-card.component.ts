@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonIcon, IonCardHeader, IonCardTitle, IonCardSubtitle } from "@ionic/angular/standalone";
+import {
+  IonIcon
+} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { construct } from 'ionicons/icons';
 
@@ -8,8 +10,8 @@ import { construct } from 'ionicons/icons';
   selector: 'maneger-card',
   templateUrl: './maneger-card.component.html',
   styleUrls: ['./maneger-card.component.scss'],
-  imports: [IonCardSubtitle, IonCardTitle, IonCardHeader, IonIcon],
-  standalone: true
+  imports: [IonIcon],
+  standalone: true,
 })
 export class ManegerCardComponent implements OnInit {
   @Input() title: string = '';
@@ -17,7 +19,7 @@ export class ManegerCardComponent implements OnInit {
   @Input() route: string = '';
 
   constructor(private router: Router) {
-    addIcons({construct});
+    addIcons({ construct });
   }
 
   ngOnInit() {}

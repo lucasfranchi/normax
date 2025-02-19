@@ -8,7 +8,8 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import {
   IonButton,
   IonButtons,
@@ -37,9 +38,9 @@ import { ManegerLoadingComponent } from '../../../../components/maneger-loading/
 import {
   ApreciacaoRiscoPresets,
   getCellChangesByForm,
+  ImageSelectorInterface,
 } from './apreciacao-risco';
 import { getPreset } from './apreciacao-risco-presets/apreciacao-risco-preset';
-import { ApreciacaoFormOrganizerService } from 'src/app/services/apreciacao-form-organizer.service/apreciacao-form-organizer.service';
 
 @Component({
   selector: 'rl-apreciacao-risco',
@@ -80,13 +81,12 @@ export class ApreciacaoRiscoComponent implements OnInit {
   formGroup: FormGroup;
   isLoading: boolean = false;
   reportId: string = '';
-  selectedImageBase64: string | null = null;
+  imageSelector?: ImageSelectorInterface = null;
 
   constructor(
     private _fb: FormBuilder,
     private _changeExcelFileService: ChangeExcelFileService,
-    private _apreciacaoFormService: ApreciacaoFormOrganizerService,
-    private _router: Router,
+    private _http: HttpClient,
     private route: ActivatedRoute
   ) {
     addIcons({ helpCircleOutline, arrowBackOutline });
@@ -134,17 +134,44 @@ export class ApreciacaoRiscoComponent implements OnInit {
     this.modal.dismiss(null, 'cancel');
   }
 
-  // Abre o seletor de arquivos
-  selectImage() {
-    this.fileInput.nativeElement.click();
+  async takePicture() {
+    const image = await Camera.getPhoto({
+      quality: 100,
+      resultType: CameraResultType.DataUrl,
+      source: CameraSource.Camera,
+    });
+
+    const img = new Image();
+    img.onload = () => {
+      this.imageSelector = {
+        image: image.dataUrl,
+        resolution: {
+          width: img.width,
+          height: img.height,
+        },
+      };
+    };
+    img.src = this.imageSelector.image;
   }
 
-  // Manipula o arquivo selecionado
-  async onFileSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.selectedImageBase64 = await this.convertToBase64(file);
-    }
+  async selectFromGallery() {
+    const image = await Camera.getPhoto({
+      quality: 100,
+      resultType: CameraResultType.DataUrl,
+      source: CameraSource.Photos,
+    });
+
+    const img = new Image();
+    img.onload = () => {
+      this.imageSelector = {
+        image: image.dataUrl,
+        resolution: {
+          width: img.width,
+          height: img.height,
+        },
+      };
+    };
+    img.src = image.dataUrl;
   }
 
   // Converte o arquivo em base64
@@ -163,8 +190,37 @@ export class ApreciacaoRiscoComponent implements OnInit {
       return;
     }
     this.isLoading = true;
-    this._apreciacaoFormService.addApreciacaoForm({...this.formGroup.value, relatorio: this.reportId})
-    this._router.navigate(['/responder-formulario/forms']);
+    this._http
+      .get('/assets/NR-12/NR-12.xlsx', { responseType: 'blob' })
+      .subscribe((data) => {
+        const file = new File([data], 'NR-12.xlsx', { type: data.type });
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+
+        const changeExcelFileDTO: ChangeExcelFileDTO = {
+          changesList: Object.keys(this.formGroup.value)
+            .filter((it) =>
+              getCellChangesByForm(
+                this.formGroup.value,
+                it,
+                Number(this.reportId) - 1
+              )
+            )
+            .map((key) =>
+              getCellChangesByForm(
+                this.formGroup.value,
+                key,
+                Number(this.reportId) - 1
+              )
+            ),
+          file: dataTransfer,
+          reportId: this.reportId,
+        };
+        this._changeExcelFileService.changeExcelFile(
+          changeExcelFileDTO,
+          this.imageSelector
+        );
+      });
   }
 
   onWillDismiss(event: Event) {}

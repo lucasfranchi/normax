@@ -1,13 +1,13 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'maneger-report-card',
   templateUrl: './maneger-report-card.component.html',
   styleUrls: ['./maneger-report-card.component.scss'],
   imports: [],
-  standalone: true
+  standalone: true,
 })
-export class ManegerReportCardComponent  implements OnInit {
+export class ManegerReportCardComponent implements OnInit {
   @Input()
   title: string;
 
@@ -16,12 +16,11 @@ export class ManegerReportCardComponent  implements OnInit {
 
   @Output() onItemClick: EventEmitter<string> = new EventEmitter();
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {}
 
   public onItemClickEvent() {
     this.onItemClick.emit(this.title);
   }
-
 }

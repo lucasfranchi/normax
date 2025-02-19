@@ -1,4 +1,4 @@
-import {ApreciacaoRiscoPresets} from "../apreciacao-risco";
+import { ApreciacaoRiscoPresets } from '../apreciacao-risco';
 
 export function getPresetReport13(reportId: string): ApreciacaoRiscoPresets[] {
   return [
@@ -16,11 +16,14 @@ export function getPresetReport13(reportId: string): ApreciacaoRiscoPresets[] {
         arglp: '4',
         arnp: '1',
         erpo: '0,5',
-        consideracaoCondAtual: 'Evidenciado que a empresa possui procedimentos de trabalho e segurança e que eles estão disponíveis e sendo aplicados em campo, atendendo os requisitos estabelecidos pelo item 12.14 da NR-12.',
-        recomendacoes: 'Manter os procedimentos atualizados e os funcionários treinados e orientados a aplicarem os procedimentos devendo no início de cada turno de trabalho ou após nova preparação da máquina ou equipamento, efetuar inspeção rotineira das condições de operacionalidade e segurança.',
+        consideracaoCondAtual:
+          'Evidenciado que a empresa possui procedimentos de trabalho e segurança e que eles estão disponíveis e sendo aplicados em campo, atendendo os requisitos estabelecidos pelo item 12.14 da NR-12.',
+        recomendacoes:
+          'Manter os procedimentos atualizados e os funcionários treinados e orientados a aplicarem os procedimentos devendo no início de cada turno de trabalho ou após nova preparação da máquina ou equipamento, efetuar inspeção rotineira das condições de operacionalidade e segurança.',
         relatorio: reportId,
-      }
-    }, {
+      },
+    },
+    {
       id: '2',
       reportId: reportId,
       form: {
@@ -34,10 +37,12 @@ export function getPresetReport13(reportId: string): ApreciacaoRiscoPresets[] {
         arglp: '4',
         arnp: '1',
         erpo: '0,5',
-        consideracaoCondAtual: 'Não evidenciado que a máquina possui procedimentos de trabalho e segurança específicos e padronizados, não atende o item 12.14.1 da NR-12.',
-        recomendacoes: 'Providenciar a elaboração do procedimento de trabalho e segurança com descrição detalhada de cada tarefa, passo a passo, a partir da apreciação de riscos mantendo os trabalhadores treinados e orientados a aplicá-lo. Ao início de cada turno de trabalho ou após nova preparação da máquina ou equipamento, efetuar inspeção rotineira das condições de operacionalidade e segurança.',
+        consideracaoCondAtual:
+          'Não evidenciado que a máquina possui procedimentos de trabalho e segurança específicos e padronizados, não atende o item 12.14.1 da NR-12.',
+        recomendacoes:
+          'Providenciar a elaboração do procedimento de trabalho e segurança com descrição detalhada de cada tarefa, passo a passo, a partir da apreciação de riscos mantendo os trabalhadores treinados e orientados a aplicá-lo. Ao início de cada turno de trabalho ou após nova preparação da máquina ou equipamento, efetuar inspeção rotineira das condições de operacionalidade e segurança.',
         relatorio: reportId,
-      }
+      },
     },
-  ]
+  ];
 }

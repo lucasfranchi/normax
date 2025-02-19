@@ -1,3 +1,8 @@
+import { getApresentacaoCellChangesByForm } from 'src/app/pages/responder-formulario/forms/apresentacao-maquina/apresentacao-maquina';
+import { getCategoriaCellChangesByForm } from 'src/app/pages/responder-formulario/forms/categoria-seguranca/categoria-seguranca';
+import { getLimitesCellChangesByForm } from 'src/app/pages/responder-formulario/forms/limites-maquina/limites-maquina';
+import { ChangeExcelFile } from '../change-excel-file/change-excel-file';
+
 export interface FormOrganizerInterface {
   apresentacaoMaquina?: ApresentacaoMaquinaForm;
   categoriaSeguranca?: CategoriaForm;
@@ -54,4 +59,39 @@ export interface LimitesMaquinaForm {
   groPgr: string;
   procOperacionais: string;
   loto: string;
+}
+
+export function getLinkedForms(
+  key: string,
+  form: FormOrganizerInterface
+): Array<ChangeExcelFile> {
+  switch (key) {
+    case 'apresentacaoMaquina':
+      return Object.keys(form.apresentacaoMaquina).map((it) =>
+        getApresentacaoCellChangesByForm(form.apresentacaoMaquina, it, 18)
+      );
+    case 'categoriaSeguranca':
+      return Object.keys(form.categoriaSeguranca).map((it) =>
+        getCategoriaCellChangesByForm(form.categoriaSeguranca, it, 19)
+      );
+    case 'limitesMaquina':
+      return Object.keys(form.limitesMaquina).map((it) =>
+        getLimitesCellChangesByForm(form.limitesMaquina, it, 20)
+      );
+  }
+
+  return null;
+}
+
+export function getReportIdsForms(key: string): string {
+  switch (key) {
+    case 'apresentacaoMaquina':
+      return '18';
+    case 'categoriaSeguranca':
+      return '19';
+    case 'limitesMaquina':
+      return '20';
+  }
+
+  return null;
 }

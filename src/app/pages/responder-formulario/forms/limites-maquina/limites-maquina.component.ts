@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
@@ -5,7 +6,6 @@ import {
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { IonInput, IonLabel, IonText } from '@ionic/angular/standalone';
 import { FormOrganizerService } from 'src/app/services/form-organizer/form-organizer.service';

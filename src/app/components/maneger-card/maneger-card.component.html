@@ -1,12 +1,22 @@
-<div class="relative items-center flex w-full flex-row rounded-xl bg-white bg-clip-border text-gray-700 shadow-md" style="height: 120px; max-height: 400px" (click)="redirectToPage()">
-  <div class="items-center flex justify-center relative -ml-6 mr-4 h-4/5 w-32 overflow-hidden rounded-xl bg-blue-gray-500 bg-clip-border text-white shadow-lg shadow-blue-gray-500/40 bg-gradient-to-r from-blue-500 to-blue-600">
+<div
+  class="relative items-center flex w-full flex-row rounded-xl bg-white bg-clip-border text-gray-700 shadow-md"
+  style="height: 120px; max-height: 400px"
+  (click)="redirectToPage()"
+>
+  <div
+    class="items-center flex justify-center relative -ml-6 mr-4 h-4/5 w-32 overflow-hidden rounded-xl bg-blue-gray-500 bg-clip-border text-white shadow-lg shadow-blue-gray-500/40 bg-gradient-to-r from-blue-500 to-blue-600"
+  >
     <ion-icon class="text-6xl" name="construct"></ion-icon>
   </div>
   <div class="py-4 px-2">
-    <h5 class="mb-2 block font-sans text-xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
+    <h5
+      class="mb-2 block font-sans text-xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased"
+    >
       {{ title }}
     </h5>
-    <p class="block font-sans text-sm text-base font-light leading-relaxed antialiased">
+    <p
+      class="block font-sans text-sm text-base font-light leading-relaxed antialiased"
+    >
       {{ subtitle }}
     </p>
   </div>

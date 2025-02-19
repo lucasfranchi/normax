@@ -1,17 +1,16 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'maneger-page',
   templateUrl: './maneger-page.component.html',
   styleUrls: ['./maneger-page.component.scss'],
-  standalone: true
+  standalone: true,
 })
-export class ManegerPageComponent  implements OnInit {
+export class ManegerPageComponent implements OnInit {
   @Input() header: string;
   @Input() subheader: string;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {}
-
 }

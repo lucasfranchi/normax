@@ -2,15 +2,15 @@ import { Injectable } from '@angular/core';
 import { ApreciacaoRiscoForm } from 'src/app/pages/responder-formulario/forms/apreciacao-risco/apreciacao-risco';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApreciacaoFormOrganizerService {
-  private formList: ApreciacaoRiscoForm[] = []
+  private formList: ApreciacaoRiscoForm[] = [];
 
-  constructor() { }
+  constructor() {}
 
   public addApreciacaoForm(apreciacaoForm: ApreciacaoRiscoForm) {
-    this.formList.push(apreciacaoForm)
+    this.formList.push(apreciacaoForm);
   }
 
   public getApreciacaoFormRisco() {

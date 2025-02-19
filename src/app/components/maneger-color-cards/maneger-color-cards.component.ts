@@ -1,19 +1,16 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ManagerColorCardsInterface} from "./maneger-color-cards";
-import {IonButton} from "@ionic/angular/standalone";
-import {CommonModule} from "@angular/common";
+import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { IonButton } from '@ionic/angular/standalone';
+import { ManagerColorCardsInterface } from './maneger-color-cards';
 
 @Component({
   selector: 'maneger-color-cards',
   templateUrl: './maneger-color-cards.component.html',
   styleUrls: ['./maneger-color-cards.component.scss'],
-  imports: [
-    CommonModule,
-    IonButton
-  ],
-  standalone: true
+  imports: [CommonModule, IonButton],
+  standalone: true,
 })
-export class ManegerColorCardsComponent  implements OnInit {
+export class ManegerColorCardsComponent implements OnInit {
   @Input()
   card: ManagerColorCardsInterface = null;
 
@@ -23,7 +20,7 @@ export class ManegerColorCardsComponent  implements OnInit {
   @Output()
   onDeleteButtonClick: EventEmitter<any> = new EventEmitter();
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {}
 

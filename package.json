@@ -32,6 +32,7 @@
     "@capacitor/keyboard": "6.0.2",
     "@capacitor/status-bar": "6.0.1",
     "@ionic/angular": "^8.4.1",
+    "cordova-plugin-camera": "^8.0.0",
     "exceljs": "^4.4.0",
     "file-saver": "^2.0.5",
     "ionicons": "^7.2.1",
