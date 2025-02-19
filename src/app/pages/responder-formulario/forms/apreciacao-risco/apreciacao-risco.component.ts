@@ -1,5 +1,14 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators,} from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   IonButton,
   IonButtons,
@@ -20,16 +29,17 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/angular/standalone';
-import {addIcons} from 'ionicons';
-import {arrowBackOutline, helpCircleOutline} from 'ionicons/icons';
-import {ChangeExcelFileDTO} from 'src/app/services/change-excel-file/change-excel-file';
-import {ChangeExcelFileService} from 'src/app/services/change-excel-file/change-excel-file.service';
-import {ApreciacaoRiscoPresets, getCellChangesByForm} from './apreciacao-risco';
-import {HttpClient} from '@angular/common/http';
-import {ActivatedRoute} from "@angular/router";
-import {CommonModule} from "@angular/common";
-import {getPreset} from "./apreciacao-risco-presets/apreciacao-risco-preset";
-import {ManegerLoadingComponent} from "../../../../components/maneger-loading/maneger-loading.component";
+import { addIcons } from 'ionicons';
+import { arrowBackOutline, helpCircleOutline } from 'ionicons/icons';
+import { ChangeExcelFileDTO } from 'src/app/services/change-excel-file/change-excel-file';
+import { ChangeExcelFileService } from 'src/app/services/change-excel-file/change-excel-file.service';
+import { ManegerLoadingComponent } from '../../../../components/maneger-loading/maneger-loading.component';
+import {
+  ApreciacaoRiscoPresets,
+  getCellChangesByForm,
+} from './apreciacao-risco';
+import { getPreset } from './apreciacao-risco-presets/apreciacao-risco-preset';
+import { ApreciacaoFormOrganizerService } from 'src/app/services/apreciacao-form-organizer.service/apreciacao-form-organizer.service';
 
 @Component({
   selector: 'rl-apreciacao-risco',
@@ -63,65 +73,61 @@ import {ManegerLoadingComponent} from "../../../../components/maneger-loading/ma
 })
 export class ApreciacaoRiscoComponent implements OnInit {
   @ViewChild(IonModal) modal: IonModal;
-  @ViewChild('fileInput', {static: false}) fileInput!: ElementRef;
+  @ViewChild('fileInput', { static: false }) fileInput!: ElementRef;
 
-  presets: Array<ApreciacaoRiscoPresets> = []
+  presets: Array<ApreciacaoRiscoPresets> = [];
 
   formGroup: FormGroup;
   isLoading: boolean = false;
-  reportId: string = "";
+  reportId: string = '';
   selectedImageBase64: string | null = null;
 
   constructor(
     private _fb: FormBuilder,
     private _changeExcelFileService: ChangeExcelFileService,
-    private _http: HttpClient,
-    private route: ActivatedRoute,
+    private _apreciacaoFormService: ApreciacaoFormOrganizerService,
+    private _router: Router,
+    private route: ActivatedRoute
   ) {
-    addIcons({helpCircleOutline, arrowBackOutline});
+    addIcons({ helpCircleOutline, arrowBackOutline });
   }
 
   ngOnInit() {
-    this.route.queryParams.subscribe(params => {
-      this.reportId = params['id']
+    this.route.queryParams.subscribe((params) => {
+      this.reportId = params['id'];
       this._createFormGroup();
-      this.presets = getPreset(this.reportId)
-      this.formGroup.get('relatorio').disable()
+      this.presets = getPreset(this.reportId);
+      this.formGroup.get('relatorio').disable();
     });
   }
 
   private _createFormGroup() {
     this.formGroup = this._fb.group({
       relatorio: [this.reportId, [Validators.required]],
-      perigo: ["", [Validators.required]],
-      localizacao: ["", [Validators.required]],
-      atividade: ["", [Validators.required]],
-      consequenciaRisco: ["", [Validators.required]],
-      tipo: ["", [Validators.required]],
-      arpo: ["", [Validators.required]],
-      arfe: ["", [Validators.required]],
-      arglp: ["", [Validators.required]],
-      arnp: ["", [Validators.required]],
-      erpo: ["", [Validators.required]],
-      consideracaoCondAtual: ["", [Validators.required]],
-      recomendacoes: ["", [Validators.required]],
+      perigo: ['', [Validators.required]],
+      localizacao: ['', [Validators.required]],
+      atividade: ['', [Validators.required]],
+      consequenciaRisco: ['', [Validators.required]],
+      tipo: ['', [Validators.required]],
+      arpo: ['', [Validators.required]],
+      arfe: ['', [Validators.required]],
+      arglp: ['', [Validators.required]],
+      arnp: ['', [Validators.required]],
+      erpo: ['', [Validators.required]],
+      consideracaoCondAtual: ['', [Validators.required]],
+      recomendacoes: ['', [Validators.required]],
     });
   }
 
   changePreset(event) {
-    console.log(event.detail.value)
-
-    const formValue = this.presets.find(it => it.id === event.detail.value);
-    console.log(formValue)
-    this.formGroup.patchValue(formValue.form)
+    const formValue = this.presets.find((it) => it.id === event.detail.value);
+    this.formGroup.patchValue(formValue.form);
   }
 
   OnInputChange(input: string) {
-    const formValue = {}
+    const formValue = {};
     formValue[input] = this.formGroup.get(input).value;
-    this.formGroup.patchValue(
-      formValue
-    )
+    this.formGroup.patchValue(formValue);
   }
 
   closeModal() {
@@ -153,27 +159,13 @@ export class ApreciacaoRiscoComponent implements OnInit {
 
   public generateRelatorio() {
     if (this.formGroup.invalid) {
-      this.formGroup.markAllAsTouched()
+      this.formGroup.markAllAsTouched();
       return;
     }
     this.isLoading = true;
-    this._http.get('/assets/NR-12.xlsx', {responseType: 'blob'}).subscribe(data => {
-      const file = new File([data], 'NR-12.xlsx', {type: data.type});
-      const dataTransfer = new DataTransfer();
-      dataTransfer.items.add(file);
-
-      const changeExcelFileDTO: ChangeExcelFileDTO = {
-        changesList: Object.keys(this.formGroup.value)
-          .filter((it) => getCellChangesByForm(this.formGroup.value, it, Number(this.reportId) - 1))
-          .map((key) => getCellChangesByForm(this.formGroup.value, key, Number(this.reportId) - 1)),
-        file: dataTransfer,
-        reportId: this.reportId
-      };
-      this._changeExcelFileService.changeExcelFile(changeExcelFileDTO, this.selectedImageBase64);
-    })
+    this._apreciacaoFormService.addApreciacaoForm({...this.formGroup.value, relatorio: this.reportId})
+    this._router.navigate(['/responder-formulario/forms']);
   }
 
-  onWillDismiss(event: Event) {
-  }
-
+  onWillDismiss(event: Event) {}
 }

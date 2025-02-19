@@ -1,6 +1,7 @@
-<div *ngIf="isLoading" class="rl-apreciacao">
-  <maneger-loading></maneger-loading>
-</div>
+<maneger-loading
+  class="w-full h-full flex items-center justify-center"
+  *ngIf="isLoading"
+></maneger-loading>
 
 <form class="rl-apreciacao-form " *ngIf="!isLoading" [formGroup]="formGroup">
   <div class="rl-apreciacao-form__inputs">

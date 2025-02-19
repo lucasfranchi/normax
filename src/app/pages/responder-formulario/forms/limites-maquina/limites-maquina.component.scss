@@ -28,12 +28,12 @@ button {
   padding: 10px 20px;
 }
 
-button > svg {
+button>svg {
   margin-left: 5px;
   transition: all 0.4s ease-in;
 }
 
-button:hover > svg {
+button:hover>svg {
   font-size: 1.2em;
   transform: translateX(6px);
 }

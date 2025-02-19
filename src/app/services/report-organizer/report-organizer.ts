@@ -1,5 +1,5 @@
 export interface ReportOrganizerInterface {
-  id: number;
+  id?: number;
   file: File;
-  identificador: string;
+  identificador?: string;
 }

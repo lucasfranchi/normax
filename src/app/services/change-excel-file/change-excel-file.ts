@@ -1,11 +1,11 @@
 export interface ChangeExcelFileDTO {
   changesList: Array<ChangeExcelFile>;
-  reportId: string;
+  reportId?: string;
   file: DataTransfer;
 }
 
 export interface ChangeExcelFile {
-  cell: string;
+  cell: Array<string>;
   worksheetIndex: number;
   value: string | number;
 }

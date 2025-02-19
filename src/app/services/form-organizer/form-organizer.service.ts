@@ -1,28 +1,27 @@
-import {Injectable} from '@angular/core';
-import {ApresentacaoMaquinaForm, CategoriaForm, FormOrganizerInterface, LimitesMaquinaForm} from "./form-organizer";
+import { Injectable } from '@angular/core';
+import { FormOrganizerInterface } from './form-organizer';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FormOrganizerService {
-  forms?: FormOrganizerInterface = {
+  private forms?: FormOrganizerInterface = {
     apresentacaoMaquina: null,
     categoriaSeguranca: {
-      categoriaF: "F1",
-      categoriaP: "P1",
-      categoriaS: "S1",
+      categoriaF: 'F1',
+      categoriaP: 'P1',
+      categoriaS: 'S1',
     },
     limitesMaquina: null,
   };
 
-  constructor() {
-  }
+  constructor() {}
 
   public addFormValues(
     key: 'apresentacaoMaquina' | 'categoriaSeguranca' | 'limitesMaquina',
     formValue: any
   ) {
-    this.forms[key] = formValue
+    this.forms[key] = formValue;
   }
 
   public getFormValue() {

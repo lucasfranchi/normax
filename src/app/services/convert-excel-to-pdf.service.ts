@@ -16,30 +16,24 @@ export class ConvertExcelToPdfService {
     private _router: Router
   ) {}
 
-  public convertExcelListToPdf(excelList: ReportOrganizerInterface[]) {
-    const convertedPdfList: Blob[] = [];
-    excelList.sort((a, b) => a.id - b.id);
-    excelList.forEach((excelObject, index) => {
+  public convertExcelListToPdf(excel: File) {
       const reader = new FileReader();
-
       reader.onload = (event) => {
         const buffer = event.target?.result as ArrayBuffer;
         const formData = new FormData();
         const blob = new Blob([buffer], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
-        formData.append('file', blob, `file_${index}.xlsx`);
+        formData.append('file', blob, `file.xlsx`);
         console.log('Arquivo que está sendo enviado:', formData.get('file'));
 
         this._http
-          .post('http://192.168.1.29:5000/convert', formData, {
+          .post('http://192.168.1.12:8080/convert', formData, {
             responseType: 'blob',
           })
           .subscribe(
             (pdfBlob: Blob) => {
-              convertedPdfList.push(pdfBlob);
-              if (convertedPdfList.length === excelList.length) {
-                this.mergePdfs(convertedPdfList);
-                this._router.navigate(['/responder-formulario/forms'])
-              }
+              console.log(pdfBlob)
+              this.mergePdfs([pdfBlob]);
+              this._router.navigate(['/responder-formulario/forms'])
             },
             (error) => {
               console.error('Erro ao converter o arquivo:', error);
@@ -47,8 +41,7 @@ export class ConvertExcelToPdfService {
           );
       };
 
-      reader.readAsArrayBuffer(excelObject.file);
-    });
+      reader.readAsArrayBuffer(excel);
   }
 
   private async savePdfLocally(pdfBlob: Blob, fileName: string) {
