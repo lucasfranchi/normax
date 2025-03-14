@@ -3,8 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { FileOpener } from '@capacitor-community/file-opener';
 import { Directory, Filesystem } from '@capacitor/filesystem';
 import { IonList } from '@ionic/angular/standalone';
-import { ManegerPageComponent } from '../../components/maneger-page/maneger-page.component';
-import { ManegerReportCardComponent } from '../../components/maneger-report-card/maneger-report-card.component';
+import { NormaxPageComponent } from '../../components/normax-page/normax-page.component';
+import { NormaxReportCardComponent } from '../../components/normax-report-card/normax-report-card.component';
 
 @Component({
   selector: 'app-tab2',
@@ -14,8 +14,8 @@ import { ManegerReportCardComponent } from '../../components/maneger-report-card
   imports: [
     CommonModule,
     IonList,
-    ManegerReportCardComponent,
-    ManegerPageComponent,
+    NormaxReportCardComponent,
+    NormaxPageComponent,
   ],
 })
 export class Tab2Page implements OnInit {

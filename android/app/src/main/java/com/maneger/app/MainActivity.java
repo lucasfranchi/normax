@@ -1,4 +1,4 @@
-package com.maneger.app;
+package com.normax.app;
 
 import com.getcapacitor.BridgeActivity;
 

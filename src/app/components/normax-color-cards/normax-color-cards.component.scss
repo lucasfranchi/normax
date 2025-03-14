@@ -1,0 +1,59 @@
+.normax-color-card {
+  position: relative;
+  background-color: rgba(var(--color), 0.5);
+  border-radius: 10px;
+  width: 80vw;
+  max-width: 270px;
+  height: 50vh;
+  max-height: 370px;
+  box-shadow: 5px 5px 15px rgb(0, 0, 0, 0.2);
+  padding: 10px 10px 10px 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-content: center;
+  font-size: 2rem;
+  font-weight: 600;
+  color: rgba(var(--color));
+  text-align: center;
+  overflow: hidden;
+
+  &__fita {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 20px;
+    background: repeating-linear-gradient(45deg, #fcd116, #fcd116 10px, #000000 10px, #000000 20px);
+  }
+
+  &__content {
+    display: flex;
+    font-size: 1rem;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 10px;
+    height: 40%;
+    color: rgba(var(--color));
+  }
+
+  &__buttons {
+    --ion-color-primary: rgba(var(--color));
+
+    display: flex;
+    width: 100%;
+    color: white;
+
+    ion-button {
+      color: white;
+      font-weight: 600;
+      width: 100%;
+    }
+  }
+}

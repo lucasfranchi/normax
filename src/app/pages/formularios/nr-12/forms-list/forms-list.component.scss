@@ -1,0 +1,19 @@
+:host {
+  display: block;
+  height: 90vh;
+}
+
+.normax-forms-list {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+
+  &__container {
+    display: flex;
+    width: 100%;
+    overflow-x: scroll;
+    gap: 1rem;
+    padding: 1rem;
+  }
+}

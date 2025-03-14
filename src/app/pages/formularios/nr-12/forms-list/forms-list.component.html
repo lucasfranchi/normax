@@ -1,0 +1,12 @@
+<normax-loading
+  class="w-full h-full flex items-center justify-center"
+  *ngIf="isLoading"
+></normax-loading>
+
+<div class="normax-forms-list" *ngIf="!isLoading">
+  <div class="normax-forms-list__container">
+    <normax-icon-button label="Criar form" (click)="createForm()">
+      <ion-icon class="svg" name="add-outline"></ion-icon>
+    </normax-icon-button>
+  </div>
+</div>

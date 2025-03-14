@@ -1,14 +1,14 @@
 import { Component, Input } from '@angular/core';
 import { addIcons } from 'ionicons';
 import { readerOutline } from 'ionicons/icons';
-import { ManegerCardComponent } from 'src/app/components/maneger-card/maneger-card.component';
+import { NormaxCardComponent } from 'src/app/components/normax-card/normax-card.component';
 import { RelatorioInterface } from './relatorios-list';
 
 @Component({
   selector: 'relatorios-list',
   templateUrl: './relatorios-list.component.html',
   styleUrls: ['./relatorios-list.component.scss'],
-  imports: [ManegerCardComponent],
+  imports: [NormaxCardComponent],
   standalone: true,
 })
 export class RelatoriosListComponent {
@@ -18,7 +18,7 @@ export class RelatoriosListComponent {
     {
       title: 'NR-12',
       subtitle: 'Conforme ABNT NBR ISO 12100',
-      route: '/apresentacao-maquina',
+      route: '/forms-list',
     },
   ];
 

@@ -1,11 +1,15 @@
 import { Injectable } from '@angular/core';
-import { ReportOrganizerInterface } from './report-organizer';
+import { ReportOrganizerInterface, ReportOrganizerMedia } from './report-organizer';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ReportOrganizerService {
   reports: Array<ReportOrganizerInterface> = [];
+  media: ReportOrganizerMedia = {
+    valor: 0,
+    qtde: 0,
+  };
 
   constructor() {}
 
@@ -32,7 +36,6 @@ export class ReportOrganizerService {
     report.identificador = newIdentifier;
     this.reports.push(report);
 
-    // Ordena a lista de objetos por ID
     this.reports.sort((a, b) => a.id - b.id);
   }
 
@@ -46,5 +49,18 @@ export class ReportOrganizerService {
 
   public clearReports(): void {
     this.reports = [];
+  }
+
+  public addMedia(valor: number): void {
+    this.media.valor += valor;
+    this.media.qtde++;
+  }
+
+  public getMedia(): number {
+    return this.media.valor / this.media.qtde;
+  }
+
+  public clearMedia(): void {
+    this.media = { valor: 0, qtde: 0 };
   }
 }

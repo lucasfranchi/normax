@@ -9,7 +9,7 @@ export const routes: Routes = [
       {
         path: 'apreciacao-risco',
         loadComponent: () =>
-          import('./forms/apreciacao-risco/apreciacao-risco.component').then(
+          import('../formularios/nr-12/apreciacao-risco/apreciacao-risco.component').then(
             (m) => m.ApreciacaoRiscoComponent
           ),
       },
@@ -17,28 +17,35 @@ export const routes: Routes = [
         path: 'apresentacao-maquina',
         loadComponent: () =>
           import(
-            './forms/apresentacao-maquina/apresentacao-maquina.component'
+            '../formularios/nr-12/apresentacao-maquina/apresentacao-maquina.component'
           ).then((m) => m.ApresentacaoMaquinaComponent),
       },
       {
         path: 'categoria-seguranca',
         loadComponent: () =>
           import(
-            './forms/categoria-seguranca/categoria-seguranca.component'
+            '../formularios/nr-12/categoria-seguranca/categoria-seguranca.component'
           ).then((m) => m.CategoriaSegurancaComponent),
       },
       {
         path: 'limites-maquina',
         loadComponent: () =>
-          import('./forms/limites-maquina/limites-maquina.component').then(
+          import('../formularios/nr-12/limites-maquina/limites-maquina.component').then(
             (m) => m.LimitesMaquinaComponent
           ),
       },
       {
-        path: 'forms',
+        path: 'reports',
         loadComponent: () =>
-          import('./forms/form-list/form-list.component').then(
-            (m) => m.FormListComponent
+          import('../formularios/nr-12/report-list/report-list.component').then(
+            (m) => m.ReportListComponent
+          ),
+      },
+      {
+        path: 'forms-list',
+        loadComponent: () =>
+          import('../formularios/nr-12/forms-list/forms-list.component').then(
+            (m) => m.FormsListComponent
           ),
       },
       {

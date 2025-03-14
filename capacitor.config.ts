@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.maneger.app',
-  appName: 'Maneger',
+  appId: 'com.normax.app',
+  appName: 'Normax',
 };
 
 export default config;

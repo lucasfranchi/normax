@@ -20,7 +20,6 @@ export class ConvertExcelToPdfService {
   public convertExcelListToPdf(excelList: ReportOrganizerInterface[]) {
     const convertedPdfList: { index: number; pdf: Blob }[] = [];
     excelList.sort((a, b) => a.id - b.id);
-    console.log(excelList);
 
     excelList.forEach((excelObject, index) => {
       const reader = new FileReader();
@@ -34,10 +33,8 @@ export class ConvertExcelToPdfService {
         formData.append('file', blob, `file_${index}.xlsx`);
         formData.append('index', index.toString());
 
-        console.log('Arquivo que está sendo enviado:', formData.get('file'));
-
         this._http
-          .post('http://192.168.1.12:8080/convert', formData, {
+          .post('http://192.168.1.19:8080/convert', formData, {
             responseType: 'blob',
           })
           .subscribe(

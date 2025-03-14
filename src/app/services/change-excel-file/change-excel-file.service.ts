@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import * as ExcelJS from 'exceljs';
-import { ImageSelectorInterface } from 'src/app/pages/responder-formulario/forms/apreciacao-risco/apreciacao-risco';
 import { ConvertExcelToPdfService } from '../convert-excel-to-pdf.service';
 import { ReportOrganizerInterface } from '../report-organizer/report-organizer';
 import { ReportOrganizerService } from '../report-organizer/report-organizer.service';
 import { ChangeExcelFileDTO } from './change-excel-file';
+import { ImageSelectorInterface } from 'src/app/pages/formularios/nr-12/apreciacao-risco/apreciacao-risco';
 
 @Injectable({
   providedIn: 'root',
@@ -45,7 +45,7 @@ export class ChangeExcelFileService {
         identificador: '',
       });
 
-      this._router.navigate(['/responder-formulario/forms']);
+      this._router.navigate(['/responder-formulario/reports']);
     };
     reader.readAsArrayBuffer(changeExcelFileDTO.file.files[0]);
   }

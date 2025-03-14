@@ -1,0 +1,133 @@
+<form class="normax-limites-maquina" [formGroup]="formGroup">
+  <div class="normax-limites-maquina__form-card">
+    <ion-label position="stacked" class="label">
+      <h1>LIMITES DA MÁQUINA/EQUIPAMENTO</h1>
+      <p>Conforme item 5.3 da ABNT NBR ISO 12100.</p>
+    </ion-label>
+    <ion-input
+      formControlName="ambiente"
+      labelPlacement="stacked"
+      placeholder="Ex: Uso industrial"
+      class="mt-3"
+    >
+      <div slot="label">
+        Ambiente
+        <ion-text color="danger">(*)</ion-text>
+      </div>
+    </ion-input>
+    <ion-input
+      formControlName="treinamentoOp"
+      labelPlacement="stacked"
+      placeholder="Ex: Treinamento básico de operação."
+    >
+      <div slot="label">
+        Treinamento operacional
+        <ion-text color="danger">(*)</ion-text>
+      </div>
+    </ion-input>
+    <ion-input
+      formControlName="operador"
+      labelPlacement="stacked"
+      placeholder="Ex: Capacitação"
+    >
+      <div slot="label">
+        Operador
+        <ion-text color="danger">(*)</ion-text>
+      </div>
+    </ion-input>
+    <ion-input
+      formControlName="manutencao"
+      labelPlacement="stacked"
+      placeholder="Ex: Realizada por profissional capacitado."
+    >
+      <div slot="label">
+        Manutenção
+        <ion-text color="danger">(*)</ion-text>
+      </div>
+    </ion-input>
+    <ion-input
+      formControlName="vidaUtil"
+      labelPlacement="stacked"
+      placeholder="Ex: Durante todo o ciclo da máquina."
+    >
+      <div slot="label">
+        Vida Útil
+        <ion-text color="danger">(*)</ion-text>
+      </div>
+    </ion-input>
+  </div>
+  <div class="normax-limites-maquina__form-card">
+    <ion-label position="stacked" class="label">
+      <h1>DOCUMENTAÇÕES ANALISADAS E/OU APRESENTADAS</h1>
+      <p>Documento e Tipo/Normativo.</p>
+    </ion-label>
+    <ion-input
+      formControlName="avaliacaoErgonomica"
+      labelPlacement="stacked"
+      placeholder="Ex: NR-17"
+      class="mt-3"
+    >
+      <div slot="label">
+        Avaliação Ergonômica
+        <ion-text color="danger">(*)</ion-text>
+      </div>
+    </ion-input>
+    <ion-input
+      formControlName="manuelMaquina"
+      labelPlacement="stacked"
+      placeholder="Ex: ABNT NBR 16746:2019/NR-12"
+    >
+      <div slot="label">
+        Manual da Máquina
+        <ion-text color="danger">(*)</ion-text>
+      </div>
+    </ion-input>
+    <ion-input
+      formControlName="certificadosCapacitacao"
+      labelPlacement="stacked"
+      placeholder="Ex: ANEXO II DA NR-12"
+    >
+      <div slot="label">
+        Certificados de Capacitação
+        <ion-text color="danger">(*)</ion-text>
+      </div> </ion-input
+    ><ion-input
+      formControlName="groPgr"
+      labelPlacement="stacked"
+      placeholder="Ex: NR-01 / NR-09"
+    >
+      <div slot="label">
+        GRO/PGR
+        <ion-text color="danger">(*)</ion-text>
+      </div>
+    </ion-input>
+    <ion-input
+      formControlName="procOperacionais"
+      labelPlacement="stacked"
+      placeholder="Ex: Boas Práticas/NR-12"
+    >
+      <div slot="label">
+        Procedimentos Operacionais de Segurança
+        <ion-text color="danger">(*)</ion-text>
+      </div>
+    </ion-input>
+    <ion-input
+      formControlName="loto"
+      labelPlacement="stacked"
+      placeholder="Ex: Boas Práticas/NR-12/NR-10"
+    >
+      <div slot="label">
+        Procedimento LOTO
+        <ion-text color="danger">(*)</ion-text>
+      </div>
+    </ion-input>
+  </div>
+  <div class="flex justify-between">
+    <normax-icon-button label="Voltar" (click)="returnPage()">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </normax-icon-button>
+    <normax-icon-button label="Próximo" (click)="nextPage()">
+      <ion-icon name="arrow-forward-outline"></ion-icon>
+    </normax-icon-button>
+  </div>
+</form>

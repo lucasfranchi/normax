@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ImageSelectorInterface } from './../../pages/responder-formulario/forms/apreciacao-risco/apreciacao-risco';
 import { FormOrganizerInterface } from './form-organizer';
+import { ImageSelectorInterface } from 'src/app/pages/formularios/nr-12/apreciacao-risco/apreciacao-risco';
 
 @Injectable({
   providedIn: 'root',

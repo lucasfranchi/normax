@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">maneger</string>
-    <string name="title_activity_main">maneger</string>
-    <string name="package_name">com.maneger.app</string>
-    <string name="custom_url_scheme">com.maneger.app</string>
+    <string name="app_name">normax</string>
+    <string name="title_activity_main">normax</string>
+    <string name="package_name">com.normax.app</string>
+    <string name="custom_url_scheme">com.normax.app</string>
 </resources>

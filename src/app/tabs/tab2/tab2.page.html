@@ -1,14 +1,14 @@
-<maneger-page header="Relatórios">
+<normax-page header="Relatórios">
   <ion-list
     class="flex flex-col gap-3 p-4 pl-8 h-full rounded-t-xl bg-gray-100"
   >
-    <maneger-report-card
+    <normax-report-card
       *ngFor="let pdfFile of pdfFiles"
       [title]="pdfFile.name"
       [subtitle]="pdfFile.date"
       (click)="openPdf(pdfFile.name)"
       (onItemClick)="deletePdf($event)"
     >
-    </maneger-report-card>
+    </normax-report-card>
   </ion-list>
-</maneger-page>
+</normax-page>

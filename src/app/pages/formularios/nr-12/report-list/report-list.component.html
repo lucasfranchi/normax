@@ -1,0 +1,40 @@
+<normax-loading
+  class="w-full h-full flex items-center justify-center"
+  *ngIf="isLoading"
+></normax-loading>
+
+<div class="normax-report-list" *ngIf="!isLoading">
+  <div class="normax-report-list__container">
+    @for (card of cardsOptions; track card) {
+    <normax-color-cards
+      [card]="card"
+      (onAddButtonClick)="addItemInReport($event)"
+      (onDeleteButtonClick)="deleteItemInReport($event)"
+    >
+    </normax-color-cards>
+    }
+  </div>
+
+  <ion-grid [fixed]="true" class="normax-report-list__grid">
+    <ion-row class="normax-report-list__grid-header">
+      <ion-col size="2">Id</ion-col>
+      <ion-col>Descrição</ion-col>
+    </ion-row>
+    <ion-row
+      *ngFor="let report of reports"
+      class="normax-report-list__grid-row"
+      style="--color: {{ report.color }};"
+    >
+      <ion-col size="2">{{ report.id }}</ion-col>
+      <ion-col>{{ report.title }}</ion-col>
+    </ion-row>
+  </ion-grid>
+  <div class="flex justify-between p-4">
+    <normax-icon-button label="Voltar" (click)="returnPage()">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </normax-icon-button>
+    <normax-icon-button label="Salvar formulário" (click)="gerarRelatorio()">
+      <ion-icon name="save-outline"></ion-icon>
+    </normax-icon-button>
+  </div>
+</div>

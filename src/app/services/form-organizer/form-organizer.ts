@@ -1,7 +1,7 @@
-import { getApresentacaoCellChangesByForm, getCapaCellChangesByForm } from 'src/app/pages/responder-formulario/forms/apresentacao-maquina/apresentacao-maquina';
-import { getCategoriaCellChangesByForm } from 'src/app/pages/responder-formulario/forms/categoria-seguranca/categoria-seguranca';
-import { getLimitesCellChangesByForm } from 'src/app/pages/responder-formulario/forms/limites-maquina/limites-maquina';
+import { getApresentacaoCellChangesByForm, getCapaCellChangesByForm } from 'src/app/pages/formularios/nr-12/apresentacao-maquina/apresentacao-maquina';
 import { ChangeExcelFile } from '../change-excel-file/change-excel-file';
+import { getCategoriaCellChangesByForm } from 'src/app/pages/formularios/nr-12/categoria-seguranca/categoria-seguranca';
+import { getLimitesCellChangesByForm } from 'src/app/pages/formularios/nr-12/limites-maquina/limites-maquina';
 
 export interface FormOrganizerInterface {
   apresentacaoMaquina?: ApresentacaoMaquinaForm;
