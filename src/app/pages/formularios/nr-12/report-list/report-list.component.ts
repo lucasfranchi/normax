@@ -1,26 +1,20 @@
-import { CommonModule, Location } from '@angular/common';
+import { CommonModule, formatDate, Location } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonCol, IonGrid, IonIcon, IonRow } from '@ionic/angular/standalone';
-import * as ExcelJS from 'exceljs';
 import { addIcons } from 'ionicons';
-import {
-  arrowBackOutline,
-  saveOutline
-} from 'ionicons/icons';
-import { ChangeExcelFileDTO } from 'src/app/services/change-excel-file/change-excel-file';
-import {
-  getLinkedForms,
-  getReportIdsForms,
-} from 'src/app/services/form-organizer/form-organizer';
+import { arrowBackOutline, saveOutline } from 'ionicons/icons';
 import { FormOrganizerService } from 'src/app/services/form-organizer/form-organizer.service';
+import { NormaxStorageFormsInterface } from 'src/app/services/normax-storage-service/normax-storage';
+import { NormaxStorageService } from 'src/app/services/normax-storage-service/normax-storage.service';
 import { NormaxColorCardsInterface } from '../../../../components/normax-color-cards/normax-color-cards';
 import { NormaxColorCardsComponent } from '../../../../components/normax-color-cards/normax-color-cards.component';
 import { NormaxIconButtonComponent } from '../../../../components/normax-icon-button/normax-icon-button.component';
 import { NormaxLoadingComponent } from '../../../../components/normax-loading/normax-loading.component';
 import { ChangeExcelFileService } from '../../../../services/change-excel-file/change-excel-file.service';
 import { ReportOrganizerService } from '../../../../services/report-organizer/report-organizer.service';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-report-list',
@@ -136,6 +130,7 @@ export class ReportListComponent implements OnInit {
     private _reportOrganizerService: ReportOrganizerService,
     private _formOrganizerService: FormOrganizerService,
     private _changeExcelFileService: ChangeExcelFileService,
+    private _normaxStorageService: NormaxStorageService,
     private _location: Location,
     private _http: HttpClient
   ) {
@@ -179,11 +174,11 @@ export class ReportListComponent implements OnInit {
         valorMedia: this._reportOrganizerService.getMedia().toString(),
       });
 
-      console.log(this._reportOrganizerService.getMedia().toString())
+      console.log(this._reportOrganizerService.getMedia().toString());
 
-      const updatedForm = this._formOrganizerService.getFormValue();
+      /* const updatedForm = this._formOrganizerService.getFormValue(); */
 
-      Object.keys(updatedForm).forEach((it) => {
+      /* Object.keys(updatedForm).forEach((it) => {
         this._http
           .get('/assets/NR-12/NR-12.xlsx', { responseType: 'blob' })
           .subscribe((data) => {
@@ -198,9 +193,24 @@ export class ReportListComponent implements OnInit {
             };
             this._changeExcelFileService.changeExcelFile(changeExcelFileDTO);
           });
-      });
+      }); */
       setTimeout(() => {
-        this._changeExcelFileService.changeOrdersAndGenerateReports();
+        const formData = this._formOrganizerService.getFormValue();
+        const storageForms: NormaxStorageFormsInterface = {
+          apresentacaoMaquina: formData.apresentacaoMaquina,
+          categoriaSeguranca: formData.categoriaSeguranca,
+          limitesMaquina: formData.limitesMaquina,
+          capa: formData.capa,
+          name: `Formulário ${formData.apresentacaoMaquina.maquina}`,
+          date: formatDate(Date.now(), 'dd/MM/yyy', 'en-US'),
+          reportList: this._reportOrganizerService.getReports(),
+        };
+        this._normaxStorageService.setForm(uuidv4(), storageForms);
+        this._formOrganizerService.clearFormsCache();
+        this._reportOrganizerService.clearMedia();
+        this._reportOrganizerService.clearReports();
+        this._router.navigate(['/responder-formulario/forms-list']);
+        /*  this._changeExcelFileService.changeOrdersAndGenerateReports(); */
       }, 3000);
     } catch (error) {
       this.isLoading = false;
