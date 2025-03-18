@@ -1,4 +1,3 @@
-import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
@@ -24,6 +23,7 @@ import {
 import { addIcons } from 'ionicons';
 import { arrowBackOutline, arrowForwardOutline } from 'ionicons/icons';
 import { NormaxStorageService } from 'src/app/services/normax-storage-service/normax-storage.service';
+import { ReportOrganizerService } from 'src/app/services/report-organizer/report-organizer.service';
 import { NormaxIconButtonComponent } from '../../../../components/normax-icon-button/normax-icon-button.component';
 import { ApresentacaoMaquinaForm } from '../../../../services/form-organizer/form-organizer';
 import { FormOrganizerService } from '../../../../services/form-organizer/form-organizer.service';
@@ -51,17 +51,18 @@ import { ImageSelectorInterface } from '../apreciacao-risco/apreciacao-risco';
 })
 export class ApresentacaoMaquinaComponent implements OnInit {
   formGroup: FormGroup;
+  formId: string;
   formValues: ApresentacaoMaquinaForm = null;
   imageSelector?: ImageSelectorInterface = null;
 
   constructor(
     private _fb: FormBuilder,
-    private _location: Location,
     private _router: Router,
     private _formOrganizerService: FormOrganizerService,
     private _toastController: ToastController,
     private _activatedRoute: ActivatedRoute,
-    private _normaxStorageService: NormaxStorageService
+    private _normaxStorageService: NormaxStorageService,
+    private _reportOrganizerService: ReportOrganizerService
   ) {
     addIcons({ arrowBackOutline, arrowForwardOutline });
   }
@@ -103,7 +104,10 @@ export class ApresentacaoMaquinaComponent implements OnInit {
   }
 
   public returnPage(): void {
-    this._location.back();
+    this._formOrganizerService.clearFormsCache();
+    this._reportOrganizerService.clearMedia();
+    this._reportOrganizerService.clearReports();
+    this._router.navigate(['/responder-formulario/forms-list']);
   }
 
   public nextPage(): void {
@@ -117,7 +121,14 @@ export class ApresentacaoMaquinaComponent implements OnInit {
       ...this.formGroup.value,
       dataInspecao: this._formatDate(this.formGroup.value.dataInspecao),
     });
-    this._router.navigateByUrl('/responder-formulario/categoria-seguranca');
+    this._router.navigate([
+      '/responder-formulario/categoria-seguranca',
+      {
+        queryParams: {
+          id: this.formId,
+        },
+      },
+    ]);
   }
 
   async takePicture() {
@@ -182,17 +193,19 @@ export class ApresentacaoMaquinaComponent implements OnInit {
   }
 
   private async _verificaFormId() {
-    const formId = this._activatedRoute.snapshot.queryParams['id'] || null;
+    this.formId = this._activatedRoute.snapshot.queryParams['id'] || null;
+    const form = this._formOrganizerService.getFormValue().apresentacaoMaquina;
 
-    if (formId) {
-      await this._normaxStorageService.getForm(formId).then((it) => {
-        console.log(it);
-        this._formOrganizerService.setStorageForm({ id: formId, data: it });
+    if (this.formId && !form) {
+      await this._normaxStorageService.getForm(this.formId).then((it) => {
+        this._formOrganizerService.setStorageForm({
+          id: this.formId,
+          data: it,
+        });
+        this._reportOrganizerService.setStorageReports(it.reportList);
         this.formGroup.patchValue(it.apresentacaoMaquina);
       });
     } else {
-      const form =
-        this._formOrganizerService.getFormValue().apresentacaoMaquina;
       if (form) {
         this.formValues = {
           ...form,
@@ -201,6 +214,5 @@ export class ApresentacaoMaquinaComponent implements OnInit {
       }
       this.formGroup.patchValue(this.formValues);
     }
-    console.log(this._activatedRoute.snapshot.queryParams);
   }
 }

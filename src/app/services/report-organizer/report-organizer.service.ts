@@ -39,6 +39,10 @@ export class ReportOrganizerService {
     this.reports.sort((a, b) => a.id - b.id);
   }
 
+  public setStorageReports(reports: Array<ReportOrganizerInterface>) {
+    this.reports = reports;
+  }
+
   public getReports(): Array<ReportOrganizerInterface> {
     return this.reports;
   }

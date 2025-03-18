@@ -1,5 +1,4 @@
-import { CommonModule, formatDate, Location } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { CommonModule, formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonCol, IonGrid, IonIcon, IonRow } from '@ionic/angular/standalone';
@@ -12,9 +11,7 @@ import { NormaxColorCardsInterface } from '../../../../components/normax-color-c
 import { NormaxColorCardsComponent } from '../../../../components/normax-color-cards/normax-color-cards.component';
 import { NormaxIconButtonComponent } from '../../../../components/normax-icon-button/normax-icon-button.component';
 import { NormaxLoadingComponent } from '../../../../components/normax-loading/normax-loading.component';
-import { ChangeExcelFileService } from '../../../../services/change-excel-file/change-excel-file.service';
 import { ReportOrganizerService } from '../../../../services/report-organizer/report-organizer.service';
-import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-report-list',
@@ -129,10 +126,7 @@ export class ReportListComponent implements OnInit {
     private _router: Router,
     private _reportOrganizerService: ReportOrganizerService,
     private _formOrganizerService: FormOrganizerService,
-    private _changeExcelFileService: ChangeExcelFileService,
-    private _normaxStorageService: NormaxStorageService,
-    private _location: Location,
-    private _http: HttpClient
+    private _normaxStorageService: NormaxStorageService
   ) {
     addIcons({ arrowBackOutline, saveOutline });
   }
@@ -174,26 +168,6 @@ export class ReportListComponent implements OnInit {
         valorMedia: this._reportOrganizerService.getMedia().toString(),
       });
 
-      console.log(this._reportOrganizerService.getMedia().toString());
-
-      /* const updatedForm = this._formOrganizerService.getFormValue(); */
-
-      /* Object.keys(updatedForm).forEach((it) => {
-        this._http
-          .get('/assets/NR-12/NR-12.xlsx', { responseType: 'blob' })
-          .subscribe((data) => {
-            const file = new File([data], 'NR-12.xlsx', { type: data.type });
-            const dataTransfer = new DataTransfer();
-            dataTransfer.items.add(file);
-
-            const changeExcelFileDTO: ChangeExcelFileDTO = {
-              changesList: getLinkedForms(it, updatedForm),
-              file: dataTransfer,
-              reportId: getReportIdsForms(it),
-            };
-            this._changeExcelFileService.changeExcelFile(changeExcelFileDTO);
-          });
-      }); */
       setTimeout(() => {
         const formData = this._formOrganizerService.getFormValue();
         const storageForms: NormaxStorageFormsInterface = {
@@ -205,12 +179,14 @@ export class ReportListComponent implements OnInit {
           date: formatDate(Date.now(), 'dd/MM/yyy', 'en-US'),
           reportList: this._reportOrganizerService.getReports(),
         };
-        this._normaxStorageService.setForm(uuidv4(), storageForms);
+        this._normaxStorageService.setForm(
+          this._formOrganizerService.getFormId(),
+          storageForms
+        );
         this._formOrganizerService.clearFormsCache();
         this._reportOrganizerService.clearMedia();
         this._reportOrganizerService.clearReports();
         this._router.navigate(['/responder-formulario/forms-list']);
-        /*  this._changeExcelFileService.changeOrdersAndGenerateReports(); */
       }, 3000);
     } catch (error) {
       this.isLoading = false;
@@ -219,6 +195,15 @@ export class ReportListComponent implements OnInit {
   }
 
   public returnPage(): void {
-    this._location.back();
+    const id = this._formOrganizerService.getRawFormId();
+    if (id) {
+      this._router.navigate(['/responder-formulario/limites-maquina'], {
+        queryParams: {
+          id: this._formOrganizerService.getRawFormId(),
+        },
+      });
+    } else {
+      this._router.navigate(['/responder-formulario/limites-maquina']);
+    }
   }
 }

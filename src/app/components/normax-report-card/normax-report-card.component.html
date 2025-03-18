@@ -4,22 +4,47 @@
 >
   <!-- Botão de deletar -->
   <button
-    class="absolute bottom-0 right-0 m-2 p-1 bg-red-500 rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400"
+    aria-label="Delete item"
+    class="delete-button"
     (click)="onItemClickEvent()"
   >
     <svg
+      class="trash-svg"
+      viewBox="0 -10 64 74"
       xmlns="http://www.w3.org/2000/svg"
-      class="h-6 w-6 text-white"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
     >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="M19 7l-1 12H6L5 7m5-4h4m-4 0h4m-4 0V3a2 2 0 00-2-2h-4a2 2 0 00-2 2v1H2m20 0h-6"
-      />
+      <g id="trash-can">
+        <rect
+          x="16"
+          y="24"
+          width="32"
+          height="30"
+          rx="3"
+          ry="3"
+          fill="#e74c3c"
+        ></rect>
+
+        <g transform-origin="12 18" id="lid-group">
+          <rect
+            x="12"
+            y="12"
+            width="40"
+            height="6"
+            rx="2"
+            ry="2"
+            fill="#c0392b"
+          ></rect>
+          <rect
+            x="26"
+            y="8"
+            width="12"
+            height="4"
+            rx="2"
+            ry="2"
+            fill="#c0392b"
+          ></rect>
+        </g>
+      </g>
     </svg>
   </button>
 

@@ -1,4 +1,3 @@
-import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
@@ -8,18 +7,31 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { IonInput, IonLabel, IonText, IonIcon } from '@ionic/angular/standalone';
+import {
+  IonIcon,
+  IonInput,
+  IonLabel,
+  IonText,
+} from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { arrowBackOutline, arrowForwardOutline } from 'ionicons/icons';
 import { LimitesMaquinaForm } from 'src/app/services/form-organizer/form-organizer';
 import { FormOrganizerService } from 'src/app/services/form-organizer/form-organizer.service';
-import { NormaxIconButtonComponent } from "../../../../components/normax-icon-button/normax-icon-button.component";
-import { arrowBackOutline, arrowForwardOutline } from 'ionicons/icons';
-import { addIcons } from 'ionicons';
+import { NormaxIconButtonComponent } from '../../../../components/normax-icon-button/normax-icon-button.component';
 
 @Component({
   selector: 'limites-maquina',
   templateUrl: './limites-maquina.component.html',
   styleUrls: ['./limites-maquina.component.scss'],
-  imports: [IonIcon, FormsModule, ReactiveFormsModule, IonLabel, IonInput, IonText, NormaxIconButtonComponent],
+  imports: [
+    IonIcon,
+    FormsModule,
+    ReactiveFormsModule,
+    IonLabel,
+    IonInput,
+    IonText,
+    NormaxIconButtonComponent,
+  ],
   standalone: true,
 })
 export class LimitesMaquinaComponent implements OnInit {
@@ -28,11 +40,10 @@ export class LimitesMaquinaComponent implements OnInit {
 
   constructor(
     private _fb: FormBuilder,
-    private _location: Location,
     private _router: Router,
     private _formOrganizerService: FormOrganizerService
   ) {
-    addIcons({arrowBackOutline,arrowForwardOutline});
+    addIcons({ arrowBackOutline, arrowForwardOutline });
   }
 
   ngOnInit() {
@@ -57,13 +68,22 @@ export class LimitesMaquinaComponent implements OnInit {
   }
 
   public returnPage(): void {
-    this._location.back();
+    const id = this._formOrganizerService.getRawFormId();
+    if (id) {
+      this._router.navigate(['/responder-formulario/categoria-seguranca'], {
+        queryParams: {
+          id: this._formOrganizerService.getRawFormId(),
+        },
+      });
+    } else {
+      this._router.navigate(['/responder-formulario/categoria-seguranca']);
+    }
   }
 
   public nextPage(): void {
-    if(this.formGroup.invalid) {
-      this.formGroup.markAllAsTouched()
-      return
+    if (this.formGroup.invalid) {
+      this.formGroup.markAllAsTouched();
+      return;
     }
     this._formOrganizerService.addFormValues(
       'limitesMaquina',

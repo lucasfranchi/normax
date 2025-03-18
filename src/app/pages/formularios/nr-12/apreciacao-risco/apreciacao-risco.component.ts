@@ -35,6 +35,7 @@ import { addIcons } from 'ionicons';
 import { arrowBackOutline, helpCircleOutline } from 'ionicons/icons';
 import { ChangeExcelFileDTO } from 'src/app/services/change-excel-file/change-excel-file';
 import { ChangeExcelFileService } from 'src/app/services/change-excel-file/change-excel-file.service';
+import { ReportOrganizerService } from 'src/app/services/report-organizer/report-organizer.service';
 import { NormaxLoadingComponent } from '../../../../components/normax-loading/normax-loading.component';
 import {
   ApreciacaoRiscoPresets,
@@ -42,7 +43,6 @@ import {
   ImageSelectorInterface,
 } from './apreciacao-risco';
 import { getPreset } from './apreciacao-risco-presets/apreciacao-risco-preset';
-import { ReportOrganizerService } from 'src/app/services/report-organizer/report-organizer.service';
 
 @Component({
   selector: 'rl-apreciacao-risco',

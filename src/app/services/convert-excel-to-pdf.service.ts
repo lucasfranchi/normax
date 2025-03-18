@@ -70,7 +70,6 @@ export class ConvertExcelToPdfService {
     });
 
     saveAs(new Blob([pdfArrayBuffer], { type: 'application/pdf' }), fileName);
-    console.log('PDF salvo com sucesso:', fileName);
   }
 
   private arrayBufferToBase64(buffer: ArrayBuffer): string {
