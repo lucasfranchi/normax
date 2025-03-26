@@ -25,9 +25,10 @@ import { arrowBackOutline, arrowForwardOutline } from 'ionicons/icons';
 import { NormaxStorageService } from 'src/app/services/normax-storage-service/normax-storage.service';
 import { ReportOrganizerService } from 'src/app/services/report-organizer/report-organizer.service';
 import { NormaxIconButtonComponent } from '../../../../components/normax-icon-button/normax-icon-button.component';
-import { ApresentacaoMaquinaForm } from '../../../../services/form-organizer/form-organizer';
-import { FormOrganizerService } from '../../../../services/form-organizer/form-organizer.service';
+import { ApresentacaoMaquinaForm } from '../../../../services/normax-form-cache/normax-form-cache';
+import { NormaxFormCacheService } from '../../../../services/normax-form-cache/normax-form-cache.service';
 import { ImageSelectorInterface } from '../apreciacao-risco/apreciacao-risco';
+import { NormaxFormEnrichService } from 'src/app/services/normax-form-enrich/normax-form-enrich.service';
 
 @Component({
   selector: 'apresentacao-maquina',
@@ -58,10 +59,10 @@ export class ApresentacaoMaquinaComponent implements OnInit {
   constructor(
     private _fb: FormBuilder,
     private _router: Router,
-    private _formOrganizerService: FormOrganizerService,
+    private _formOrganizerService: NormaxFormCacheService,
     private _toastController: ToastController,
     private _activatedRoute: ActivatedRoute,
-    private _normaxStorageService: NormaxStorageService,
+    private _normaxFormEnrichService: NormaxFormEnrichService,
     private _reportOrganizerService: ReportOrganizerService
   ) {
     addIcons({ arrowBackOutline, arrowForwardOutline });
@@ -197,14 +198,9 @@ export class ApresentacaoMaquinaComponent implements OnInit {
     const form = this._formOrganizerService.getFormValue().apresentacaoMaquina;
 
     if (this.formId && !form) {
-      await this._normaxStorageService.getForm(this.formId).then((it) => {
-        this._formOrganizerService.setStorageForm({
-          id: this.formId,
-          data: it,
-        });
-        this._reportOrganizerService.setStorageReports(it.reportList);
-        this.formGroup.patchValue(it.apresentacaoMaquina);
-      });
+      await this._normaxFormEnrichService.getFormAndEnrich(this.formId);
+      const updatedForm = this._formOrganizerService.getFormValue().apresentacaoMaquina
+      this.formGroup.patchValue(updatedForm);
     } else {
       if (form) {
         this.formValues = {

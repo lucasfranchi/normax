@@ -3,7 +3,7 @@ import {
   CapaForm,
   CategoriaForm,
   LimitesMaquinaForm,
-} from '../form-organizer/form-organizer';
+} from '../normax-form-cache/normax-form-cache';
 import { ReportOrganizerInterface } from '../report-organizer/report-organizer';
 
 export interface NormaxStorageFormsInterface {
@@ -15,6 +15,7 @@ export interface NormaxStorageFormsInterface {
   date: string;
   reportList: Array<ReportOrganizerInterface>;
 }
+
 export interface NormaxStorageInterface {
   id: string;
   data: NormaxStorageFormsInterface;

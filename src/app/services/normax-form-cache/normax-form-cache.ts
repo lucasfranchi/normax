@@ -3,7 +3,7 @@ import { ChangeExcelFile } from '../change-excel-file/change-excel-file';
 import { getCategoriaCellChangesByForm } from 'src/app/pages/formularios/nr-12/categoria-seguranca/categoria-seguranca';
 import { getLimitesCellChangesByForm } from 'src/app/pages/formularios/nr-12/limites-maquina/limites-maquina';
 
-export interface FormOrganizerInterface {
+export interface NormaxFormCacheInterface {
   apresentacaoMaquina?: ApresentacaoMaquinaForm;
   categoriaSeguranca?: CategoriaForm;
   limitesMaquina?: LimitesMaquinaForm;
@@ -72,7 +72,7 @@ export interface LimitesMaquinaForm {
 
 export function getLinkedForms(
   key: string,
-  form: FormOrganizerInterface
+  form: NormaxFormCacheInterface
 ): Array<ChangeExcelFile> {
   switch (key) {
     case 'capa':

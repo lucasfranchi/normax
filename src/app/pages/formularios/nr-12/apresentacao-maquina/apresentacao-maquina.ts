@@ -1,5 +1,5 @@
 import { ChangeExcelFile } from 'src/app/services/change-excel-file/change-excel-file';
-import { ApresentacaoMaquinaForm, CapaForm } from 'src/app/services/form-organizer/form-organizer';
+import { ApresentacaoMaquinaForm, CapaForm } from 'src/app/services/normax-form-cache/normax-form-cache';
 
 export function getApresentacaoCellChangesByForm(
   form: ApresentacaoMaquinaForm,

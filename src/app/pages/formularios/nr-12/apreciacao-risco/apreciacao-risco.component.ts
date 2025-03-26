@@ -233,7 +233,8 @@ export class ApreciacaoRiscoComponent implements OnInit {
         };
         this._changeExcelFileService.changeExcelFile(
           changeExcelFileDTO,
-          this.imageSelector
+          this.imageSelector,
+          true
         );
       });
   }

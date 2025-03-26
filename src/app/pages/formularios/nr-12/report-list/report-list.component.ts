@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { IonCol, IonGrid, IonIcon, IonRow } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { arrowBackOutline, saveOutline } from 'ionicons/icons';
-import { FormOrganizerService } from 'src/app/services/form-organizer/form-organizer.service';
+import { NormaxFormCacheService } from 'src/app/services/normax-form-cache/normax-form-cache.service';
 import { NormaxStorageFormsInterface } from 'src/app/services/normax-storage-service/normax-storage';
 import { NormaxStorageService } from 'src/app/services/normax-storage-service/normax-storage.service';
 import { NormaxColorCardsInterface } from '../../../../components/normax-color-cards/normax-color-cards';
@@ -125,7 +125,7 @@ export class ReportListComponent implements OnInit {
   constructor(
     private _router: Router,
     private _reportOrganizerService: ReportOrganizerService,
-    private _formOrganizerService: FormOrganizerService,
+    private _formOrganizerService: NormaxFormCacheService,
     private _normaxStorageService: NormaxStorageService
   ) {
     addIcons({ arrowBackOutline, saveOutline });

@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { ImageSelectorInterface } from 'src/app/pages/formularios/nr-12/apreciacao-risco/apreciacao-risco';
 import { NormaxStorageFormsInterface } from '../normax-storage-service/normax-storage';
-import { FormOrganizerInterface } from './form-organizer';
+import { NormaxFormCacheInterface } from './normax-form-cache';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable({
   providedIn: 'root',
 })
-export class FormOrganizerService {
-  private forms?: FormOrganizerInterface = {
+export class NormaxFormCacheService {
+  private forms?: NormaxFormCacheInterface = {
     apresentacaoMaquina: null,
     categoriaSeguranca: {
       categoriaF: 'F1',

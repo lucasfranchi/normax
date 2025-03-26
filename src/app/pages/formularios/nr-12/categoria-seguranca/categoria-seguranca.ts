@@ -1,5 +1,5 @@
 import { ChangeExcelFile } from 'src/app/services/change-excel-file/change-excel-file';
-import { CategoriaForm } from 'src/app/services/form-organizer/form-organizer';
+import { CategoriaForm } from 'src/app/services/normax-form-cache/normax-form-cache';
 
 export function getCategoriaCellChangesByForm(
   form: CategoriaForm,

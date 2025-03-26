@@ -15,8 +15,8 @@ import {
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { arrowBackOutline, arrowForwardOutline } from 'ionicons/icons';
-import { LimitesMaquinaForm } from 'src/app/services/form-organizer/form-organizer';
-import { FormOrganizerService } from 'src/app/services/form-organizer/form-organizer.service';
+import { LimitesMaquinaForm } from 'src/app/services/normax-form-cache/normax-form-cache';
+import { NormaxFormCacheService } from 'src/app/services/normax-form-cache/normax-form-cache.service';
 import { NormaxIconButtonComponent } from '../../../../components/normax-icon-button/normax-icon-button.component';
 
 @Component({
@@ -41,7 +41,7 @@ export class LimitesMaquinaComponent implements OnInit {
   constructor(
     private _fb: FormBuilder,
     private _router: Router,
-    private _formOrganizerService: FormOrganizerService
+    private _formOrganizerService: NormaxFormCacheService
   ) {
     addIcons({ arrowBackOutline, arrowForwardOutline });
   }

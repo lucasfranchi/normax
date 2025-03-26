@@ -1,5 +1,5 @@
 import { CommonModule, Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IonIcon } from '@ionic/angular/standalone';
@@ -15,6 +15,7 @@ import { NormaxStorageService } from 'src/app/services/normax-storage-service/no
 import { NormaxFormCardComponent } from '../../../../components/normax-form-card/normax-form-card.component';
 import { NormaxIconButtonComponent } from '../../../../components/normax-icon-button/normax-icon-button.component';
 import { NormaxLoadingComponent } from '../../../../components/normax-loading/normax-loading.component';
+import { NormaxFormsOrganizerService } from 'src/app/services/normax-forms-organizer/normax-forms-organizer.service';
 
 @Component({
   selector: 'app-forms-list',
@@ -30,7 +31,7 @@ import { NormaxLoadingComponent } from '../../../../components/normax-loading/no
     FormsModule,
   ],
 })
-export class FormsListComponent implements OnInit {
+export class FormsListComponent  {
   isLoading: boolean = false;
   forms: Array<NormaxStorageInterface> = [];
   isAllChecked: boolean = false;
@@ -38,7 +39,8 @@ export class FormsListComponent implements OnInit {
   constructor(
     private _router: Router,
     private _location: Location,
-    private _normaxStorageService: NormaxStorageService
+    private _normaxStorageService: NormaxStorageService,
+    private _normaxFormsOrganizerService: NormaxFormsOrganizerService
   ) {
     addIcons({
       addOutline,
@@ -50,8 +52,6 @@ export class FormsListComponent implements OnInit {
       this._updateForms();
     });
   }
-
-  ngOnInit() {}
 
   public returnPage(): void {
     this._location.back();
@@ -82,9 +82,12 @@ export class FormsListComponent implements OnInit {
   public toggleFormSelect(event: { id: string; isChecked: boolean }) {
     this.forms.find((form) => form.id === event.id).isSelected =
       event.isChecked;
-    if (!this.forms.every((form) => form.isSelected)) {
-      this.isAllChecked = false;
-    }
+    this.isAllChecked = this.forms.every((form) => form.isSelected);
+  }
+
+  public convertReports() {
+    const formIds = this.forms.filter(it => it.isSelected).map(it => it.id);
+    this._normaxFormsOrganizerService.generateReports(formIds);
   }
 
   private _updateForms() {

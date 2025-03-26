@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import * as ExcelJS from 'exceljs';
+import { ImageSelectorInterface } from 'src/app/pages/formularios/nr-12/apreciacao-risco/apreciacao-risco';
 import { ConvertExcelToPdfService } from '../convert-excel-to-pdf.service';
 import { ReportOrganizerInterface } from '../report-organizer/report-organizer';
 import { ReportOrganizerService } from '../report-organizer/report-organizer.service';
 import { ChangeExcelFileDTO } from './change-excel-file';
-import { ImageSelectorInterface } from 'src/app/pages/formularios/nr-12/apreciacao-risco/apreciacao-risco';
 
 @Injectable({
   providedIn: 'root',
@@ -15,11 +15,12 @@ export class ChangeExcelFileService {
     private _convertExcelToPdfService: ConvertExcelToPdfService,
     private _reportOrganizer: ReportOrganizerService,
     private _router: Router
-  ) {}
+  ) { }
 
   public changeExcelFile(
     changeExcelFileDTO: ChangeExcelFileDTO,
-    imageSelector?: ImageSelectorInterface
+    imageSelector?: ImageSelectorInterface,
+    flgReturn: boolean = false
   ) {
     const reader: FileReader = new FileReader();
     reader.onload = async (e: any) => {
@@ -45,12 +46,12 @@ export class ChangeExcelFileService {
         identificador: '',
       });
 
-      this._router.navigate(['/responder-formulario/reports']);
+      flgReturn && this._router.navigate(['/responder-formulario/reports']);
     };
     reader.readAsArrayBuffer(changeExcelFileDTO.file.files[0]);
   }
 
-  public async changeOrdersAndGenerateReports() {
+  public async changeOrdersAndGenerateReports(fileName: string) {
     const excelFiles = this._reportOrganizer.getReports();
 
     // Atualiza todos os arquivos Excel primeiro
@@ -59,7 +60,7 @@ export class ChangeExcelFileService {
     }
 
     // Converte os arquivos Excel para PDF
-    this._convertExcelToPdfService.convertExcelListToPdf(excelFiles);
+    this._convertExcelToPdfService.convertExcelListToPdf(excelFiles, fileName);
   }
 
   private updateExcelFileOrderAsync(

@@ -11,8 +11,8 @@ import {
 import { addIcons } from 'ionicons';
 import { arrowBackOutline, arrowForwardOutline } from 'ionicons/icons';
 import { NormaxIconButtonComponent } from '../../../../components/normax-icon-button/normax-icon-button.component';
-import { CategoriaForm } from '../../../../services/form-organizer/form-organizer';
-import { FormOrganizerService } from '../../../../services/form-organizer/form-organizer.service';
+import { CategoriaForm } from '../../../../services/normax-form-cache/normax-form-cache';
+import { NormaxFormCacheService } from '../../../../services/normax-form-cache/normax-form-cache.service';
 
 @Component({
   selector: 'categoria-seguranca',
@@ -39,7 +39,7 @@ export class CategoriaSegurancaComponent implements OnInit {
 
   constructor(
     private _router: Router,
-    private _formOrganizerService: FormOrganizerService
+    private _formOrganizerService: NormaxFormCacheService
   ) {
     addIcons({ arrowBackOutline, arrowForwardOutline });
   }
