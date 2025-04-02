@@ -86,6 +86,7 @@ export class FormsListComponent  {
   }
 
   public convertReports() {
+    this.isLoading = true;
     const formIds = this.forms.filter(it => it.isSelected).map(it => it.id);
     this._normaxFormsOrganizerService.generateReports(formIds);
   }

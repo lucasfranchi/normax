@@ -27,7 +27,7 @@
           [isSelected]="form.isSelected"
           (onSelectForm)="toggleFormSelect($event)"
           (onDeleteButtonClick)="deleteForm($event)"
-          (click)="editForm(form.id)"
+          (onClickCard)="editForm(form.id)"
         ></normax-form-card>
       }
     </div>

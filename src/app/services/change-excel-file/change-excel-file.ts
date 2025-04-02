@@ -7,5 +7,5 @@ export interface ChangeExcelFileDTO {
 export interface ChangeExcelFile {
   cell: Array<string>;
   worksheetIndex: number;
-  value: string | number;
+  value: any;
 }

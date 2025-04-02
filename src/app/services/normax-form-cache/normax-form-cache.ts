@@ -2,6 +2,7 @@ import { getApresentacaoCellChangesByForm, getCapaCellChangesByForm } from 'src/
 import { ChangeExcelFile } from '../change-excel-file/change-excel-file';
 import { getCategoriaCellChangesByForm } from 'src/app/pages/formularios/nr-12/categoria-seguranca/categoria-seguranca';
 import { getLimitesCellChangesByForm } from 'src/app/pages/formularios/nr-12/limites-maquina/limites-maquina';
+import { ImageSelectorInterface } from 'src/app/pages/formularios/nr-12/apreciacao-risco/apreciacao-risco';
 
 export interface NormaxFormCacheInterface {
   apresentacaoMaquina?: ApresentacaoMaquinaForm;
@@ -54,6 +55,7 @@ export interface CapaForm {
   serie: string;
   localInstalacao: string;
   valorMedia: string;
+  imageSelector?: ImageSelectorInterface;
 }
 
 export interface LimitesMaquinaForm {

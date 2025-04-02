@@ -21,6 +21,7 @@ export class NormaxFormEnrichService {
         data: it,
       });
       this._reportOrganizerService.setStorageReports(it.reportList);
+      this._reportOrganizerService.setRawMedia(it.media);
     });
   }
 }

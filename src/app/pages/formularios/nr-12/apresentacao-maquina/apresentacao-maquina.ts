@@ -221,6 +221,12 @@ export function getCapaCellChangesByForm(
         value: form[key],
         worksheetIndex: reportId,
       };
+    case 'imageSelector':
+      return {
+        cell: ['C24'],
+        value: form[key],
+        worksheetIndex: reportId,
+      };
   }
 
   return null;

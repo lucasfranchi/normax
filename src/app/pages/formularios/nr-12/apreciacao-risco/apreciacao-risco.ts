@@ -24,6 +24,7 @@ export interface ApreciacaoRiscoPresets {
 
 export interface ImageSelectorInterface {
   image: string;
+  isCapaImage: boolean;
   resolution: {
     width: number;
     height: number;

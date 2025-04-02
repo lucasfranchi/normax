@@ -22,13 +22,12 @@ import {
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { arrowBackOutline, arrowForwardOutline } from 'ionicons/icons';
-import { NormaxStorageService } from 'src/app/services/normax-storage-service/normax-storage.service';
+import { NormaxFormEnrichService } from 'src/app/services/normax-form-enrich/normax-form-enrich.service';
 import { ReportOrganizerService } from 'src/app/services/report-organizer/report-organizer.service';
 import { NormaxIconButtonComponent } from '../../../../components/normax-icon-button/normax-icon-button.component';
 import { ApresentacaoMaquinaForm } from '../../../../services/normax-form-cache/normax-form-cache';
 import { NormaxFormCacheService } from '../../../../services/normax-form-cache/normax-form-cache.service';
 import { ImageSelectorInterface } from '../apreciacao-risco/apreciacao-risco';
-import { NormaxFormEnrichService } from 'src/app/services/normax-form-enrich/normax-form-enrich.service';
 
 @Component({
   selector: 'apresentacao-maquina',
@@ -143,6 +142,7 @@ export class ApresentacaoMaquinaComponent implements OnInit {
     img.onload = () => {
       this.imageSelector = {
         image: image.dataUrl,
+        isCapaImage: true,
         resolution: {
           width: img.width,
           height: img.height,
@@ -164,6 +164,7 @@ export class ApresentacaoMaquinaComponent implements OnInit {
     img.onload = () => {
       this.imageSelector = {
         image: image.dataUrl,
+        isCapaImage: true,
         resolution: {
           width: img.width,
           height: img.height,
@@ -200,7 +201,7 @@ export class ApresentacaoMaquinaComponent implements OnInit {
     if (this.formId && !form) {
       await this._normaxFormEnrichService.getFormAndEnrich(this.formId);
       const updatedForm = this._formOrganizerService.getFormValue().apresentacaoMaquina
-      this.formGroup.patchValue(updatedForm);
+      this.formGroup.patchValue({ ...updatedForm, dataInspecao: this._reformatDate(updatedForm.dataInspecao) });
     } else {
       if (form) {
         this.formValues = {

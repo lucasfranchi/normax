@@ -11,7 +11,7 @@ export class ReportOrganizerService {
     qtde: 0,
   };
 
-  constructor() {}
+  constructor() { }
 
   public addReport(report: ReportOrganizerInterface): void {
     const existingObjects = this.reports.filter((obj) => obj.id === report.id);
@@ -27,10 +27,10 @@ export class ReportOrganizerService {
     const newIdentifier =
       existingObjects.length > 0
         ? (
-            parseFloat(
-              existingObjects[existingObjects.length - 1].identificador
-            ) + 0.1
-          ).toFixed(1)
+          parseFloat(
+            existingObjects[existingObjects.length - 1].identificador
+          ) + 0.1
+        ).toFixed(1)
         : (report.id + 0.1).toFixed(1);
 
     report.identificador = newIdentifier;
@@ -62,6 +62,14 @@ export class ReportOrganizerService {
 
   public getMedia(): number {
     return this.media.valor / this.media.qtde;
+  }
+
+  public getRawMedia(): ReportOrganizerMedia {
+    return this.media;
+  }
+
+  public setRawMedia(media: ReportOrganizerMedia): void {
+    this.media = media;
   }
 
   public clearMedia(): void {

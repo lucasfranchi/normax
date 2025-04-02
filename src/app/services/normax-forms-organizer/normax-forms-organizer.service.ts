@@ -9,6 +9,7 @@ import {
 import { NormaxFormCacheService } from '../normax-form-cache/normax-form-cache.service';
 import { NormaxFormEnrichService } from '../normax-form-enrich/normax-form-enrich.service';
 import { ReportOrganizerService } from '../report-organizer/report-organizer.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -19,40 +20,51 @@ export class NormaxFormsOrganizerService {
     private _formOrganizerService: NormaxFormCacheService,
     private _normaxFormEnrichService: NormaxFormEnrichService,
     private _reportOrganizerService: ReportOrganizerService,
-    private _http: HttpClient
+    private _http: HttpClient,
+    private _router: Router,
   ) { }
 
-  public generateReports(formIdsList: Array<string>) {
-    formIdsList.forEach(async formId => {
-      this._formOrganizerService.clearFormsCache()
-      this._reportOrganizerService.getReports()
-      this._reportOrganizerService.getMedia()
+  public async generateReports(formIdsList: Array<string>) {
+    for (const formId of formIdsList) {
+      this._formOrganizerService.clearFormsCache();
+      this._reportOrganizerService.getReports();
+      this._reportOrganizerService.getMedia();
 
-      await this._normaxFormEnrichService.getFormAndEnrich(formId)
+      await this._normaxFormEnrichService.getFormAndEnrich(formId);
 
       const updatedForm = this._formOrganizerService.getFormValue();
+      console.log(updatedForm);
 
-      Object.keys(updatedForm).forEach((it) => {
-        this._http
-          .get('/assets/NR-12/NR-12.xlsx', { responseType: 'blob' })
-          .subscribe((data) => {
-            const file = new File([data], 'NR-12.xlsx', { type: data.type });
-            const dataTransfer = new DataTransfer();
-            dataTransfer.items.add(file);
+      await Promise.all(
+        Object.keys(updatedForm).map(async (it) => {
+          return new Promise<void>((resolve) => {
+            this._http
+              .get('/assets/NR-12/NR-12.xlsx', { responseType: 'blob' })
+              .subscribe((data) => {
+                const file = new File([data], 'NR-12.xlsx', { type: data.type });
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                const imageSelector = getReportIdsForms(it) == '18' ? updatedForm.capa.imageSelector : null;
 
-            const changeExcelFileDTO: ChangeExcelFileDTO = {
-              changesList: getLinkedForms(it, updatedForm),
-              file: dataTransfer,
-              reportId: getReportIdsForms(it),
-            };
-            this._changeExcelFileService.changeExcelFile(changeExcelFileDTO);
+                const changeExcelFileDTO: ChangeExcelFileDTO = {
+                  changesList: getLinkedForms(it, updatedForm),
+                  file: dataTransfer,
+                  reportId: getReportIdsForms(it),
+                };
+
+                this._changeExcelFileService.changeExcelFile(changeExcelFileDTO, imageSelector);
+                resolve();
+              });
           });
-      });
-      setTimeout(() => {
-        this._changeExcelFileService.changeOrdersAndGenerateReports(updatedForm.apresentacaoMaquina.maquina);
-      }, 3000);
-    })
+        })
+      );
 
-    /* this._router.navigate(['/responder-formulario/forms']); */
+      await this._changeExcelFileService.changeOrdersAndGenerateReports(
+        updatedForm.apresentacaoMaquina.maquina,
+        formId
+      );
+    }
+
+    this._router.navigate(['/responder-formulario/forms']);
   }
 }

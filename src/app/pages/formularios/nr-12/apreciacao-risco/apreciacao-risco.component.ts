@@ -149,6 +149,7 @@ export class ApreciacaoRiscoComponent implements OnInit {
     img.onload = () => {
       this.imageSelector = {
         image: image.dataUrl,
+        isCapaImage: false,
         resolution: {
           width: img.width,
           height: img.height,
@@ -170,6 +171,7 @@ export class ApreciacaoRiscoComponent implements OnInit {
     img.onload = () => {
       this.imageSelector = {
         image: image.dataUrl,
+        isCapaImage: false,
         resolution: {
           width: img.width,
           height: img.height,

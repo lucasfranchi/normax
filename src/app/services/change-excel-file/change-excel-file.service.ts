@@ -27,6 +27,8 @@ export class ChangeExcelFileService {
       const buffer = e.target.result;
       const workbook = new ExcelJS.Workbook();
       await workbook.xlsx.load(buffer);
+      console.log(changeExcelFileDTO)
+      console.log(imageSelector)
       if (imageSelector)
         await this._addImageToWorkbook(workbook, imageSelector);
       this._retrieveChanges(changeExcelFileDTO, workbook);
@@ -51,7 +53,7 @@ export class ChangeExcelFileService {
     reader.readAsArrayBuffer(changeExcelFileDTO.file.files[0]);
   }
 
-  public async changeOrdersAndGenerateReports(fileName: string) {
+  public async changeOrdersAndGenerateReports(fileName: string, formId: string) {
     const excelFiles = this._reportOrganizer.getReports();
 
     // Atualiza todos os arquivos Excel primeiro
@@ -60,7 +62,7 @@ export class ChangeExcelFileService {
     }
 
     // Converte os arquivos Excel para PDF
-    this._convertExcelToPdfService.convertExcelListToPdf(excelFiles, fileName);
+    this._convertExcelToPdfService.convertExcelListToPdf(excelFiles, fileName, formId);
   }
 
   private updateExcelFileOrderAsync(
@@ -165,7 +167,7 @@ export class ChangeExcelFileService {
 
       const worksheet = workbook.worksheets[0];
       worksheet.addImage(imageId, {
-        tl: { col: 1, row: 21 },
+        tl: { col: imageSelector.isCapaImage ? 3 : 1, row: imageSelector.isCapaImage ? 7 : 21 },
         ext: this._getImageResolution(imageSelector),
       });
     } catch (error) {

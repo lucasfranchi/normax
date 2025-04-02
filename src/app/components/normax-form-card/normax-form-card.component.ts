@@ -23,6 +23,9 @@ export class NormaxFormCardComponent implements OnInit {
   onDeleteButtonClick: EventEmitter<string> = new EventEmitter();
 
   @Output()
+  onClickCard: EventEmitter<string> = new EventEmitter();
+
+  @Output()
   onSelectForm: EventEmitter<{ id: string; isChecked: boolean }> =
     new EventEmitter();
 
@@ -41,5 +44,11 @@ export class NormaxFormCardComponent implements OnInit {
     event.preventDefault();
     event.stopPropagation();
     this.onDeleteButtonClick.emit(this.formId);
+  }
+
+  public onClickCardEvent(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.onClickCard.emit(this.formId);
   }
 }

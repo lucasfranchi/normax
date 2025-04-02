@@ -59,7 +59,7 @@ export class NormaxFormCacheService {
     return this.formId;
   }
 
-  public addCapaPhoto(imageSelector: ImageSelectorInterface) {
+  public addCapaPhoto(imageSelector?: ImageSelectorInterface) {
     this.imageCapa = imageSelector;
   }
 

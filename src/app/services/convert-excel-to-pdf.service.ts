@@ -3,9 +3,8 @@ import { Injectable } from '@angular/core';
 import { Directory, Encoding, Filesystem } from '@capacitor/filesystem';
 import { saveAs } from 'file-saver';
 import { PDFDocument } from 'pdf-lib';
-import { NormaxFormCacheService } from './normax-form-cache/normax-form-cache.service';
+import { NormaxStorageService } from './normax-storage-service/normax-storage.service';
 import { ReportOrganizerInterface } from './report-organizer/report-organizer';
-import { ReportOrganizerService } from './report-organizer/report-organizer.service';
 
 @Injectable({
   providedIn: 'root',
@@ -13,15 +12,22 @@ import { ReportOrganizerService } from './report-organizer/report-organizer.serv
 export class ConvertExcelToPdfService {
   constructor(
     private _http: HttpClient,
-    private _formOrganizer: NormaxFormCacheService,
-    private _reportOrganizerService: ReportOrganizerService
+    private _normaxStorageService: NormaxStorageService,
   ) { }
 
-  public convertExcelListToPdf(excelList: ReportOrganizerInterface[], fileName: string) {
+  public convertExcelListToPdf(excelList: ReportOrganizerInterface[], fileName: string, formId: string) {
     const convertedPdfList: { index: number; pdf: Blob }[] = [];
     excelList.sort((a, b) => a.id - b.id);
 
-    excelList.forEach((excelObject, index) => {
+    let index = 0;
+
+    const interval = setInterval(() => {
+      if (index >= excelList.length) {
+        clearInterval(interval); // Para a execução quando terminar a lista
+        return;
+      }
+
+      const excelObject = excelList[index];
       const reader = new FileReader();
 
       reader.onload = async (event) => {
@@ -32,31 +38,30 @@ export class ConvertExcelToPdfService {
         });
         formData.append('inputFile', blob, `file_${index}.xlsx`);
 
-        this._http
-          .post('https://api.cloudmersive.com/convert/xlsx/to/pdf', formData, {
-            responseType: 'blob',
-            headers: {
-              "Apikey": "4191c49c-f543-4959-907b-282d161b1563"
+        this._http.post('https://api.cloudmersive.com/convert/xlsx/to/pdf', formData, {
+          responseType: 'blob',
+          headers: {
+            "Apikey": "4191c49c-f543-4959-907b-282d161b1563"
+          }
+        }).subscribe(
+          (pdfBlob: Blob) => {
+            convertedPdfList.push({ index, pdf: pdfBlob });
+            if (convertedPdfList.length === excelList.length) {
+              convertedPdfList.sort((a, b) => a.index - b.index);
+              const pdfs = convertedPdfList.map((item) => item.pdf);
+              this.mergePdfs(pdfs, fileName, formId);
             }
-          })
-          .subscribe(
-            (pdfBlob: Blob) => {
-              convertedPdfList.push({ index, pdf: pdfBlob });
-              if (convertedPdfList.length === excelList.length) {
-                // Ordenar os PDFs convertidos pelo índice antes de mesclá-los
-                convertedPdfList.sort((a, b) => a.index - b.index);
-                const pdfs = convertedPdfList.map((item) => item.pdf);
-                this.mergePdfs(pdfs, fileName);
-              }
-            },
-            (error) => {
-              console.error('Erro ao converter o arquivo:', error);
-            }
-          );
+          },
+          (error) => {
+            console.error('Erro ao converter o arquivo:', error);
+            window.location.href = '/responder-formulario/forms-list';
+          }
+        );
       };
 
       reader.readAsArrayBuffer(excelObject.file);
-    });
+      index++; // Avança no array para a próxima requisição
+    }, 1000); // Chama a cada 1 segundo
   }
 
   private async savePdfLocally(pdfBlob: Blob, fileName: string) {
@@ -83,12 +88,11 @@ export class ConvertExcelToPdfService {
     return window.btoa(binary);
   }
 
-  private async mergePdfs(pdfList: Blob[], fileName: string) {
+  private async mergePdfs(pdfList: Blob[], fileName: string, formId: string) {
     const mergedPdf = await PDFDocument.create();
 
     // Carregar e adicionar o PDF existente da pasta assets primeiro
     const existingPdfBytes = await this.loadDefaultPdfFromAssets();
-    const divisorPdfBytes = await this.loadDivisorPdfFromAssets();
     const existingPdf = await PDFDocument.load(existingPdfBytes);
     const copiedExistingPages = await mergedPdf.copyPages(
       existingPdf,
@@ -109,16 +113,6 @@ export class ConvertExcelToPdfService {
       });
     }
 
-    // Adicionar o PDF divisor
-    const divisorPdf = await PDFDocument.load(divisorPdfBytes);
-    const copiedDivisorPages = await mergedPdf.copyPages(
-      divisorPdf,
-      divisorPdf.getPageIndices()
-    );
-    copiedDivisorPages.forEach((page) => {
-      mergedPdf.addPage(page);
-    });
-
     // Adicionar o restante dos PDFs da lista
     const remainingPdfs = pdfList.slice(0, -4);
     for (const pdfBlob of remainingPdfs) {
@@ -135,25 +129,20 @@ export class ConvertExcelToPdfService {
     const mergedPdfBlob = new Blob([mergedPdfBytes], {
       type: 'application/pdf',
     });
-    const form = this._formOrganizer.getFormValue();
 
     await this.savePdfLocally(
       mergedPdfBlob,
       `${fileName}.pdf`
     );
 
+    /* this._normaxStorageService.deleteForm(formId); */
+
     // Navegar para a página de relatórios salvos
-    /*  window.location.href = '/tabs/tab2'; */
+     window.location.href = '/tabs/tab2';
   }
 
   private async loadDefaultPdfFromAssets(): Promise<Uint8Array> {
     const response = await fetch('/assets/default.pdf');
-    const pdfArrayBuffer = await response.arrayBuffer();
-    return new Uint8Array(pdfArrayBuffer);
-  }
-
-  private async loadDivisorPdfFromAssets(): Promise<Uint8Array> {
-    const response = await fetch('/assets/divisor.pdf');
     const pdfArrayBuffer = await response.arrayBuffer();
     return new Uint8Array(pdfArrayBuffer);
   }

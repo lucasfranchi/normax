@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonCol, IonGrid, IonIcon, IonRow } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { arrowBackOutline, saveOutline } from 'ionicons/icons';
+import { arrowBackOutline, image, saveOutline } from 'ionicons/icons';
 import { NormaxFormCacheService } from 'src/app/services/normax-form-cache/normax-form-cache.service';
 import { NormaxStorageFormsInterface } from 'src/app/services/normax-storage-service/normax-storage';
 import { NormaxStorageService } from 'src/app/services/normax-storage-service/normax-storage.service';
@@ -160,12 +160,13 @@ export class ReportListComponent implements OnInit {
     try {
       this.isLoading = true;
       const formOrganizer = this._formOrganizerService.getFormValue();
-
+      console.log(this._reportOrganizerService.getMedia())
       this._formOrganizerService.addFormValues('capa', {
         maquina: formOrganizer?.apresentacaoMaquina?.maquina,
         serie: formOrganizer?.apresentacaoMaquina?.numTagSeri,
         localInstalacao: formOrganizer?.apresentacaoMaquina?.localInstalacao,
         valorMedia: this._reportOrganizerService.getMedia().toString(),
+        imageSelector: this._formOrganizerService.getImageCapa(),
       });
 
       setTimeout(() => {
@@ -174,10 +175,11 @@ export class ReportListComponent implements OnInit {
           apresentacaoMaquina: formData.apresentacaoMaquina,
           categoriaSeguranca: formData.categoriaSeguranca,
           limitesMaquina: formData.limitesMaquina,
-          capa: formData.capa,
+          capa: { ...formData.capa, imageSelector: this._formOrganizerService.getImageCapa() },
           name: `Formulário ${formData.apresentacaoMaquina.maquina}`,
           date: formatDate(Date.now(), 'dd/MM/yyy', 'en-US'),
           reportList: this._reportOrganizerService.getReports(),
+          media: this._reportOrganizerService.getRawMedia()
         };
         this._normaxStorageService.setForm(
           this._formOrganizerService.getFormId(),
