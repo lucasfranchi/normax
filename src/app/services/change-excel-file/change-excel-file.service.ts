@@ -27,8 +27,6 @@ export class ChangeExcelFileService {
       const buffer = e.target.result;
       const workbook = new ExcelJS.Workbook();
       await workbook.xlsx.load(buffer);
-      console.log(changeExcelFileDTO)
-      console.log(imageSelector)
       if (imageSelector)
         await this._addImageToWorkbook(workbook, imageSelector);
       this._retrieveChanges(changeExcelFileDTO, workbook);
@@ -165,9 +163,9 @@ export class ChangeExcelFileService {
         extension: 'jpeg',
       });
 
-      const worksheet = workbook.worksheets[0];
+      const worksheet = workbook.worksheets[imageSelector.isCapaImage ? 18 : 0];
       worksheet.addImage(imageId, {
-        tl: { col: imageSelector.isCapaImage ? 3 : 1, row: imageSelector.isCapaImage ? 7 : 21 },
+        tl: { col: imageSelector.isCapaImage ? 1 : 1, row: imageSelector.isCapaImage ? 6 : 21 },
         ext: this._getImageResolution(imageSelector),
       });
     } catch (error) {
@@ -176,14 +174,21 @@ export class ChangeExcelFileService {
   }
 
   private _getImageResolution(imageSelector: ImageSelectorInterface) {
-    const width =
-      imageSelector.resolution.width > 650
-        ? 650
-        : imageSelector.resolution.width;
-    const height =
-      imageSelector.resolution.height > 400
-        ? 400
-        : imageSelector.resolution.height;
+    const width = imageSelector.resolution.width;
+    const height = imageSelector.resolution.height;
+
+    if(imageSelector.resolution.width > 650) {
+      imageSelector.resolution.width = imageSelector.resolution.width / 2;
+      imageSelector.resolution.height = imageSelector.resolution.height / 2;
+      return this._getImageResolution(imageSelector);
+    }
+
+    if(imageSelector.resolution.height > (imageSelector.isCapaImage ? 200 : 400)) {
+      imageSelector.resolution.width = imageSelector.resolution.width / 2;
+      imageSelector.resolution.height = imageSelector.resolution.height / 2;
+      return this._getImageResolution(imageSelector);
+    }
+
     return { width, height };
   }
 }

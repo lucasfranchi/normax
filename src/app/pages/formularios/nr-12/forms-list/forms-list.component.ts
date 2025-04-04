@@ -80,8 +80,7 @@ export class FormsListComponent  {
   }
 
   public toggleFormSelect(event: { id: string; isChecked: boolean }) {
-    this.forms.find((form) => form.id === event.id).isSelected =
-      event.isChecked;
+    this.forms.forEach((form) => form.isSelected = form.id === event.id);
     this.isAllChecked = this.forms.every((form) => form.isSelected);
   }
 

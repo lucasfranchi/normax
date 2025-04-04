@@ -196,6 +196,7 @@ export function getCapaCellChangesByForm(
   key: string,
   reportId: number
 ): ChangeExcelFile {
+  console.log(form)
   switch (key) {
     case 'maquina':
       return {
@@ -224,7 +225,7 @@ export function getCapaCellChangesByForm(
     case 'imageSelector':
       return {
         cell: ['C24'],
-        value: form[key],
+        value: form['valorMedia'],
         worksheetIndex: reportId,
       };
   }

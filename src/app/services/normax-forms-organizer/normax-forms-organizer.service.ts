@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { ChangeExcelFileDTO } from '../change-excel-file/change-excel-file';
 import { ChangeExcelFileService } from '../change-excel-file/change-excel-file.service';
 import {
@@ -9,7 +10,6 @@ import {
 import { NormaxFormCacheService } from '../normax-form-cache/normax-form-cache.service';
 import { NormaxFormEnrichService } from '../normax-form-enrich/normax-form-enrich.service';
 import { ReportOrganizerService } from '../report-organizer/report-organizer.service';
-import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -31,40 +31,42 @@ export class NormaxFormsOrganizerService {
       this._reportOrganizerService.getMedia();
 
       await this._normaxFormEnrichService.getFormAndEnrich(formId);
-
       const updatedForm = this._formOrganizerService.getFormValue();
-      console.log(updatedForm);
 
-      await Promise.all(
-        Object.keys(updatedForm).map(async (it) => {
-          return new Promise<void>((resolve) => {
-            this._http
-              .get('/assets/NR-12/NR-12.xlsx', { responseType: 'blob' })
-              .subscribe((data) => {
-                const file = new File([data], 'NR-12.xlsx', { type: data.type });
-                const dataTransfer = new DataTransfer();
-                dataTransfer.items.add(file);
-                const imageSelector = getReportIdsForms(it) == '18' ? updatedForm.capa.imageSelector : null;
+      // Criando um array de promessas para aguardar a execução correta
+      const changeFilePromises = Object.keys(updatedForm).map((it) => {
+        return this.changeExcelFileWithPromise(it, updatedForm);
+      });
 
-                const changeExcelFileDTO: ChangeExcelFileDTO = {
-                  changesList: getLinkedForms(it, updatedForm),
-                  file: dataTransfer,
-                  reportId: getReportIdsForms(it),
-                };
-
-                this._changeExcelFileService.changeExcelFile(changeExcelFileDTO, imageSelector);
-                resolve();
-              });
-          });
-        })
-      );
+      await Promise.all(changeFilePromises);
 
       await this._changeExcelFileService.changeOrdersAndGenerateReports(
         updatedForm.apresentacaoMaquina.maquina,
         formId
       );
     }
+  }
 
-    this._router.navigate(['/responder-formulario/forms']);
+  // Função que retorna uma Promise e aguarda a execução de changeExcelFile()
+  private changeExcelFileWithPromise(it: string, updatedForm: any): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this._http.get('/assets/NR-12/NR-12.xlsx', { responseType: 'blob' }).subscribe((data) => {
+        const file = new File([data], 'NR-12.xlsx', { type: data.type });
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+
+        const imageSelector = getReportIdsForms(it) == '18' ? updatedForm.capa.imageSelector : null;
+        const changeExcelFileDTO: ChangeExcelFileDTO = {
+          changesList: getLinkedForms(it, updatedForm),
+          file: dataTransfer,
+          reportId: getReportIdsForms(it),
+        };
+
+        this._changeExcelFileService.changeExcelFile(changeExcelFileDTO, imageSelector);
+
+        // Apenas resolve a promessa após execução completa de changeExcelFile()
+        setTimeout(() => resolve(), 3000);
+      }, (error) => reject(error));
+    });
   }
 }

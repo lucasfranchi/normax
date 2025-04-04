@@ -12,11 +12,11 @@
       <ion-icon name="document-text-outline"></ion-icon>
     </normax-icon-button>
 
-    <label class="normax-check-container" *ngIf="forms.length > 0">
+    <!-- <label class="normax-check-container" *ngIf="forms.length > 0">
       <input type="checkbox" [checked]="isAllChecked ? 'checked' : ''" (change)="toggleSelectedForms($event)"/>
       <div class="checkmark"></div>
       <div class="normax-check-container__title">Selecionar todos os formulários</div>
-    </label>
+    </label> -->
 
     <div class="normax-forms-list__container__forms">
       @for (form of forms; track form) {
